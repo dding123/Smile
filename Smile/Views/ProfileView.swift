@@ -1,0 +1,20 @@
+//
+//  ProfileView.swift
+//  Smile
+//
+//  Created by David Ding on 7/31/23.
+//
+
+import SwiftUI
+
+struct ProfileView: View {
+    var body: some View {
+        Text("Profile View")
+    }
+}
+
+struct ProfileView_Previews: PreviewProvider {
+    static var previews: some View {
+        ProfileView()
+    }
+}
