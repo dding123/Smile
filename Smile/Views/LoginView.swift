@@ -9,7 +9,7 @@ import SwiftUI
 import Combine
 
 struct LoginView: View {
-    @StateObject private var viewModel = AuthViewModel()
+    @EnvironmentObject var viewModel: AuthViewModel
     @State private var email = ""
     @State private var password = ""
     @State private var isSignUp = false
@@ -45,6 +45,16 @@ struct LoginView: View {
                         isSignUp.toggle()
                     }
                 }
+                
+                // Debug information
+                Section(header: Text("Debug Info")) {
+                    Text("Is Authenticated: \(viewModel.isAuthenticated ? "Yes" : "No")")
+                    if let user = viewModel.currentUser {
+                        Text("Current User: \(user.email)")
+                    } else {
+                        Text("No current user")
+                    }
+                }
             }
             .navigationTitle(isSignUp ? "Sign Up" : "Sign In")
             .alert(item: Binding<AuthErrorWrapper?>(
@@ -59,7 +69,6 @@ struct LoginView: View {
     }
 }
 
-// This wrapper is used to make our error conform to Identifiable
 struct AuthErrorWrapper: Identifiable {
     let id = UUID()
     let error: String
@@ -68,5 +77,6 @@ struct AuthErrorWrapper: Identifiable {
 struct LoginView_Previews: PreviewProvider {
     static var previews: some View {
         LoginView()
+            .environmentObject(AuthViewModel())
     }
 }

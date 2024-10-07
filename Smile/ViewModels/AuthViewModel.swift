@@ -9,53 +9,63 @@ import Foundation
 import Combine
 
 class AuthViewModel: ObservableObject {
-    @Published var isAuthenticated = false
+    @Published var currentUser: User?
     @Published var authError: String = ""
     
     private var cancellables = Set<AnyCancellable>()
-    private let authService: AuthService
+    private let dataService: DataService
     
-    init(authService: AuthService = AuthService()) {
-        self.authService = authService
-        
-        authService.$currentUser
-            .map { $0 != nil }
-            .assign(to: \.isAuthenticated, on: self)
-            .store(in: &cancellables)
+    init(dataService: DataService = FirebaseDataService()) {
+        self.dataService = dataService
+        print("AuthViewModel initialized")
+    }
+    
+    var isAuthenticated: Bool {
+        return currentUser != nil
     }
     
     func signUp(email: String, password: String, username: String) {
-        authService.signUp(email: email, password: password, username: username)
-            .sink(receiveCompletion: { completion in
+        
+        dataService.signUp(email: email, password: password, username: username)
+            .sink(receiveCompletion: { [weak self] completion in
                 if case .failure(let error) = completion {
-                    self.authError = error.localizedDescription
+                    self?.authError = error.localizedDescription
                 }
-            }, receiveValue: { _ in
-                self.authError = ""
+            }, receiveValue: { [weak self] user in
+                self?.currentUser = user
+                self?.authError = ""
             })
             .store(in: &cancellables)
     }
     
     func signIn(email: String, password: String) {
-        authService.signIn(email: email, password: password)
-            .sink(receiveCompletion: { completion in
-                if case .failure(let error) = completion {
-                    self.authError = error.localizedDescription
+        print("Attempting to sign in with email: \(email)")
+        dataService.signIn(email: email, password: password)
+            .sink(receiveCompletion: { [weak self] completion in
+                switch completion {
+                case .finished:
+                    print("Sign in process completed")
+                case .failure(let error):
+                    print("Sign in error: \(error.localizedDescription)")
+                    self?.authError = error.localizedDescription
                 }
-            }, receiveValue: { _ in
-                self.authError = ""
+            }, receiveValue: { [weak self] user in
+                print("Sign in successful. User: \(user)")
+                self?.currentUser = user
+                self?.authError = ""
             })
             .store(in: &cancellables)
     }
     
     func signOut() {
-        authService.signOut()
-            .sink(receiveCompletion: { completion in
+        dataService.signOut()
+            .sink(receiveCompletion: { [weak self] completion in
                 if case .failure(let error) = completion {
-                    self.authError = error.localizedDescription
+                    self?.authError = error.localizedDescription
                 }
-            }, receiveValue: { _ in
-                self.authError = ""
+            }, receiveValue: { [weak self] _ in
+                self?.currentUser = nil
+                self?.authError = ""
             })
             .store(in: &cancellables)
     }
