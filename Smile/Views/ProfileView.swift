@@ -8,51 +8,82 @@
 import SwiftUI
 
 struct ProfileView: View {
-    @EnvironmentObject var authViewModel: AuthViewModel
-    @State private var showingLogoutAlert = false
-
+    let bannerHeight: CGFloat = 200
+    let profileImageSize: CGFloat = 120
+    
+    @State private var selectedTab: Tab = .photos
+    
+    enum Tab {
+        case photos, uploads
+    }
+    
+    let columns: [GridItem] = Array(repeating: .init(.flexible(), spacing: 2), count: 3)
+    
     var body: some View {
-        NavigationView {
-            VStack {
-                // Your existing profile content here
-                Text("Profile View")
-                    .font(.title)
-                    .padding()
-
-                // Add more profile information and settings as needed
-
-                Spacer()
-
-                Button(action: {
-                    showingLogoutAlert = true
-                }) {
-                    Text("Log Out")
-                        .foregroundColor(.white)
-                        .padding()
-                        .frame(maxWidth: .infinity)
-                        .background(Color.red)
-                        .cornerRadius(10)
+        ScrollView {
+            VStack(alignment: .leading, spacing: 0) {
+                // Banner Image
+                ZStack(alignment: .bottomLeading) {
+                    Image(systemName: "photo")
+                        .resizable()
+                        .aspectRatio(contentMode: .fill)
+                        .frame(height: bannerHeight)
+                        .clipped()
+                    
+                    // Profile Image
+                    Image(systemName: "photo")
+                        .resizable()
+                        .aspectRatio(contentMode: .fill)
+                        .frame(width: profileImageSize, height: profileImageSize)
+                        .clipShape(Circle())
+                        .overlay(Circle().stroke(Color.white, lineWidth: 4))
+                        .shadow(radius: 10)
+                        .offset(x: 20, y: profileImageSize / 2)
                 }
-                .padding()
-            }
-            .navigationTitle("Profile")
-            .alert(isPresented: $showingLogoutAlert) {
-                Alert(
-                    title: Text("Log Out"),
-                    message: Text("Are you sure you want to log out?"),
-                    primaryButton: .destructive(Text("Log Out")) {
-                        authViewModel.signOut()
-                    },
-                    secondaryButton: .cancel()
-                )
+                
+                // Spacer to account for the overlapping profile image
+                Spacer().frame(height: profileImageSize / 2 + 20)
+                
+                // User Info (placeholder for now)
+                VStack(alignment: .leading, spacing: 8) {
+                    Text("User Name")
+                        .font(.title)
+                        .fontWeight(.bold)
+                    Text("User Bio goes here")
+                        .font(.subheadline)
+                        .foregroundColor(.gray)
+                }
+                .padding(.horizontal)
+                
+                // Navigation Tabs
+                HStack {
+                    Picker("", selection: $selectedTab) {
+                        Text("Photos").tag(Tab.photos)
+                        Text("Uploads").tag(Tab.uploads)
+                    }
+                    .pickerStyle(SegmentedPickerStyle())
+                    .padding()
+                }
+                
+                // Photo Grid
+                LazyVGrid(columns: columns, spacing: 2) {
+                    ForEach(0..<30) { index in
+                        Image(systemName: "photo")
+                            .resizable()
+                            .aspectRatio(contentMode: .fill)
+                            .frame(height: (UIScreen.main.bounds.width - 4) / 3) // Subtracting 4 to account for 2px spacing
+                            .clipped()
+                    }
+                }
+
             }
         }
+        .edgesIgnoringSafeArea(.top)
     }
 }
 
 struct ProfileView_Previews: PreviewProvider {
     static var previews: some View {
         ProfileView()
-            .environmentObject(AuthViewModel())
     }
 }

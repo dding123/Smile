@@ -48,64 +48,86 @@ class FirebaseDataService: DataService {
 
     func createPost(imageUrl: URL, caption: String, taggedUsers: [String]) -> AnyPublisher<Void, Error> {
         Future { promise in
-            guard let currentUser = Auth.auth().currentUser else {
-                let error = NSError(domain: "FirebaseDataService", code: 0, userInfo: [NSLocalizedDescriptionKey: "User not logged in"])
-                print("Error: User not logged in")
-                promise(.failure(error))
-                return
-            }
-            
-            print("Attempting to create post for user: \(currentUser.uid)")
-            
-            let db = Firestore.firestore()
-            let postRef = db.collection("posts").document()
-            
-            let postData: [String: Any] = [
-                "userId": currentUser.uid,
-                "imageUrl": imageUrl.absoluteString,
-                "caption": caption,
-                "taggedUsers": taggedUsers,
-                "createdAt": FieldValue.serverTimestamp()
-            ]
-            
-            postRef.setData(postData) { error in
-                if let error = error {
+            Task {
+                do {
+                    guard let currentUser = Auth.auth().currentUser else {
+                        throw NSError(domain: "FirebaseDataService", code: 0, userInfo: [NSLocalizedDescriptionKey: "User not logged in"])
+                    }
+                    
+                    print("Attempting to create post for user: \(currentUser.uid)")
+                    print("Tagged Users: \(taggedUsers)")
+                    
+                    // Fetch the current user's username
+                    let db = Firestore.firestore()
+                    let userDoc = try await db.collection("users").document(currentUser.uid).getDocument()
+                    
+                    guard let username = userDoc.data()?["username"] as? String else {
+                        throw NSError(domain: "FirebaseDataService", code: 1, userInfo: [NSLocalizedDescriptionKey: "Username not found"])
+                    }
+                    
+                    let postRef = db.collection("posts").document()
+                    
+                    let postData: [String: Any] = [
+                        "userId": currentUser.uid,
+                        "username": username,
+                        "imageUrl": imageUrl.absoluteString,
+                        "caption": caption,
+                        "taggedUsers": taggedUsers,
+                        "createdAt": FieldValue.serverTimestamp(),
+                        "likeCount": 0,
+                        "commentCount": 0
+                    ]
+                    
+                    try await postRef.setData(postData)
+                    
+                    print("Post created successfully with ID: \(postRef.documentID)")
+                    print("Post data: \(postData)")
+                    promise(.success(()))
+                } catch {
                     print("Error creating post: \(error.localizedDescription)")
                     promise(.failure(error))
-                } else {
-                    print("Post created successfully with ID: \(postRef.documentID)")
-                    promise(.success(()))
                 }
             }
         }.eraseToAnyPublisher()
     }
     
     func fetchPosts() -> AnyPublisher<[Post], Error> {
-        Future { promise in
-            let db = Firestore.firestore()
-            db.collection("posts").order(by: "createdAt", descending: true).getDocuments { (snapshot, error) in
-                if let error = error {
+        let db = Firestore.firestore()
+        
+        return Future { promise in
+            Task {
+                do {
+                    let snapshot = try await db.collection("posts")
+                        .order(by: "createdAt", descending: true)
+                        .limit(to: 20)
+                        .getDocuments()
+                    
+                    let posts = await snapshot.documents.asyncCompactMap { document -> Post? in
+                        do {
+                            var post = try document.data(as: Post.self)
+                            
+                            // Fetch the username if it's not stored in the post document
+                            if post.username.isEmpty {
+                                let userDoc = try await db.collection("users").document(post.userId).getDocument()
+                                post.username = userDoc.data()?["username"] as? String ?? "Unknown User"
+                            }
+                            
+                            return post
+                        } catch {
+                            print("Error decoding post: \(error)")
+                            return nil
+                        }
+                    }
+                    
+                    promise(.success(posts))
+                } catch {
                     promise(.failure(error))
-                    return
                 }
-                
-                let posts = snapshot?.documents.compactMap { document -> Post? in
-                    let data = document.data()
-                    return Post(
-                        id: document.documentID,
-                        userId: data["userId"] as? String ?? "",
-                        imageUrl: data["imageUrl"] as? String ?? "",
-                        caption: data["caption"] as? String ?? "",
-                        taggedUsers: data["taggedUsers"] as? [String] ?? [],
-                        createdAt: (data["createdAt"] as? Timestamp)?.dateValue() ?? Date()
-                    )
-                } ?? []
-                
-                promise(.success(posts))
             }
-        }.eraseToAnyPublisher()
+        }
+        .eraseToAnyPublisher()
     }
-    
+
     func signIn(email: String, password: String) -> AnyPublisher<User, Error> {
         Future { promise in
             Auth.auth().signIn(withEmail: email, password: password) { (authResult, error) in
@@ -147,8 +169,23 @@ class FirebaseDataService: DataService {
                         return
                     }
                     
-                    let user = User(id: firebaseUser.uid, email: email, username: username)
-                    promise(.success(user))
+                    // Create user document in Firestore
+                    let db = Firestore.firestore()
+                    let userData: [String: Any] = [
+                        "username": username,
+                        "email": email,
+                        "createdAt": FieldValue.serverTimestamp(),
+                        "lastLoginAt": FieldValue.serverTimestamp()
+                    ]
+                    
+                    db.collection("users").document(firebaseUser.uid).setData(userData) { error in
+                        if let error = error {
+                            promise(.failure(error))
+                        } else {
+                            let user = User(id: firebaseUser.uid, email: email, username: username)
+                            promise(.success(user))
+                        }
+                    }
                 }
             }
         }.eraseToAnyPublisher()
@@ -163,5 +200,21 @@ class FirebaseDataService: DataService {
                 promise(.failure(error))
             }
         }.eraseToAnyPublisher()
+    }
+}
+
+extension Sequence {
+    func asyncCompactMap<T>(
+        _ transform: (Element) async -> T?
+    ) async -> [T] {
+        var values = [T]()
+        
+        for element in self {
+            if let newElement = await transform(element) {
+                values.append(newElement)
+            }
+        }
+        
+        return values
     }
 }

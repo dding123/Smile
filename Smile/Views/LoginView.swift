@@ -46,15 +46,15 @@ struct LoginView: View {
                     }
                 }
                 
-                // Debug information
-                Section(header: Text("Debug Info")) {
-                    Text("Is Authenticated: \(viewModel.isAuthenticated ? "Yes" : "No")")
-                    if let user = viewModel.currentUser {
-                        Text("Current User: \(user.email)")
-                    } else {
-                        Text("No current user")
-                    }
-                }
+//                // Debug information
+//                Section(header: Text("Debug Info")) {
+//                    Text("Is Authenticated: \(viewModel.isAuthenticated ? "Yes" : "No")")
+//                    if let user = viewModel.currentUser {
+//                        Text("Current User: \(user.email)")
+//                    } else {
+//                        Text("No current user")
+//                    }
+//                }
             }
             .navigationTitle(isSignUp ? "Sign Up" : "Sign In")
             .alert(item: Binding<AuthErrorWrapper?>(

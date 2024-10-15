@@ -8,14 +8,26 @@
 import SwiftUI
 
 struct HomeView: View {
+    @StateObject private var viewModel = HomeViewModel()
+    
     var body: some View {
-        VStack {
-            Image(systemName: "globe")
-                .imageScale(.large) 
-                .foregroundColor(.accentColor)
-            Text("Home")
+        NavigationView {
+            ScrollView {
+                LazyVStack(spacing: 20) {
+                    ForEach(viewModel.posts) { post in
+                        PostView(post: post)
+                    }
+                }
+                .padding(.top)
+            }
+            .navigationTitle("Home")
+            .onAppear {
+                viewModel.fetchPosts()
+            }
+            .refreshable {
+                viewModel.fetchPosts()
+            }
         }
-        .padding()
     }
 }
 

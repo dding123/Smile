@@ -88,7 +88,7 @@ struct TaggingView: View {
         print("Starting upload process")
         isUploading = true
         uploadError = nil
-
+        
         dataService.uploadImage(imageData)
             .flatMap { imageUrl -> AnyPublisher<Void, Error> in
                 print("Image uploaded successfully. URL: \(imageUrl)")
