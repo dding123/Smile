@@ -24,9 +24,8 @@ class AuthViewModel: ObservableObject {
         return currentUser != nil
     }
     
-    func signUp(email: String, password: String, username: String) {
-        
-        dataService.signUp(email: email, password: password, username: username)
+    func signUp(email: String, password: String, username: String, firstName: String, lastName: String) {
+        dataService.signUp(email: email, password: password, username: username, firstName: firstName, lastName: lastName)
             .sink(receiveCompletion: { [weak self] completion in
                 if case .failure(let error) = completion {
                     self?.authError = error.localizedDescription

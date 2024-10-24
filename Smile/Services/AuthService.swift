@@ -8,6 +8,7 @@
 import Foundation
 import Combine
 import FirebaseAuth
+import FirebaseFirestore
 
 enum AuthError: Error {
     case signUpFailed(String)
@@ -23,7 +24,19 @@ class AuthService: ObservableObject {
     init() {
         authStateDidChangeListenerHandle = Auth.auth().addStateDidChangeListener { [weak self] (_, firebaseUser) in
             if let firebaseUser = firebaseUser {
-                self?.currentUser = User(id: firebaseUser.uid, email: firebaseUser.email ?? "", username: firebaseUser.displayName ?? "")
+                // Fetch additional user data from Firestore
+                let db = Firestore.firestore()
+                db.collection("users").document(firebaseUser.uid).getDocument { (document, error) in
+                    if let document = document, let data = document.data() {
+                        self?.currentUser = User(
+                            id: firebaseUser.uid,
+                            email: firebaseUser.email ?? "",
+                            username: firebaseUser.displayName ?? "",
+                            firstName: data["firstName"] as? String ?? "",
+                            lastName: data["lastName"] as? String ?? ""
+                        )
+                    }
+                }
             } else {
                 self?.currentUser = nil
             }
@@ -36,7 +49,7 @@ class AuthService: ObservableObject {
         }
     }
     
-    func signUp(email: String, password: String, username: String) -> AnyPublisher<User, AuthError> {
+    func signUp(email: String, password: String, username: String, firstName: String, lastName: String) -> AnyPublisher<User, AuthError> {
         return Future { promise in
             Auth.auth().createUser(withEmail: email, password: password) { (authResult, error) in
                 if let error = error {
@@ -57,8 +70,31 @@ class AuthService: ObservableObject {
                         return
                     }
                     
-                    let user = User(id: authResult.user.uid, email: email, username: username)
-                    promise(.success(user))
+                    // Create user document in Firestore
+                    let db = Firestore.firestore()
+                    let userData: [String: Any] = [
+                        "username": username,
+                        "email": email,
+                        "firstName": firstName,
+                        "lastName": lastName,
+                        "createdAt": FieldValue.serverTimestamp()
+                    ]
+                    
+                    db.collection("users").document(authResult.user.uid).setData(userData) { error in
+                        if let error = error {
+                            promise(.failure(.signUpFailed(error.localizedDescription)))
+                            return
+                        }
+                        
+                        let user = User(
+                            id: authResult.user.uid,
+                            email: email,
+                            username: username,
+                            firstName: firstName,
+                            lastName: lastName
+                        )
+                        promise(.success(user))
+                    }
                 }
             }
         }
@@ -78,8 +114,31 @@ class AuthService: ObservableObject {
                     return
                 }
                 
-                let user = User(id: authResult.user.uid, email: authResult.user.email ?? "", username: authResult.user.displayName ?? "")
-                promise(.success(user))
+                // Fetch additional user data from Firestore
+                let db = Firestore.firestore()
+                db.collection("users").document(authResult.user.uid).getDocument { (document, error) in
+                    if let error = error {
+                        promise(.failure(.signInFailed(error.localizedDescription)))
+                        return
+                    }
+                    
+                    guard let document = document,
+                          let data = document.data(),
+                          let firstName = data["firstName"] as? String,
+                          let lastName = data["lastName"] as? String else {
+                        promise(.failure(.signInFailed("Failed to get user data")))
+                        return
+                    }
+                    
+                    let user = User(
+                        id: authResult.user.uid,
+                        email: authResult.user.email ?? "",
+                        username: authResult.user.displayName ?? "",
+                        firstName: firstName,
+                        lastName: lastName
+                    )
+                    promise(.success(user))
+                }
             }
         }
         .eraseToAnyPublisher()

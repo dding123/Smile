@@ -29,6 +29,8 @@
 		094628002C6346A400C8FE90 /* FirebaseAuth in Frameworks */ = {isa = PBXBuildFile; productRef = 094627FF2C6346A400C8FE90 /* FirebaseAuth */; };
 		0969DF9D2CBDFED7002A7BEA /* HomeViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0969DF9C2CBDFED3002A7BEA /* HomeViewModel.swift */; };
 		0969DF9F2CBDFEEC002A7BEA /* PostView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0969DF9E2CBDFEE9002A7BEA /* PostView.swift */; };
+		0969DFB42CC8803C002A7BEA /* UserPreview.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0969DFB32CC88039002A7BEA /* UserPreview.swift */; };
+		0969DFB62CC88096002A7BEA /* TaggingViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0969DFB52CC88091002A7BEA /* TaggingViewModel.swift */; };
 		098AF2A42CA4D9710095B1CD /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 098AF2A32CA4D9710095B1CD /* GoogleService-Info.plist */; };
 		09E28BC02A78B11F00C003A1 /* ProfileView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 09E28BBF2A78B11F00C003A1 /* ProfileView.swift */; };
 		09E28BC42A78B13700C003A1 /* UploadView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 09E28BC32A78B13700C003A1 /* UploadView.swift */; };
@@ -68,6 +70,9 @@
 		0969DF9C2CBDFED3002A7BEA /* HomeViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeViewModel.swift; sourceTree = "<group>"; };
 		0969DF9E2CBDFEE9002A7BEA /* PostView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostView.swift; sourceTree = "<group>"; };
 		0969DFA42CBE099C002A7BEA /* SmileTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = SmileTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		0969DFB22CC4F2D8002A7BEA /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
+		0969DFB32CC88039002A7BEA /* UserPreview.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserPreview.swift; sourceTree = "<group>"; };
+		0969DFB52CC88091002A7BEA /* TaggingViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TaggingViewModel.swift; sourceTree = "<group>"; };
 		098AF2A32CA4D9710095B1CD /* GoogleService-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		09E28BBF2A78B11F00C003A1 /* ProfileView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileView.swift; sourceTree = "<group>"; };
 		09E28BC32A78B13700C003A1 /* UploadView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UploadView.swift; sourceTree = "<group>"; };
@@ -132,6 +137,7 @@
 		090F42C22A67A5E90035774E /* Smile */ = {
 			isa = PBXGroup;
 			children = (
+				0969DFB22CC4F2D8002A7BEA /* Info.plist */,
 				094627E52C5090E600C8FE90 /* Resources */,
 				094627E42C5090DF00C8FE90 /* Utils */,
 				094627E32C5090D900C8FE90 /* Services */,
@@ -156,6 +162,7 @@
 		094627E02C5090C200C8FE90 /* Models */ = {
 			isa = PBXGroup;
 			children = (
+				0969DFB32CC88039002A7BEA /* UserPreview.swift */,
 				094627E62C50912200C8FE90 /* User.swift */,
 				094627E82C50913800C8FE90 /* Post.swift */,
 			);
@@ -182,6 +189,7 @@
 		094627E22C5090D000C8FE90 /* ViewModels */ = {
 			isa = PBXGroup;
 			children = (
+				0969DFB52CC88091002A7BEA /* TaggingViewModel.swift */,
 				0969DF9C2CBDFED3002A7BEA /* HomeViewModel.swift */,
 				094627F02C5091F600C8FE90 /* UserViewModel.swift */,
 				094627FA2C50930600C8FE90 /* AuthViewModel.swift */,
@@ -335,6 +343,7 @@
 				09E28BC62A78B14A00C003A1 /* GroupsView.swift in Sources */,
 				0969DF9D2CBDFED7002A7BEA /* HomeViewModel.swift in Sources */,
 				09E28BC82A78B15100C003A1 /* MainView.swift in Sources */,
+				0969DFB62CC88096002A7BEA /* TaggingViewModel.swift in Sources */,
 				09E28BC42A78B13700C003A1 /* UploadView.swift in Sources */,
 				09E28BCA2A78B1AD00C003A1 /* SearchView.swift in Sources */,
 				094627E72C50912200C8FE90 /* User.swift in Sources */,
@@ -347,6 +356,7 @@
 				094627E92C50913800C8FE90 /* Post.swift in Sources */,
 				094627F72C50921E00C8FE90 /* NetworkService.swift in Sources */,
 				094627F12C5091F600C8FE90 /* UserViewModel.swift in Sources */,
+				0969DFB42CC8803C002A7BEA /* UserPreview.swift in Sources */,
 				094627ED2C5091B700C8FE90 /* LoginView.swift in Sources */,
 				094627F52C50920E00C8FE90 /* AuthService.swift in Sources */,
 				09E28BC02A78B11F00C003A1 /* ProfileView.swift in Sources */,
@@ -499,6 +509,7 @@
 				DEVELOPMENT_TEAM = C74JA4P6VX;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = Smile/Info.plist;
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
@@ -528,6 +539,7 @@
 				DEVELOPMENT_TEAM = C74JA4P6VX;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = Smile/Info.plist;
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;

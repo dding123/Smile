@@ -10,7 +10,8 @@ import SwiftUI
 struct ProfileView: View {
     let bannerHeight: CGFloat = 200
     let profileImageSize: CGFloat = 120
-    
+    @EnvironmentObject var authViewModel: AuthViewModel
+
     @State private var selectedTab: Tab = .photos
     
     enum Tab {
@@ -24,14 +25,14 @@ struct ProfileView: View {
             VStack(alignment: .leading, spacing: 0) {
                 // Banner Image
                 ZStack(alignment: .bottomLeading) {
-                    Image(systemName: "photo")
+                    Image("bannerImage")
                         .resizable()
                         .aspectRatio(contentMode: .fill)
                         .frame(height: bannerHeight)
                         .clipped()
                     
                     // Profile Image
-                    Image(systemName: "photo")
+                    Image("defaultAvatar")
                         .resizable()
                         .aspectRatio(contentMode: .fill)
                         .frame(width: profileImageSize, height: profileImageSize)
@@ -46,15 +47,18 @@ struct ProfileView: View {
                 
                 // User Info (placeholder for now)
                 VStack(alignment: .leading, spacing: 8) {
-                    Text("User Name")
-                        .font(.title)
-                        .fontWeight(.bold)
-                    Text("User Bio goes here")
-                        .font(.subheadline)
-                        .foregroundColor(.gray)
+                    if let user = authViewModel.currentUser {
+                        Text("\(user.firstName) \(user.lastName)")
+                            .font(.title2)
+                            .fontWeight(.bold)
+                        
+                        Text("@\(user.username)")
+                            .font(.subheadline)
+                            .foregroundColor(.gray)
+                    }
                 }
                 .padding(.horizontal)
-                
+
                 // Navigation Tabs
                 HStack {
                     Picker("", selection: $selectedTab) {
@@ -84,6 +88,16 @@ struct ProfileView: View {
 
 struct ProfileView_Previews: PreviewProvider {
     static var previews: some View {
-        ProfileView()
+        let mockViewModel = AuthViewModel()
+        mockViewModel.currentUser = User(
+            id: "preview-id",
+            email: "preview@example.com",
+            username: "previewuser",
+            firstName: "John",
+            lastName: "Doe"
+        )
+        
+        return ProfileView()
+            .environmentObject(mockViewModel)
     }
 }

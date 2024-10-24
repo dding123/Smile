@@ -11,33 +11,26 @@ import FirebaseFirestore
 struct Post: Identifiable, Codable {
     @DocumentID var id: String?
     var userId: String
-    var username: String  // New field
+    var username: String
     var imageUrl: String
     var caption: String
     var taggedUsers: [String]
     @ServerTimestamp var createdAt: Date?
-    var likeCount: Int  // New field
-    var commentCount: Int  // New field
-
-    enum CodingKeys: String, CodingKey {
-        case id
-        case userId
-        case username
-        case imageUrl
-        case caption
-        case taggedUsers
-        case createdAt
-        case likeCount
-        case commentCount
-    }
-
-    init(userId: String, username: String, imageUrl: String, caption: String, taggedUsers: [String], likeCount: Int = 0, commentCount: Int = 0) {
-        self.userId = userId
-        self.username = username
-        self.imageUrl = imageUrl
-        self.caption = caption
-        self.taggedUsers = taggedUsers
-        self.likeCount = likeCount
-        self.commentCount = commentCount
+    var likeCount: Int
+    var commentCount: Int
+    
+    init(from decoder: Decoder) throws {
+        let container = try decoder.container(keyedBy: CodingKeys.self)
+        print("Decoding post. Available keys: \(container.allKeys)")
+        
+        self.id = try container.decodeIfPresent(String.self, forKey: .id)
+        self.userId = try container.decode(String.self, forKey: .userId)
+        self.username = try container.decode(String.self, forKey: .username)
+        self.imageUrl = try container.decode(String.self, forKey: .imageUrl)
+        self.caption = try container.decode(String.self, forKey: .caption)
+        self.taggedUsers = try container.decode([String].self, forKey: .taggedUsers)
+        self.createdAt = try container.decodeIfPresent(Date.self, forKey: .createdAt)
+        self.likeCount = try container.decodeIfPresent(Int.self, forKey: .likeCount) ?? 0
+        self.commentCount = try container.decodeIfPresent(Int.self, forKey: .commentCount) ?? 0
     }
 }

@@ -11,5 +11,10 @@ struct User: Identifiable, Codable {
     let id: String
     let email: String
     var username: String
-    // Add other user properties as needed
+    let firstName: String
+    let lastName: String
+    
+    var fullName: String {
+        "\(firstName) \(lastName)"
+    }
 }

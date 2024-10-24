@@ -14,26 +14,45 @@ struct LoginView: View {
     @State private var password = ""
     @State private var isSignUp = false
     @State private var username = ""
+    @State private var firstName = ""
+    @State private var lastName = ""
     
     var body: some View {
         NavigationView {
             Form {
-                Section(header: Text("Login")) {
-                    TextField("Email", text: $email)
-                        .autocapitalization(.none)
-                    SecureField("Password", text: $password)
+                
+                if !isSignUp {
+                    Section(header: Text("Login")) {
+                        TextField("Email", text: $email)
+                            .autocapitalization(.none)
+                            .keyboardType(.emailAddress)
+                        SecureField("Password", text: $password)
+                    }
                 }
                 
                 if isSignUp {
-                    Section(header: Text("Sign Up")) {
+                    Section(header: Text("Sign Up Details")) {
+                        TextField("Email", text: $email)
+                            .autocapitalization(.none)
+                            .keyboardType(.emailAddress)
+                        SecureField("Password", text: $password)
                         TextField("Username", text: $username)
+                            .autocapitalization(.none)
+                        TextField("First Name", text: $firstName)
+                        TextField("Last Name", text: $lastName)
                     }
                 }
                 
                 Section {
                     Button(isSignUp ? "Sign Up" : "Sign In") {
                         if isSignUp {
-                            viewModel.signUp(email: email, password: password, username: username)
+                            viewModel.signUp(
+                                email: email,
+                                password: password,
+                                username: username,
+                                firstName: firstName,
+                                lastName: lastName
+                            )
                         } else {
                             viewModel.signIn(email: email, password: password)
                         }
@@ -46,15 +65,6 @@ struct LoginView: View {
                     }
                 }
                 
-//                // Debug information
-//                Section(header: Text("Debug Info")) {
-//                    Text("Is Authenticated: \(viewModel.isAuthenticated ? "Yes" : "No")")
-//                    if let user = viewModel.currentUser {
-//                        Text("Current User: \(user.email)")
-//                    } else {
-//                        Text("No current user")
-//                    }
-//                }
             }
             .navigationTitle(isSignUp ? "Sign Up" : "Sign In")
             .alert(item: Binding<AuthErrorWrapper?>(
