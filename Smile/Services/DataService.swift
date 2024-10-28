@@ -15,4 +15,6 @@ protocol DataService {
     func uploadImage(_ data: Data) -> AnyPublisher<URL, Error>
     func createPost(userId: String, username: String, imageUrl: URL, caption: String, taggedUsers: [String]) -> AnyPublisher<Void, Error>
     func searchUsers(matching query: String) -> AnyPublisher<[UserPreview], Error>
+    func uploadProfileImage(_ data: Data, path: String) async throws -> URL
+    func updateUserProfileImage(userId: String, imageUrl: String, type: ProfileImageType) async throws
 }

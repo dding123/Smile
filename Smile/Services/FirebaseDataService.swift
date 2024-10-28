@@ -255,6 +255,24 @@ class FirebaseDataService: DataService {
         }
         .eraseToAnyPublisher()
     }
+    
+    func uploadProfileImage(_ data: Data, path: String) async throws -> URL {
+        let storageRef = Storage.storage().reference().child(path)
+        
+        // Upload the data
+        _ = try await storageRef.putDataAsync(data)
+        
+        // Get the download URL
+        return try await storageRef.downloadURL()
+    }
+
+    func updateUserProfileImage(userId: String, imageUrl: String, type: ProfileImageType) async throws {
+        let db = Firestore.firestore()
+        let field = type == .profilePicture ? "profilePictureUrl" : "bannerPictureUrl"
+        
+        try await db.collection("users").document(userId)
+            .setData([field: imageUrl], merge: true)
+    }
 }
     
 
@@ -270,7 +288,6 @@ extension Sequence {
                 values.append(newElement)
             }
         }
-        
         return values
     }
 }

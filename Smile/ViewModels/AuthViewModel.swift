@@ -7,6 +7,7 @@
 
 import Foundation
 import Combine
+import UIKit
 
 class AuthViewModel: ObservableObject {
     @Published var currentUser: User?
@@ -67,5 +68,39 @@ class AuthViewModel: ObservableObject {
                 self?.authError = ""
             })
             .store(in: &cancellables)
+    }
+    
+    func updateProfileImage(_ image: UIImage, type: ProfileImageType) async throws {
+        guard let currentUser = currentUser else { return }
+        guard let imageData = type == .profilePicture ?
+            image.jpegData(compressionQuality: 0.5) :
+            image.jpegData(compressionQuality: 0.7) else {
+            throw NSError(domain: "", code: -1, userInfo: [NSLocalizedDescriptionKey: "Failed to convert image to data"])
+        }
+        
+        let path = type == .profilePicture ?
+            "profile_pictures/\(currentUser.id).jpg" :
+            "profile_banners/\(currentUser.id).jpg"
+        
+        // First upload the image
+        let imageUrl = try await dataService.uploadProfileImage(imageData, path: path)
+        
+        // Then update the user profile
+        try await dataService.updateUserProfileImage(
+            userId: currentUser.id,
+            imageUrl: imageUrl.absoluteString,
+            type: type
+        )
+        
+        // Update the current user object with the new image URL
+        await MainActor.run {
+            var updatedUser = currentUser
+            if type == .profilePicture {
+                updatedUser.profilePictureUrl = imageUrl.absoluteString
+            } else {
+                updatedUser.bannerPictureUrl = imageUrl.absoluteString
+            }
+            self.currentUser = updatedUser
+        }
     }
 }

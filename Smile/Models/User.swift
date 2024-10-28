@@ -17,4 +17,7 @@ struct User: Identifiable, Codable {
     var fullName: String {
         "\(firstName) \(lastName)"
     }
+    
+    var profilePictureUrl: String?
+    var bannerPictureUrl: String?
 }
