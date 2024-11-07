@@ -28,13 +28,10 @@ struct PostView: View {
             .padding(.horizontal)
             
             // Post Image
-            AsyncImage(url: URL(string: post.imageUrl)) { image in
-                image.resizable()
-                    .aspectRatio(contentMode: .fit)
-            } placeholder: {
-                Color.gray
-            }
-            .frame(height: 300)
+            PostImageView(
+                imagePath: post.imagePath,
+                size: 300
+            )
             
             // Caption
             Text(post.caption)

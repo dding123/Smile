@@ -1,34 +1,22 @@
 //
-//  ContentView.swift
+//  TabNavigator.swift
 //  Smile
 //
-//  Created by David Ding on 7/23/24.
+//  Created by David Ding on 10/27/24.
 //
 
 import SwiftUI
 
-struct ContentView: View {
-    @StateObject private var authViewModel = AuthViewModel()
+struct TabNavigator: View {
+    @EnvironmentObject var authViewModel: AuthViewModel
     
-    var body: some View {
-        Group {
-            if authViewModel.isAuthenticated {
-                MainTabView()
-            } else {
-                LoginView()
-            }
-        }
-        .environmentObject(authViewModel)
-    }
-}
-
-struct MainTabView: View {
     var body: some View {
         TabView {
             HomeView()
                 .tabItem {
                     Label("Home", systemImage: "house")
                 }
+            
             SearchView()
                 .tabItem {
                     Label("Search", systemImage: "magnifyingglass")
@@ -44,7 +32,7 @@ struct MainTabView: View {
                     Label("Groups", systemImage: "person.3")
                 }
             
-            ProfileView()
+            ProfileView(userId: authViewModel.currentUser?.id ?? "")
                 .tabItem {
                     Label("Me", systemImage: "person")
                 }
@@ -52,8 +40,9 @@ struct MainTabView: View {
     }
 }
 
-struct ContentView_Previews: PreviewProvider {
+struct TabNavigator_Previews: PreviewProvider {
     static var previews: some View {
-        ContentView()
+        TabNavigator()
+            .environmentObject(AuthViewModel())
     }
 }

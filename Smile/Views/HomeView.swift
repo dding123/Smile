@@ -8,24 +8,27 @@
 import SwiftUI
 
 struct HomeView: View {
-    @StateObject private var viewModel = HomeViewModel()
+    @EnvironmentObject var appState: AppState
     
     var body: some View {
         NavigationView {
             ScrollView {
                 LazyVStack(spacing: 20) {
-                    ForEach(viewModel.posts) { post in
-                        PostView(post: post)
+                    ForEach(appState.posts) { post in
+                        PostImageView(
+                            imagePath: post.imagePath,
+                            size: 300
+                        )
                     }
                 }
                 .padding(.top)
             }
             .navigationTitle("Home")
-            .onAppear {
-                viewModel.fetchPosts()
+            .task {
+                await appState.refreshAllPosts()
             }
             .refreshable {
-                viewModel.fetchPosts()
+                await appState.refreshAllPosts()
             }
         }
     }

@@ -6,68 +6,69 @@
 //
 
 import Foundation
-import Combine
+import SwiftUI
 import UIKit
 
 class AuthViewModel: ObservableObject {
     @Published var currentUser: User?
     @Published var authError: String = ""
-    
-    private var cancellables = Set<AnyCancellable>()
     private let dataService: DataService
     
     init(dataService: DataService = FirebaseDataService()) {
         self.dataService = dataService
-        print("AuthViewModel initialized")
+//        print("AuthViewModel initialized")
     }
     
     var isAuthenticated: Bool {
         return currentUser != nil
     }
     
+    @MainActor
     func signUp(email: String, password: String, username: String, firstName: String, lastName: String) {
-        dataService.signUp(email: email, password: password, username: username, firstName: firstName, lastName: lastName)
-            .sink(receiveCompletion: { [weak self] completion in
-                if case .failure(let error) = completion {
-                    self?.authError = error.localizedDescription
-                }
-            }, receiveValue: { [weak self] user in
-                self?.currentUser = user
-                self?.authError = ""
-            })
-            .store(in: &cancellables)
+        Task {
+            do {
+                let user = try await dataService.signUp(
+                    email: email,
+                    password: password,
+                    username: username,
+                    firstName: firstName,
+                    lastName: lastName
+                )
+                currentUser = user
+                authError = ""
+            } catch {
+                authError = error.localizedDescription
+            }
+        }
     }
     
+    @MainActor
     func signIn(email: String, password: String) {
-        print("Attempting to sign in with email: \(email)")
-        dataService.signIn(email: email, password: password)
-            .sink(receiveCompletion: { [weak self] completion in
-                switch completion {
-                case .finished:
-                    print("Sign in process completed")
-                case .failure(let error):
-                    print("Sign in error: \(error.localizedDescription)")
-                    self?.authError = error.localizedDescription
-                }
-            }, receiveValue: { [weak self] user in
-                print("Sign in successful. User: \(user)")
-                self?.currentUser = user
-                self?.authError = ""
-            })
-            .store(in: &cancellables)
+        Task {
+            do {
+//                print("Attempting to sign in with email: \(email)")
+                let user = try await dataService.signIn(email: email, password: password)
+//                print("Sign in successful. User: \(user)")
+                currentUser = user
+                authError = ""
+            } catch {
+                print("Sign in error: \(error.localizedDescription)")
+                authError = error.localizedDescription
+            }
+        }
     }
     
+    @MainActor
     func signOut() {
-        dataService.signOut()
-            .sink(receiveCompletion: { [weak self] completion in
-                if case .failure(let error) = completion {
-                    self?.authError = error.localizedDescription
-                }
-            }, receiveValue: { [weak self] _ in
-                self?.currentUser = nil
-                self?.authError = ""
-            })
-            .store(in: &cancellables)
+        Task {
+            do {
+                try await dataService.signOut()
+                currentUser = nil
+                authError = ""
+            } catch {
+                authError = error.localizedDescription
+            }
+        }
     }
     
     func updateProfileImage(_ image: UIImage, type: ProfileImageType) async throws {

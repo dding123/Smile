@@ -10,17 +10,24 @@ import SwiftUI
 struct ProfileView: View {
     let bannerHeight: CGFloat = 200
     let profileImageSize: CGFloat = 120
+    @EnvironmentObject var appState: AppState
     @EnvironmentObject var authViewModel: AuthViewModel
     @State private var showingImagePicker = false
     @State private var profileImageType: ProfileImageType = .profilePicture
-    
+    @StateObject private var viewModel: ProfileViewModel
     @State private var selectedTab: Tab = .photos
+    @State private var selectedPost: Post? = nil
     
     enum Tab {
-        case photos, uploads
+        case photos
+        case uploads
     }
     
     let columns: [GridItem] = Array(repeating: .init(.flexible(), spacing: 2), count: 3)
+    
+    init(userId: String) {
+        _viewModel = StateObject(wrappedValue: ProfileViewModel(userId: userId))
+    }
     
     var body: some View {
         ScrollView {
@@ -90,10 +97,9 @@ struct ProfileView: View {
                 }
                 .offset(x: 20, y: profileImageSize / 2)
             }
-            // Spacer to account for the overlapping profile image
+            
             Spacer().frame(height: profileImageSize / 2 + 20)
             
-            // User Info (placeholder for now)
             VStack(alignment: .leading, spacing: 8) {
                 if let user = authViewModel.currentUser {
                     Text("\(user.firstName) \(user.lastName)")
@@ -107,7 +113,6 @@ struct ProfileView: View {
             }
             .padding(.horizontal)
             
-            // Navigation Tabs
             HStack {
                 Picker("", selection: $selectedTab) {
                     Text("Photos").tag(Tab.photos)
@@ -119,13 +124,20 @@ struct ProfileView: View {
             
             // Photo Grid
             LazyVGrid(columns: columns, spacing: 2) {
-                ForEach(0..<30) { index in
-                    Image(systemName: "photo")
-                        .resizable()
-                        .aspectRatio(contentMode: .fill)
-                        .frame(height: (UIScreen.main.bounds.width - 4) / 3) // Subtracting 4 to account for 2px spacing
-                        .clipped()
+                ForEach(selectedTab == .photos ? appState.taggedPosts : appState.userPosts) { post in
+                    PostImageView(
+                        imagePath: post.imagePath,
+                        size: (UIScreen.main.bounds.width - 4) / 3
+                    )
+                    .id(post.uniqueId)  // Add explicit ID here
+                    .onTapGesture {
+                        selectedPost = post
+                    }
                 }
+            }
+            if viewModel.isLoading {
+                ProgressView()
+                    .padding()
             }
         }
         .ignoresSafeArea(.container, edges: .top)
@@ -134,12 +146,18 @@ struct ProfileView: View {
                 handleProfileImageUpdate(image, type: profileImageType)
             }
         }
+        .task {
+            await appState.refreshUserPosts()
+        }
+        .refreshable {
+            await appState.refreshUserPosts()
+        }
     }
     
-    private func handleProfileImageUpdate(_ image: UIImage, type: ProfileImageType) {  // Changed from handleSelectedImage
+    private func handleProfileImageUpdate(_ image: UIImage, type: ProfileImageType) {
         Task {
             do {
-                try await authViewModel.updateProfileImage(image, type: type)  // Changed from uploadUserImage
+                try await authViewModel.updateProfileImage(image, type: type)
             } catch {
                 print("Error updating profile image: \(error)")
             }
@@ -158,7 +176,7 @@ struct ProfileView_Previews: PreviewProvider {
             lastName: "Doe"
         )
         
-        return ProfileView()
+        return ProfileView(userId: "preview-id")
             .environmentObject(mockViewModel)
     }
 }

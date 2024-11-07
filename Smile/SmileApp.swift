@@ -11,6 +11,7 @@ import Firebase
 
 @main
 struct SmileApp: App {
+    @StateObject private var appState = AppState()
     @StateObject private var authViewModel = AuthViewModel()
 
     init() {
@@ -19,7 +20,8 @@ struct SmileApp: App {
 
     var body: some Scene {
         WindowGroup {
-            ContentView()
+            RootView()
+                .environmentObject(appState)
                 .environmentObject(authViewModel)
         }
     }

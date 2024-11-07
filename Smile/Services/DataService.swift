@@ -9,12 +9,33 @@ import Foundation
 import Combine
 
 protocol DataService {
-    func signIn(email: String, password: String) -> AnyPublisher<User, Error>
-    func signUp(email: String, password: String, username: String, firstName: String, lastName: String) -> AnyPublisher<User, Error>
-    func signOut() -> AnyPublisher<Void, Error>
-    func uploadImage(_ data: Data) -> AnyPublisher<URL, Error>
-    func createPost(userId: String, username: String, imageUrl: URL, caption: String, taggedUsers: [String]) -> AnyPublisher<Void, Error>
-    func searchUsers(matching query: String) -> AnyPublisher<[UserPreview], Error>
+    // Auth
+    func signIn(email: String, password: String) async throws -> User
+    func signUp(email: String, password: String, username: String, firstName: String, lastName: String) async throws -> User
+    func signOut() async throws
+    
+    // Posts and Images
+    func uploadImage(_ data: Data) async throws -> String
+    func createPost(userId: String, username: String, imagePath: String, caption: String, taggedUsers: [String]) async throws
+    func searchUsers(matching query: String) async throws -> [UserPreview]
+    
+    // Profile
     func uploadProfileImage(_ data: Data, path: String) async throws -> URL
     func updateUserProfileImage(userId: String, imageUrl: String, type: ProfileImageType) async throws
+    func fetchUserProfile(userId: String) async throws -> User
+    
+    // Fetch Posts
+    func fetchUserPosts(userId: String, limit: Int, after post: Post?) async throws -> [Post]
+    func fetchTaggedPosts(userId: String, limit: Int, after post: Post?) async throws -> [Post]
+    
+    // Comments
+    func fetchComments(for postId: String) async throws -> [Comment]
+    func addComment(to postId: String, text: String) async throws
+    
+    // Likes
+    func fetchLikeStatus(for postId: String) async throws -> LikeStatus
+    func toggleLike(for postId: String) async throws
+    
+    // User
+//    func fetchUser(userId: String) async throws -> User
 }

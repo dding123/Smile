@@ -12,15 +12,16 @@ import FirebaseAuth
 
 struct TaggingView: View {
     @StateObject private var viewModel = TaggingViewModel()
+    @EnvironmentObject var appState: AppState
     @EnvironmentObject var authViewModel: AuthViewModel
-    let imageData: Data
-    @State private var cancellables = Set<AnyCancellable>()
     @State private var caption = ""
+    let imageData: Data
     @Environment(\.presentationMode) var presentationMode
-    private let dataService = FirebaseDataService()
+    private let dataService: DataService
     
     init(imageData: Data, dataService: DataService = FirebaseDataService()) {
         self.imageData = imageData
+        self.dataService = dataService
     }
     
     var body: some View {
@@ -93,36 +94,36 @@ struct TaggingView: View {
             return
         }
         
-        print("Current user displayName: \(currentUser.displayName ?? "nil")")
+        guard let username = currentUser.displayName, !username.isEmpty else {
+            print("Username not found")
+            return
+        }
         
-        dataService.uploadImage(imageData)
-            .flatMap { imageUrl -> AnyPublisher<Void, Error> in
+        Task {
+            do {
+                // Upload image and get path
+                let imagePath = try await dataService.uploadImage(imageData)
+                
+                // Create post with path
                 let taggedUsers = viewModel.taggedUsers.map { $0.id }
-                
-                // Make sure we have a username
-                guard let username = currentUser.displayName, !username.isEmpty else {
-                    return Fail(error: NSError(domain: "", code: -1, userInfo: [NSLocalizedDescriptionKey: "Username not found"]))
-                        .eraseToAnyPublisher()
-                }
-                
-                return self.dataService.createPost(
+                try await dataService.createPost(
                     userId: currentUser.uid,
                     username: username,
-                    imageUrl: imageUrl,
+                    imagePath: imagePath,
                     caption: caption,
                     taggedUsers: taggedUsers
                 )
-            }
-            .receive(on: DispatchQueue.main)
-            .sink(receiveCompletion: { completion in
-                if case .failure(let error) = completion {
-                    print("Error creating post: \(error.localizedDescription)")
+                
+                await appState.postAdded()
+                
+                await MainActor.run {
+                    presentationMode.wrappedValue.dismiss()
                 }
-                self.presentationMode.wrappedValue.dismiss()
-            }, receiveValue: { _ in })
-            .store(in: &cancellables)
-    }
-}
+            } catch {
+                print("Error creating post: \(error.localizedDescription)")
+            }
+        }
+    }}
 
 #Preview {
     TaggingView(imageData: UIImage(systemName: "photo")?.pngData() ?? Data())
