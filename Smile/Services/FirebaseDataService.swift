@@ -14,6 +14,42 @@ import SwiftUI
 
 class FirebaseDataService: DataService {
     
+    
+    //
+    //    func joinGroup(groupId: String) async throws {
+    //
+    //    }
+    //
+    //    func leaveGroup(groupId: String) async throws {
+    //        <#code#>
+    //    }
+    func createGroup(name: String) async throws -> UserGroup {
+        guard let userId = Auth.auth().currentUser?.uid else {
+            throw NSError(domain: "", code: -1, userInfo: [NSLocalizedDescriptionKey: "User not logged in"])
+        }
+        
+        let db = Firestore.firestore()
+        
+        let groupData: [String: Any] = [
+            "name": name,
+            "members": [userId], // Creator is first member
+            "createdAt": FieldValue.serverTimestamp(),
+            "createdBy": userId,
+        ]
+        
+        let documentRef = try await db.collection("groups").addDocument(data: groupData)
+        
+        return UserGroup(
+            id: documentRef.documentID,
+            name: name,
+            photoUrl: nil,
+            memberCount: 1,
+            createdAt: Date(),
+            createdBy: userId
+        )
+    }
+    
+    
     func uploadImage(_ data: Data) async throws -> String {
         let imageName = UUID().uuidString + ".jpg"
         let path = "post_images/\(imageName)"
@@ -58,16 +94,10 @@ class FirebaseDataService: DataService {
                         .limit(to: 20)
                         .getDocuments()
                     
-                    let posts = await snapshot.documents.asyncCompactMap { document -> Post? in
+                    let posts = snapshot.documents.compactMap { document -> Post? in
                         do {
                             var post = try document.data(as: Post.self)
-                            
-                            // Fetch the username if it's not stored in the post document
-                            if post.username.isEmpty {
-                                let userDoc = try await db.collection("users").document(post.userId).getDocument()
-                                post.username = userDoc.data()?["username"] as? String ?? "Unknown User"
-                            }
-                            
+                            post.id = document.documentID
                             return post
                         } catch {
                             print("Error decoding post: \(error)")
@@ -435,20 +465,55 @@ class FirebaseDataService: DataService {
             bannerPictureUrl: data["bannerPictureUrl"] as? String
         )
     }
-}
-
-
-extension Sequence {
-    func asyncCompactMap<T>(
-        _ transform: (Element) async -> T?
-    ) async -> [T] {
-        var values = [T]()
-        
-        for element in self {
-            if let newElement = await transform(element) {
-                values.append(newElement)
-            }
+    
+    func fetchUserGroups() async throws -> [UserGroup] {
+        guard let userId = Auth.auth().currentUser?.uid else {
+            throw NSError(domain: "", code: -1, userInfo: [NSLocalizedDescriptionKey: "User not logged in"])
         }
-        return values
+        
+        let db = Firestore.firestore()
+        let snapshot = try await db.collection("groups")
+            .whereField("members", arrayContains: userId)
+            .getDocuments()
+        
+        return try snapshot.documents.map { document in
+            let data = document.data()
+            
+            // If any of these fields are missing, throw an error
+            guard
+                let name = data["name"] as? String,
+                let members = data["members"] as? [String],
+                let createdAt = (data["createdAt"] as? Timestamp)?.dateValue(),
+                let createdBy = data["createdBy"] as? String
+            else {
+                throw NSError(domain: "", code: -1,
+                             userInfo: [NSLocalizedDescriptionKey: "Invalid group data"])
+            }
+            
+            return UserGroup(
+                id: document.documentID,
+                name: name,
+                photoUrl: data["photoUrl"] as? String,
+                memberCount: members.count,
+                createdAt: createdAt,
+                createdBy: createdBy
+            )
+        }
     }
 }
+
+//
+//extension Sequence {
+//    func asyncCompactMap<T>(
+//        _ transform: (Element) async -> T?
+//    ) async -> [T] {
+//        var values = [T]()
+//        
+//        for element in self {
+//            if let newElement = await transform(element) {
+//                values.append(newElement)
+//            }
+//        }
+//        return values
+//    }
+//}

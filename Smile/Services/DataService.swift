@@ -38,4 +38,9 @@ protocol DataService {
     
     // User
 //    func fetchUser(userId: String) async throws -> User
+    
+    func fetchUserGroups() async throws -> [UserGroup]
+    func createGroup(name: String) async throws -> UserGroup  // Remove photo parameter
+//    func joinGroup(groupId: String) async throws
+//    func leaveGroup(groupId: String) async throws
 }
