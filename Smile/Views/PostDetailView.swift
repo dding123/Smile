@@ -18,9 +18,9 @@ struct PostDetailView: View {
     }
     
     var body: some View {
-        NavigationView {
+        GeometryReader { geometry in
             ScrollView {
-                VStack(spacing: 12) {
+                VStack(alignment: .leading, spacing: 12) {
                     // User info header
                     HStack {
                         AsyncImage(url: URL(string: viewModel.userProfilePicture ?? "")) { image in
@@ -47,14 +47,15 @@ struct PostDetailView: View {
                     }
                     .padding(.horizontal)
                     
-                    // Post image using our new PostImageView
+                    // Post image
                     PostImageView(
                         imagePath: post.imagePath,
-                        size: UIScreen.main.bounds.width
+                        size: geometry.size.width
                     )
+                    .frame(width: geometry.size.width)
                     
                     // Action buttons
-                    HStack {
+                    HStack(spacing: 16) {
                         Button {
                             viewModel.toggleLike()
                         } label: {
@@ -63,7 +64,6 @@ struct PostDetailView: View {
                         }
                         
                         Button {
-                            // Focus comment field
                             viewModel.isCommentingActive = true
                         } label: {
                             Image(systemName: "bubble.right")
@@ -85,54 +85,53 @@ struct PostDetailView: View {
                         Text("\(viewModel.likeCount) likes")
                             .font(.subheadline)
                             .fontWeight(.semibold)
-                            .frame(maxWidth: .infinity, alignment: .leading)
                             .padding(.horizontal)
                     }
                     
                     // Caption
                     if !post.caption.isEmpty {
-                        HStack {
+                        HStack(alignment: .top, spacing: 4) {
                             Text(post.username)
-                                .fontWeight(.semibold) +
-                            Text(" ") +
+                                .fontWeight(.semibold)
                             Text(post.caption)
+                                .fixedSize(horizontal: false, vertical: true)
                         }
-                        .frame(maxWidth: .infinity, alignment: .leading)
                         .padding(.horizontal)
                     }
                     
                     // Comments
-                    LazyVStack(alignment: .leading, spacing: 8) {
-                        ForEach(viewModel.comments) { comment in
-                            HStack(alignment: .top) {
-                                Text(comment.username)
-                                    .fontWeight(.semibold) +
-                                Text(" ") +
-                                Text(comment.text)
-                                
-                                Spacer()
-                                
-                                Text(comment.timeAgo)
-                                    .font(.caption)
-                                    .foregroundColor(.gray)
-                            }
+                    ForEach(viewModel.comments) { comment in
+                        HStack(alignment: .top, spacing: 4) {
+                            Text(comment.username)
+                                .fontWeight(.semibold)
+                            Text(comment.text)
+                                .fixedSize(horizontal: false, vertical: true)
+                            Spacer()
+                            Text(comment.timeAgo)
+                                .font(.caption)
+                                .foregroundColor(.gray)
                         }
-                    }
-                    .padding(.horizontal)
-                }
-            }
-            .navigationBarTitleDisplayMode(.inline)
-            .toolbar {
-                ToolbarItem(placement: .navigationBarLeading) {
-                    Button {
-                        dismiss()
-                    } label: {
-                        Image(systemName: "xmark")
+                        .padding(.horizontal)
                     }
                 }
+                .frame(width: geometry.size.width)
             }
-            
-            // Comment input field
+        }
+        .ignoresSafeArea(.all, edges: .top)
+        .overlay(alignment: .top) {
+            HStack {
+                Button {
+                    dismiss()
+                } label: {
+                    Image(systemName: "xmark")
+                        .foregroundColor(.primary)
+                        .padding()
+                }
+                Spacer()
+            }
+            .background(.thinMaterial)
+        }
+        .overlay(alignment: .bottom) {
             if viewModel.isCommentingActive {
                 CommentInputView(
                     text: $viewModel.newCommentText,
@@ -142,12 +141,13 @@ struct PostDetailView: View {
                         }
                     }
                 )
+                .background(.thinMaterial)
             }
         }
     }
 }
 
-// Helper view for comment input remains unchanged
+// Update CommentInputView to ensure proper width
 struct CommentInputView: View {
     @Binding var text: String
     let onSubmit: () -> Void
@@ -163,6 +163,7 @@ struct CommentInputView: View {
             .disabled(text.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty)
         }
         .padding()
+        .frame(maxWidth: .infinity)
         .background(Color(.systemBackground))
         .overlay(
             Rectangle()

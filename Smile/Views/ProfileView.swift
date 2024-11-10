@@ -122,19 +122,35 @@ struct ProfileView: View {
                 .padding()
             }
             
+            // Calculate the size for each grid item - screen width minus total spacing, divided by 3
+            let width = (UIScreen.main.bounds.width - 40) / 3  // 40 accounts for spacing and edges
+
             // Photo Grid
-            LazyVGrid(columns: columns, spacing: 2) {
+            LazyVGrid(columns: Array(repeating: GridItem(.flexible(), spacing: 10), count: 3), spacing: 10) {
                 ForEach(selectedTab == .photos ? appState.taggedPosts : appState.userPosts) { post in
                     PostImageView(
                         imagePath: post.imagePath,
-                        size: (UIScreen.main.bounds.width - 4) / 3
+                        size: width
                     )
-                    .id(post.uniqueId)  // Add explicit ID here
+                    .frame(width: width, height: width)  // Enforce square aspect ratio
+                    .clipped()
+                    .overlay(
+                        Rectangle()
+                            .stroke(Color.gray.opacity(0.2), lineWidth: 0.5)
+                    )
+                    .id(post.uniqueId)
                     .onTapGesture {
                         selectedPost = post
                     }
                 }
             }
+            .padding(.horizontal, 10)
+            .sheet(item: $selectedPost) { post in
+                PostDetailView(post: post)
+                    .presentationDragIndicator(.visible)
+                    .presentationDetents([.large])
+            }
+            
             if viewModel.isLoading {
                 ProgressView()
                     .padding()
