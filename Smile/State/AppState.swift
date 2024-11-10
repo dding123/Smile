@@ -23,18 +23,27 @@ class AppState: ObservableObject {
     @MainActor
     func refreshAllPosts() async {
         do {
-            // Fetch posts for home feed
             let snapshot = try await Firestore.firestore()
                 .collection("posts")
                 .order(by: "createdAt", descending: true)
                 .limit(to: 20)
                 .getDocuments()
             
-            posts = snapshot.documents.compactMap { try? $0.data(as: Post.self) }
-            print("Fetched \(posts.count) posts for home feed")
-            posts.forEach { post in
-                print("Post image path: \(post.imagePath)")
+            posts = snapshot.documents.compactMap { document in
+                do {
+                    var post = try document.data(as: Post.self)
+                    post.id = document.documentID // Ensure ID is set
+                    if post.id?.isEmpty ?? true {
+                        print("Warning: Empty post ID for document: \(document.documentID)")
+                        return nil
+                    }
+                    return post
+                } catch {
+                    print("Error decoding post: \(error)")
+                    return nil
+                }
             }
+            print("Fetched \(posts.count) posts for home feed")
         } catch {
             print("Error refreshing all posts: \(error)")
         }

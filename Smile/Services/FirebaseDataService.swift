@@ -318,24 +318,40 @@ class FirebaseDataService: DataService {
             throw NSError(domain: "", code: -1, userInfo: [NSLocalizedDescriptionKey: "User not logged in"])
         }
         
+        // Add validation for postId
+        guard !postId.isEmpty else {
+            print("Warning: Empty post ID in fetchLikeStatus")
+            return LikeStatus(isLiked: false, count: 0)
+        }
+        
         let db = Firestore.firestore()
         
-        // Get like document
-        let likeDoc = try await db.collection("posts")
-            .document(postId)
-            .collection("likes")
-            .document(currentUser.uid)
-            .getDocument()
-        
-        // Get total likes count
-        let postDoc = try await db.collection("posts")
-            .document(postId)
-            .getDocument()
-        
-        let likeCount = postDoc.data()?["likeCount"] as? Int ?? 0
-        let isLiked = likeDoc.exists
-        
-        return LikeStatus(isLiked: isLiked, count: likeCount)
+        do {
+            // Get post document first to verify it exists
+            let postDoc = try await db.collection("posts")
+                .document(postId)
+                .getDocument()
+            
+            guard postDoc.exists else {
+                print("Warning: Post document does not exist")
+                return LikeStatus(isLiked: false, count: 0)
+            }
+            
+            // Get like document
+            let likeDoc = try await db.collection("posts")
+                .document(postId)
+                .collection("likes")
+                .document(currentUser.uid)
+                .getDocument()
+            
+            let likeCount = postDoc.data()?["likeCount"] as? Int ?? 0
+            let isLiked = likeDoc.exists
+            
+            return LikeStatus(isLiked: isLiked, count: likeCount)
+        } catch {
+            print("Error in fetchLikeStatus: \(error)")
+            return LikeStatus(isLiked: false, count: 0)
+        }
     }
     
     func toggleLike(for postId: String) async throws {

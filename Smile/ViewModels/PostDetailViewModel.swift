@@ -41,12 +41,21 @@ class PostDetailViewModel: ObservableObject {
     
     @MainActor
     func fetchLikeStatus() async {
+        guard let postId = post.id, !postId.isEmpty else {
+            print("Warning: Invalid post ID in fetchLikeStatus")
+            isLiked = false
+            likeCount = 0
+            return
+        }
+        
         do {
-            let status = try await dataService.fetchLikeStatus(for: post.id ?? "")
+            let status = try await dataService.fetchLikeStatus(for: postId)
             isLiked = status.isLiked
             likeCount = status.count
         } catch {
             print("Error fetching like status: \(error)")
+            isLiked = false
+            likeCount = 0
         }
     }
     
@@ -62,24 +71,29 @@ class PostDetailViewModel: ObservableObject {
     
     @MainActor
     func toggleLike() {
-        Task {
-            do {
-                isLiked.toggle()
-                if isLiked {
-                    likeCount += 1
-                } else {
-                    likeCount -= 1
-                }
-                
-                try await dataService.toggleLike(for: post.id ?? "")
-            } catch {
-                // Revert on failure
-                isLiked.toggle()
-                likeCount += isLiked ? 1 : -1
-                print("Error toggling like: \(error)")
-            }
-        }
-    }
+           guard let postId = post.id, !postId.isEmpty else {
+               print("Warning: Invalid post ID in toggleLike")
+               return
+           }
+           
+           Task {
+               do {
+                   isLiked.toggle()
+                   if isLiked {
+                       likeCount += 1
+                   } else {
+                       likeCount -= 1
+                   }
+                   
+                   try await dataService.toggleLike(for: postId)
+               } catch {
+                   // Revert on failure
+                   isLiked.toggle()
+                   likeCount += isLiked ? 1 : -1
+                   print("Error toggling like: \(error)")
+               }
+           }
+       }
     
     @MainActor
     func addComment() async {
