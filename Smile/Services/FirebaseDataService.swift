@@ -28,7 +28,7 @@ class FirebaseDataService: DataService {
         // Return the path instead of URL
         return path
     }
-
+    
     func createPost(userId: String, username: String, imagePath: String, caption: String, taggedUsers: [String]) async throws {
         let db = Firestore.firestore()
         let postRef = db.collection("posts").document()
@@ -83,7 +83,7 @@ class FirebaseDataService: DataService {
         }
         .eraseToAnyPublisher()
     }
-
+    
     func signIn(email: String, password: String) async throws -> User {
         // Sign in with Firebase Auth
         let authResult = try await Auth.auth().signIn(withEmail: email, password: password)
@@ -100,7 +100,7 @@ class FirebaseDataService: DataService {
               let firstName = data["firstName"] as? String,
               let lastName = data["lastName"] as? String else {
             throw NSError(domain: "FirebaseDataService", code: 0,
-                userInfo: [NSLocalizedDescriptionKey: "Failed to get user data"])
+                          userInfo: [NSLocalizedDescriptionKey: "Failed to get user data"])
         }
         
         return User(
@@ -113,21 +113,37 @@ class FirebaseDataService: DataService {
             bannerPictureUrl: data["bannerPictureUrl"] as? String
         )
     }
-
+    
     func signUp(email: String, password: String, username: String, firstName: String, lastName: String) async throws -> User {
+        // Ensure username is lowercase and has no spaces
+        let cleanUsername = username.lowercased().filter { !$0.isWhitespace }
+        
+        // Check if username exists first
+        let db = Firestore.firestore()
+        let usernameSnapshot = try await db.collection("users")
+            .whereField("username", isEqualTo: cleanUsername)
+            .getDocuments()
+        
+        if !usernameSnapshot.documents.isEmpty {
+            throw NSError(
+                domain: "",
+                code: -1,
+                userInfo: [NSLocalizedDescriptionKey: "Username already taken"]
+            )
+        }
+        
         // Create user in Firebase Auth
         let authResult = try await Auth.auth().createUser(withEmail: email, password: password)
-        let firebaseUser = authResult.user  // No need for guard let
+        let firebaseUser = authResult.user
         
         // Update display name
         let changeRequest = firebaseUser.createProfileChangeRequest()
-        changeRequest.displayName = username
+        changeRequest.displayName = cleanUsername
         try await changeRequest.commitChanges()
         
         // Create user document in Firestore
-        let db = Firestore.firestore()
         let userData: [String: Any] = [
-            "username": username,
+            "username": cleanUsername,
             "email": email,
             "firstName": firstName,
             "lastName": lastName,
@@ -141,32 +157,36 @@ class FirebaseDataService: DataService {
         return User(
             id: firebaseUser.uid,
             email: email,
-            username: username,
+            username: cleanUsername,
             firstName: firstName,
             lastName: lastName
         )
     }
     
+    
     func signOut() async throws {
         try Auth.auth().signOut()
     }
-
+    
     func searchUsers(matching query: String) async throws -> [UserPreview] {
         let db = Firestore.firestore()
-//        print("Starting Firestore query for: \(query)")
+        let cleanQuery = query.lowercased().filter { !$0.isWhitespace }
         
         let snapshot = try await db.collection("users")
-            .whereField("username", isGreaterThanOrEqualTo: query.lowercased())
-            .whereField("username", isLessThan: query.lowercased() + "\u{f8ff}")
-            .limit(to: 10)
+            .whereField("username", isGreaterThanOrEqualTo: cleanQuery)
+            .whereField("username", isLessThan: cleanQuery + "\u{f8ff}")
+            .limit(to: 20)
             .getDocuments()
         
-        return snapshot.documents.compactMap { document -> UserPreview? in
+        return snapshot.documents.compactMap { document in
             guard let username = document.data()["username"] as? String else {
-                print("Failed to get username from document: \(document.documentID)")
                 return nil
             }
-            return UserPreview(id: document.documentID, username: username)
+            return UserPreview(
+                id: document.documentID,
+                username: username,
+                profilePictureUrl: document.data()["profilePictureUrl"] as? String
+            )
         }
     }
     
@@ -179,7 +199,7 @@ class FirebaseDataService: DataService {
         // Get the download URL
         return try await storageRef.downloadURL()
     }
-
+    
     func updateUserProfileImage(userId: String, imageUrl: String, type: ProfileImageType) async throws {
         let db = Firestore.firestore()
         let field = type == .profilePicture ? "profilePictureUrl" : "bannerPictureUrl"
@@ -190,7 +210,7 @@ class FirebaseDataService: DataService {
     
     func fetchUserPosts(userId: String, limit: Int = 12, after post: Post? = nil) async throws -> [Post] {
         let db = Firestore.firestore()
-//        print("Fetching posts for userId: \(userId)") // Add debug print
+        //        print("Fetching posts for userId: \(userId)") // Add debug print
         
         var query = db.collection("posts")
             .whereField("userId", isEqualTo: userId)
@@ -202,7 +222,7 @@ class FirebaseDataService: DataService {
         }
         
         let snapshot = try await query.getDocuments()
-//        print("Found \(snapshot.documents.count) documents") // Add debug print
+        //        print("Found \(snapshot.documents.count) documents") // Add debug print
         
         let posts = snapshot.documents.compactMap { document -> Post? in
             do {
@@ -216,13 +236,13 @@ class FirebaseDataService: DataService {
             }
         }
         
-//        print("Successfully decoded \(posts.count) posts") // Add debug print
+        //        print("Successfully decoded \(posts.count) posts") // Add debug print
         return posts
     }
     
     func fetchTaggedPosts(userId: String, limit: Int = 12, after post: Post? = nil) async throws -> [Post] {
         let db = Firestore.firestore()
-//        print("Fetching tagged posts for userId: \(userId)") // Add debug print
+        //        print("Fetching tagged posts for userId: \(userId)") // Add debug print
         
         var query = db.collection("posts")
             .whereField("taggedUsers", arrayContains: userId)
@@ -234,7 +254,7 @@ class FirebaseDataService: DataService {
         }
         
         let snapshot = try await query.getDocuments()
-//        print("Found \(snapshot.documents.count) tagged documents") // Add debug print
+        //        print("Found \(snapshot.documents.count) tagged documents") // Add debug print
         
         let posts = snapshot.documents.compactMap { document -> Post? in
             do {
@@ -248,7 +268,7 @@ class FirebaseDataService: DataService {
             }
         }
         
-//        print("Successfully decoded \(posts.count) tagged posts") // Add debug print
+        //        print("Successfully decoded \(posts.count) tagged posts") // Add debug print
         return posts
     }
     
@@ -263,7 +283,7 @@ class FirebaseDataService: DataService {
             .collection("comments")
             .order(by: "createdAt", descending: false)
             .getDocuments()
-            
+        
         return snapshot.documents.compactMap { try? $0.data(as: Comment.self) }
     }
     
@@ -416,7 +436,6 @@ class FirebaseDataService: DataService {
         )
     }
 }
-    
 
 
 extension Sequence {

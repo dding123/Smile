@@ -6,9 +6,11 @@
 //
 import Foundation
 
+// In UserPreview.swift
 struct UserPreview: Identifiable, Hashable {
     let id: String
     let username: String
+    let profilePictureUrl: String?
     
     func hash(into hasher: inout Hasher) {
         hasher.combine(id)

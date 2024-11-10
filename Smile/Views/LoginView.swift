@@ -17,10 +17,14 @@ struct LoginView: View {
     @State private var firstName = ""
     @State private var lastName = ""
     
+    // Add this computed property
+    private var formattedUsername: String {
+        username.lowercased().trimmingCharacters(in: .whitespaces)
+    }
+    
     var body: some View {
         NavigationView {
             Form {
-                
                 if !isSignUp {
                     Section(header: Text("Login")) {
                         TextField("Email", text: $email)
@@ -38,6 +42,9 @@ struct LoginView: View {
                         SecureField("Password", text: $password)
                         TextField("Username", text: $username)
                             .autocapitalization(.none)
+                            .onChange(of: username) { newValue in
+                                username = newValue.lowercased().filter { !$0.isWhitespace }
+                            }
                         TextField("First Name", text: $firstName)
                         TextField("Last Name", text: $lastName)
                     }
@@ -49,7 +56,7 @@ struct LoginView: View {
                             viewModel.signUp(
                                 email: email,
                                 password: password,
-                                username: username,
+                                username: formattedUsername,
                                 firstName: firstName,
                                 lastName: lastName
                             )
@@ -64,7 +71,6 @@ struct LoginView: View {
                         isSignUp.toggle()
                     }
                 }
-                
             }
             .navigationTitle(isSignUp ? "Sign Up" : "Sign In")
             .alert(item: Binding<AuthErrorWrapper?>(
