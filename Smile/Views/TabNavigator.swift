@@ -32,7 +32,7 @@ struct TabNavigator: View {
                     Label("Groups", systemImage: "person.3")
                 }
             
-            ProfileView(userId: authViewModel.currentUser?.id ?? "")
+            ProfileView()
                 .tabItem {
                     Label("Me", systemImage: "person")
                 }
@@ -42,7 +42,8 @@ struct TabNavigator: View {
 
 struct TabNavigator_Previews: PreviewProvider {
     static var previews: some View {
-        TabNavigator()
-            .environmentObject(AuthViewModel())
+        PreviewHelpers.PreviewContainer {
+            TabNavigator()
+        }
     }
 }

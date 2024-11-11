@@ -20,8 +20,9 @@ struct SearchView: View {
                 ScrollView {
                     LazyVStack(spacing: 0) {
                         ForEach(viewModel.searchResults) { user in
-                            NavigationLink(destination: ProfileView(userId: user.id)) {
+                            NavigationLink(destination: UserView(userId: user.id)) {
                                 UserSearchCell(userPreview: user)
+                            }
                             }
                         }
                     }
@@ -29,7 +30,7 @@ struct SearchView: View {
             }
             .navigationTitle("Search")
         }
-    }
+    
     
     private var searchBar: some View {
         HStack {

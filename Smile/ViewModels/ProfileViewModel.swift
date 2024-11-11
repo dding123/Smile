@@ -9,99 +9,45 @@ import SwiftUI
 import Firebase
 import Combine
 
-class ProfileViewModel: ObservableObject {
-    @Published var uploadedPosts: [Post] = []
-    @Published var taggedPosts: [Post] = []
-    @Published var isLoading = false
-    @Published var error: String?
+class ProfileViewModel: BaseProfileViewModel {
+    private var authViewModel: AuthViewModel
+    @Published var isImagePickerShowing = false
+    @Published var profileImageType: ProfileImageType = .profilePicture
+    @Published var showingSettingsSheet = false
     
-    private let dataService: DataService
-    private let userId: String
-    private var lastUploadedPost: Post?
-    private var lastTaggedPost: Post?
-    private var hasMoreUploadedPosts = true
-    private var hasMoreTaggedPosts = true
-    
-    init(dataService: DataService = FirebaseDataService(), userId: String) {
-        self.dataService = dataService
-        self.userId = userId
-        Task {
-            await fetchInitialPosts()
-        }
+    init(authViewModel: AuthViewModel) {
+        self.authViewModel = authViewModel
+        super.init(userId: authViewModel.currentUser?.id ?? "")
     }
     
-    @MainActor
-    func fetchInitialPosts() async {
-        isLoading = true
-        do {
-//            // Reset everything for fresh load
-//            uploadedPosts = []
-//            taggedPosts = []
-//            lastUploadedPost = nil
-//            lastTaggedPost = nil
-//            hasMoreUploadedPosts = true
-//            hasMoreTaggedPosts = true
-            
-            // Fetch initial batch of posts with nil for 'after' parameter
-            let uploaded = try await dataService.fetchUserPosts(
-                userId: userId,
-                limit: 12,
-                after: nil
-            )
-            
-//            print("Fetched \(uploaded.count) uploaded posts") // Add debug print
-            uploadedPosts = uploaded
-            lastUploadedPost = uploaded.last
-            hasMoreUploadedPosts = uploaded.count == 12
-            
-            let tagged = try await dataService.fetchTaggedPosts(
-                userId: userId,
-                limit: 12,
-                after: nil
-            )
-//            print("Fetched \(tagged.count) tagged posts") // Add debug print
-            taggedPosts = tagged
-            lastTaggedPost = tagged.last
-            hasMoreTaggedPosts = tagged.count == 12
-            
-        } catch {
-            print("Error fetching posts: \(error)") // Add debug print
-            self.error = error.localizedDescription
-        }
-        isLoading = false
-    }
-    
-    @MainActor
-    func loadMorePosts(forTab tab: ProfileView.Tab) async {
-        guard !isLoading else { return }
-        
-        if tab == .uploads && !hasMoreUploadedPosts { return }
-        if tab == .photos && !hasMoreTaggedPosts { return }
-        
-        isLoading = true
-        do {
-            if tab == .uploads {
-                let newPosts = try await dataService.fetchUserPosts(
-                    userId: userId,
-                    limit: 12,
-                    after: lastUploadedPost
-                )
-                uploadedPosts.append(contentsOf: newPosts)
-                lastUploadedPost = newPosts.last
-                hasMoreUploadedPosts = newPosts.count == 12
-            } else {
-                let newPosts = try await dataService.fetchTaggedPosts(
-                    userId: userId,
-                    limit: 12,
-                    after: lastTaggedPost
-                )
-                taggedPosts.append(contentsOf: newPosts)
-                lastTaggedPost = newPosts.last
-                hasMoreTaggedPosts = newPosts.count == 12
+    func updateAuthViewModel(_ newAuthViewModel: AuthViewModel) {
+        self.authViewModel = newAuthViewModel
+        if let userId = newAuthViewModel.currentUser?.id {
+            self.userId = userId
+            Task {
+                await loadProfile()
             }
-        } catch {
-            self.error = error.localizedDescription
         }
-        isLoading = false
     }
+    
+    func signOut() async {
+        await authViewModel.signOut()
+    }
+    
+    func updateProfileImage(_ image: UIImage, type: ProfileImageType) async {
+        do {
+            try await authViewModel.updateProfileImage(image, type: type)
+            await loadProfile() // Reload profile to show updated image
+        } catch {
+            print("Error updating profile image: \(error)")
+        }
+    }
+    
+    // Future methods could include:
+    // - updateProfile(firstName:lastName:bio:)
+    // - updatePrivacySettings
+    // - updateNotificationPreferences
+    // - deleteAccount
+    // - blockUser
+    // - etc.
 }

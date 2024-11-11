@@ -11,31 +11,51 @@ import FirebaseStorage
 
 struct Post: Identifiable, Codable {
     @DocumentID var id: String?
-    var userId: String
-    var username: String
-    var imagePath: String
-    var caption: String
-    var taggedUsers: [String]
+    let userId: String
+    let username: String
+    let imagePath: String
+    let caption: String
+    let taggedUsers: [String]
     @ServerTimestamp var createdAt: Date?
-    var likeCount: Int
-    var commentCount: Int
+    let likeCount: Int
+    let commentCount: Int
     
     var uniqueId: String {
-        if let id = id {
-            return id
-        }
-        // Include more unique information if ID is nil
-        return "\(userId)-\(createdAt?.timeIntervalSince1970 ?? 0)"
+        id ?? "\(userId)-\(createdAt?.timeIntervalSince1970 ?? 0)"
     }
     
-    // Custom Codable implementation to handle the imagePath
+    // Default memberwise initializer for creating posts
+    init(
+        id: String? = nil,
+        userId: String,
+        username: String,
+        imagePath: String,
+        caption: String,
+        taggedUsers: [String] = [],
+        createdAt: Date? = nil,
+        likeCount: Int = 0,
+        commentCount: Int = 0
+    ) {
+        self.id = id
+        self.userId = userId
+        self.username = username
+        self.imagePath = imagePath
+        self.caption = caption
+        self.taggedUsers = taggedUsers
+        self.createdAt = createdAt
+        self.likeCount = likeCount
+        self.commentCount = commentCount
+    }
+}
+
+// Separate extension for Codable implementation
+extension Post {
     enum CodingKeys: String, CodingKey {
         case id, userId, username, imagePath, caption, taggedUsers, createdAt, likeCount, commentCount
     }
     
     init(from decoder: Decoder) throws {
         let container = try decoder.container(keyedBy: CodingKeys.self)
-//        print("Decoding post. Available keys: \(container.allKeys)")
         
         self.id = try container.decodeIfPresent(String.self, forKey: .id)
         self.userId = try container.decode(String.self, forKey: .userId)
@@ -49,24 +69,37 @@ struct Post: Identifiable, Codable {
     }
 }
 
-// Helper struct to manage image loading
+// Separate helper struct for image handling
 struct PostImage {
+    enum PostImageError: Error {
+        case invalidPath
+        case downloadFailed(Error)
+        
+        var localizedDescription: String {
+            switch self {
+            case .invalidPath:
+                return "Invalid image path"
+            case .downloadFailed(let error):
+                return "Failed to download image: \(error.localizedDescription)"
+            }
+        }
+    }
+    
     static func getURL(for path: String) async throws -> URL {
         // If the path is already a full URL string, try to use it directly
         if let url = URL(string: path), url.scheme != nil {
             return url
         }
         
-        print("Getting download URL for path: \(path)")
-        let storageRef = Storage.storage().reference().child(path)
+        guard !path.isEmpty else {
+            throw PostImageError.invalidPath
+        }
         
         do {
-            let url = try await storageRef.downloadURL()
-            print("Successfully got download URL: \(url)")
-            return url
+            let storageRef = Storage.storage().reference().child(path)
+            return try await storageRef.downloadURL()
         } catch {
-            print("Error getting download URL: \(error)")
-            throw error
+            throw PostImageError.downloadFailed(error)
         }
     }
 }

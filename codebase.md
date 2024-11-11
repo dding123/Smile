@@ -1,7 +1,7 @@
 # .gitignore
 
 ```
-GoogleService-Info.plist
+#GoogleService-Info.plist
 
 ```
 
@@ -124,6 +124,8 @@ social media app
 		09AAFA432CD5627C004CD75D /* UserTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 09AAFA422CD5627C004CD75D /* UserTests.swift */; };
 		09AAFA472CDC0740004CD75D /* AppState.swift in Sources */ = {isa = PBXBuildFile; fileRef = 09AAFA452CDC073C004CD75D /* AppState.swift */; };
 		09AAFA492CDC5055004CD75D /* PostImageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 09AAFA482CDC5055004CD75D /* PostImageView.swift */; };
+		09AAFA4F2CE04EA4004CD75D /* SearchViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 09AAFA4E2CE04EA0004CD75D /* SearchViewModel.swift */; };
+		09AAFA512CE0579A004CD75D /* CreateGroupView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 09AAFA502CE0579A004CD75D /* CreateGroupView.swift */; };
 		09E28BC02A78B11F00C003A1 /* ProfileView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 09E28BBF2A78B11F00C003A1 /* ProfileView.swift */; };
 		09E28BC42A78B13700C003A1 /* UploadView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 09E28BC32A78B13700C003A1 /* UploadView.swift */; };
 		09E28BC62A78B14A00C003A1 /* GroupsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 09E28BC52A78B14A00C003A1 /* GroupsView.swift */; };
@@ -175,6 +177,8 @@ social media app
 		09AAFA422CD5627C004CD75D /* UserTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserTests.swift; sourceTree = "<group>"; };
 		09AAFA452CDC073C004CD75D /* AppState.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppState.swift; sourceTree = "<group>"; };
 		09AAFA482CDC5055004CD75D /* PostImageView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostImageView.swift; sourceTree = "<group>"; };
+		09AAFA4E2CE04EA0004CD75D /* SearchViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchViewModel.swift; sourceTree = "<group>"; };
+		09AAFA502CE0579A004CD75D /* CreateGroupView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateGroupView.swift; sourceTree = "<group>"; };
 		09E28BBF2A78B11F00C003A1 /* ProfileView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileView.swift; sourceTree = "<group>"; };
 		09E28BC32A78B13700C003A1 /* UploadView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UploadView.swift; sourceTree = "<group>"; };
 		09E28BC52A78B14A00C003A1 /* GroupsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GroupsView.swift; sourceTree = "<group>"; };
@@ -271,6 +275,7 @@ social media app
 		094627E12C5090C800C8FE90 /* Views */ = {
 			isa = PBXGroup;
 			children = (
+				09AAFA502CE0579A004CD75D /* CreateGroupView.swift */,
 				09AAFA482CDC5055004CD75D /* PostImageView.swift */,
 				0969DFC72CD04060002A7BEA /* PostDetailView.swift */,
 				0969DFC52CCF4466002A7BEA /* RootView.swift */,
@@ -291,6 +296,7 @@ social media app
 		094627E22C5090D000C8FE90 /* ViewModels */ = {
 			isa = PBXGroup;
 			children = (
+				09AAFA4E2CE04EA0004CD75D /* SearchViewModel.swift */,
 				0969DFC92CD04083002A7BEA /* PostDetailViewModel.swift */,
 				0969DFBD2CCF402B002A7BEA /* ProfileViewModel.swift */,
 				0969DFB52CC88091002A7BEA /* TaggingViewModel.swift */,
@@ -471,8 +477,10 @@ social media app
 				090F42C62A67A5E90035774E /* HomeView.swift in Sources */,
 				0969DFCA2CD04087002A7BEA /* PostDetailViewModel.swift in Sources */,
 				0908AEC42C9B950200F13C0E /* DataService.swift in Sources */,
+				09AAFA512CE0579A004CD75D /* CreateGroupView.swift in Sources */,
 				0908AEC82C9B965A00F13C0E /* TaggingView.swift in Sources */,
 				094627E92C50913800C8FE90 /* Post.swift in Sources */,
+				09AAFA4F2CE04EA4004CD75D /* SearchViewModel.swift in Sources */,
 				094627F72C50921E00C8FE90 /* NetworkService.swift in Sources */,
 				09AAFA492CDC5055004CD75D /* PostImageView.swift in Sources */,
 				094627F12C5091F600C8FE90 /* UserViewModel.swift in Sources */,
@@ -962,6 +970,52 @@ social media app
 
 This is a binary file of the type: Binary
 
+# Smile.xcodeproj/xcuserdata/davidding.xcuserdatad/xcdebugger/Breakpoints_v2.xcbkptlist
+
+```xcbkptlist
+<?xml version="1.0" encoding="UTF-8"?>
+<Bucket
+   uuid = "5BE72DF1-FC95-4991-9384-FEC25CC4BC57"
+   type = "1"
+   version = "2.0">
+   <Breakpoints>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "03A4685E-C391-4A5C-B1B8-BD4ECE94C095"
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "Smile/State/AppState.swift"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "23"
+            endingLineNumber = "23"
+            landmarkName = "refreshAllPosts()"
+            landmarkType = "7">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "217F86C2-DF99-464A-A697-8AEB6AF82233"
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "Smile/State/AppState.swift"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "21"
+            endingLineNumber = "21"
+            landmarkName = "init(dataService:)"
+            landmarkType = "7">
+         </BreakpointContent>
+      </BreakpointProxy>
+   </Breakpoints>
+</Bucket>
+
+```
+
 # Smile.xcodeproj/xcuserdata/davidding.xcuserdatad/xcschemes/xcschememanagement.plist
 
 ```plist
@@ -1322,16 +1376,41 @@ import Foundation
 struct User: Identifiable, Codable {
     let id: String
     let email: String
-    var username: String
+    private var _username: String
     let firstName: String
     let lastName: String
+    var profilePictureUrl: String?
+    var bannerPictureUrl: String?
+    
+    var username: String {
+        get { _username.lowercased() }
+        set { _username = newValue.lowercased() }
+    }
     
     var fullName: String {
         "\(firstName) \(lastName)"
     }
     
-    var profilePictureUrl: String?
-    var bannerPictureUrl: String?
+    enum CodingKeys: String, CodingKey {
+        case id
+        case email
+        case _username = "username"
+        case firstName
+        case lastName
+        case profilePictureUrl
+        case bannerPictureUrl
+    }
+    
+    // Add custom init to handle the username property
+    init(id: String, email: String, username: String, firstName: String, lastName: String, profilePictureUrl: String? = nil, bannerPictureUrl: String? = nil) {
+        self.id = id
+        self.email = email
+        self._username = username.lowercased()
+        self.firstName = firstName
+        self.lastName = lastName
+        self.profilePictureUrl = profilePictureUrl
+        self.bannerPictureUrl = bannerPictureUrl
+    }
 }
 
 ```
@@ -1347,9 +1426,11 @@ struct User: Identifiable, Codable {
 //
 import Foundation
 
+// In UserPreview.swift
 struct UserPreview: Identifiable, Hashable {
     let id: String
     let username: String
+    let profilePictureUrl: String?
     
     func hash(into hasher: inout Hasher) {
         hasher.combine(id)
@@ -1581,6 +1662,11 @@ protocol DataService {
     
     // User
 //    func fetchUser(userId: String) async throws -> User
+    
+    func fetchUserGroups() async throws -> [UserGroup]
+    func createGroup(name: String) async throws -> UserGroup  // Remove photo parameter
+//    func joinGroup(groupId: String) async throws
+//    func leaveGroup(groupId: String) async throws
 }
 
 ```
@@ -1604,6 +1690,42 @@ import SwiftUI
 
 class FirebaseDataService: DataService {
     
+    
+    //
+    //    func joinGroup(groupId: String) async throws {
+    //
+    //    }
+    //
+    //    func leaveGroup(groupId: String) async throws {
+    //        <#code#>
+    //    }
+    func createGroup(name: String) async throws -> UserGroup {
+        guard let userId = Auth.auth().currentUser?.uid else {
+            throw NSError(domain: "", code: -1, userInfo: [NSLocalizedDescriptionKey: "User not logged in"])
+        }
+        
+        let db = Firestore.firestore()
+        
+        let groupData: [String: Any] = [
+            "name": name,
+            "members": [userId], // Creator is first member
+            "createdAt": FieldValue.serverTimestamp(),
+            "createdBy": userId,
+        ]
+        
+        let documentRef = try await db.collection("groups").addDocument(data: groupData)
+        
+        return UserGroup(
+            id: documentRef.documentID,
+            name: name,
+            photoUrl: nil,
+            memberCount: 1,
+            createdAt: Date(),
+            createdBy: userId
+        )
+    }
+    
+    
     func uploadImage(_ data: Data) async throws -> String {
         let imageName = UUID().uuidString + ".jpg"
         let path = "post_images/\(imageName)"
@@ -1618,7 +1740,7 @@ class FirebaseDataService: DataService {
         // Return the path instead of URL
         return path
     }
-
+    
     func createPost(userId: String, username: String, imagePath: String, caption: String, taggedUsers: [String]) async throws {
         let db = Firestore.firestore()
         let postRef = db.collection("posts").document()
@@ -1648,16 +1770,10 @@ class FirebaseDataService: DataService {
                         .limit(to: 20)
                         .getDocuments()
                     
-                    let posts = await snapshot.documents.asyncCompactMap { document -> Post? in
+                    let posts = snapshot.documents.compactMap { document -> Post? in
                         do {
                             var post = try document.data(as: Post.self)
-                            
-                            // Fetch the username if it's not stored in the post document
-                            if post.username.isEmpty {
-                                let userDoc = try await db.collection("users").document(post.userId).getDocument()
-                                post.username = userDoc.data()?["username"] as? String ?? "Unknown User"
-                            }
-                            
+                            post.id = document.documentID
                             return post
                         } catch {
                             print("Error decoding post: \(error)")
@@ -1673,7 +1789,7 @@ class FirebaseDataService: DataService {
         }
         .eraseToAnyPublisher()
     }
-
+    
     func signIn(email: String, password: String) async throws -> User {
         // Sign in with Firebase Auth
         let authResult = try await Auth.auth().signIn(withEmail: email, password: password)
@@ -1690,7 +1806,7 @@ class FirebaseDataService: DataService {
               let firstName = data["firstName"] as? String,
               let lastName = data["lastName"] as? String else {
             throw NSError(domain: "FirebaseDataService", code: 0,
-                userInfo: [NSLocalizedDescriptionKey: "Failed to get user data"])
+                          userInfo: [NSLocalizedDescriptionKey: "Failed to get user data"])
         }
         
         return User(
@@ -1703,21 +1819,37 @@ class FirebaseDataService: DataService {
             bannerPictureUrl: data["bannerPictureUrl"] as? String
         )
     }
-
+    
     func signUp(email: String, password: String, username: String, firstName: String, lastName: String) async throws -> User {
+        // Ensure username is lowercase and has no spaces
+        let cleanUsername = username.lowercased().filter { !$0.isWhitespace }
+        
+        // Check if username exists first
+        let db = Firestore.firestore()
+        let usernameSnapshot = try await db.collection("users")
+            .whereField("username", isEqualTo: cleanUsername)
+            .getDocuments()
+        
+        if !usernameSnapshot.documents.isEmpty {
+            throw NSError(
+                domain: "",
+                code: -1,
+                userInfo: [NSLocalizedDescriptionKey: "Username already taken"]
+            )
+        }
+        
         // Create user in Firebase Auth
         let authResult = try await Auth.auth().createUser(withEmail: email, password: password)
-        let firebaseUser = authResult.user  // No need for guard let
+        let firebaseUser = authResult.user
         
         // Update display name
         let changeRequest = firebaseUser.createProfileChangeRequest()
-        changeRequest.displayName = username
+        changeRequest.displayName = cleanUsername
         try await changeRequest.commitChanges()
         
         // Create user document in Firestore
-        let db = Firestore.firestore()
         let userData: [String: Any] = [
-            "username": username,
+            "username": cleanUsername,
             "email": email,
             "firstName": firstName,
             "lastName": lastName,
@@ -1731,32 +1863,36 @@ class FirebaseDataService: DataService {
         return User(
             id: firebaseUser.uid,
             email: email,
-            username: username,
+            username: cleanUsername,
             firstName: firstName,
             lastName: lastName
         )
     }
     
+    
     func signOut() async throws {
         try Auth.auth().signOut()
     }
-
+    
     func searchUsers(matching query: String) async throws -> [UserPreview] {
         let db = Firestore.firestore()
-//        print("Starting Firestore query for: \(query)")
+        let cleanQuery = query.lowercased().filter { !$0.isWhitespace }
         
         let snapshot = try await db.collection("users")
-            .whereField("username", isGreaterThanOrEqualTo: query.lowercased())
-            .whereField("username", isLessThan: query.lowercased() + "\u{f8ff}")
-            .limit(to: 10)
+            .whereField("username", isGreaterThanOrEqualTo: cleanQuery)
+            .whereField("username", isLessThan: cleanQuery + "\u{f8ff}")
+            .limit(to: 20)
             .getDocuments()
         
-        return snapshot.documents.compactMap { document -> UserPreview? in
+        return snapshot.documents.compactMap { document in
             guard let username = document.data()["username"] as? String else {
-                print("Failed to get username from document: \(document.documentID)")
                 return nil
             }
-            return UserPreview(id: document.documentID, username: username)
+            return UserPreview(
+                id: document.documentID,
+                username: username,
+                profilePictureUrl: document.data()["profilePictureUrl"] as? String
+            )
         }
     }
     
@@ -1769,7 +1905,7 @@ class FirebaseDataService: DataService {
         // Get the download URL
         return try await storageRef.downloadURL()
     }
-
+    
     func updateUserProfileImage(userId: String, imageUrl: String, type: ProfileImageType) async throws {
         let db = Firestore.firestore()
         let field = type == .profilePicture ? "profilePictureUrl" : "bannerPictureUrl"
@@ -1780,7 +1916,7 @@ class FirebaseDataService: DataService {
     
     func fetchUserPosts(userId: String, limit: Int = 12, after post: Post? = nil) async throws -> [Post] {
         let db = Firestore.firestore()
-//        print("Fetching posts for userId: \(userId)") // Add debug print
+        //        print("Fetching posts for userId: \(userId)") // Add debug print
         
         var query = db.collection("posts")
             .whereField("userId", isEqualTo: userId)
@@ -1792,7 +1928,7 @@ class FirebaseDataService: DataService {
         }
         
         let snapshot = try await query.getDocuments()
-//        print("Found \(snapshot.documents.count) documents") // Add debug print
+        //        print("Found \(snapshot.documents.count) documents") // Add debug print
         
         let posts = snapshot.documents.compactMap { document -> Post? in
             do {
@@ -1806,13 +1942,13 @@ class FirebaseDataService: DataService {
             }
         }
         
-//        print("Successfully decoded \(posts.count) posts") // Add debug print
+        //        print("Successfully decoded \(posts.count) posts") // Add debug print
         return posts
     }
     
     func fetchTaggedPosts(userId: String, limit: Int = 12, after post: Post? = nil) async throws -> [Post] {
         let db = Firestore.firestore()
-//        print("Fetching tagged posts for userId: \(userId)") // Add debug print
+        //        print("Fetching tagged posts for userId: \(userId)") // Add debug print
         
         var query = db.collection("posts")
             .whereField("taggedUsers", arrayContains: userId)
@@ -1824,7 +1960,7 @@ class FirebaseDataService: DataService {
         }
         
         let snapshot = try await query.getDocuments()
-//        print("Found \(snapshot.documents.count) tagged documents") // Add debug print
+        //        print("Found \(snapshot.documents.count) tagged documents") // Add debug print
         
         let posts = snapshot.documents.compactMap { document -> Post? in
             do {
@@ -1838,7 +1974,7 @@ class FirebaseDataService: DataService {
             }
         }
         
-//        print("Successfully decoded \(posts.count) tagged posts") // Add debug print
+        //        print("Successfully decoded \(posts.count) tagged posts") // Add debug print
         return posts
     }
     
@@ -1853,7 +1989,7 @@ class FirebaseDataService: DataService {
             .collection("comments")
             .order(by: "createdAt", descending: false)
             .getDocuments()
-            
+        
         return snapshot.documents.compactMap { try? $0.data(as: Comment.self) }
     }
     
@@ -1908,24 +2044,40 @@ class FirebaseDataService: DataService {
             throw NSError(domain: "", code: -1, userInfo: [NSLocalizedDescriptionKey: "User not logged in"])
         }
         
+        // Add validation for postId
+        guard !postId.isEmpty else {
+            print("Warning: Empty post ID in fetchLikeStatus")
+            return LikeStatus(isLiked: false, count: 0)
+        }
+        
         let db = Firestore.firestore()
         
-        // Get like document
-        let likeDoc = try await db.collection("posts")
-            .document(postId)
-            .collection("likes")
-            .document(currentUser.uid)
-            .getDocument()
-        
-        // Get total likes count
-        let postDoc = try await db.collection("posts")
-            .document(postId)
-            .getDocument()
-        
-        let likeCount = postDoc.data()?["likeCount"] as? Int ?? 0
-        let isLiked = likeDoc.exists
-        
-        return LikeStatus(isLiked: isLiked, count: likeCount)
+        do {
+            // Get post document first to verify it exists
+            let postDoc = try await db.collection("posts")
+                .document(postId)
+                .getDocument()
+            
+            guard postDoc.exists else {
+                print("Warning: Post document does not exist")
+                return LikeStatus(isLiked: false, count: 0)
+            }
+            
+            // Get like document
+            let likeDoc = try await db.collection("posts")
+                .document(postId)
+                .collection("likes")
+                .document(currentUser.uid)
+                .getDocument()
+            
+            let likeCount = postDoc.data()?["likeCount"] as? Int ?? 0
+            let isLiked = likeDoc.exists
+            
+            return LikeStatus(isLiked: isLiked, count: likeCount)
+        } catch {
+            print("Error in fetchLikeStatus: \(error)")
+            return LikeStatus(isLiked: false, count: 0)
+        }
     }
     
     func toggleLike(for postId: String) async throws {
@@ -1989,24 +2141,58 @@ class FirebaseDataService: DataService {
             bannerPictureUrl: data["bannerPictureUrl"] as? String
         )
     }
-}
     
-
-
-extension Sequence {
-    func asyncCompactMap<T>(
-        _ transform: (Element) async -> T?
-    ) async -> [T] {
-        var values = [T]()
-        
-        for element in self {
-            if let newElement = await transform(element) {
-                values.append(newElement)
-            }
+    func fetchUserGroups() async throws -> [UserGroup] {
+        guard let userId = Auth.auth().currentUser?.uid else {
+            throw NSError(domain: "", code: -1, userInfo: [NSLocalizedDescriptionKey: "User not logged in"])
         }
-        return values
+        
+        let db = Firestore.firestore()
+        let snapshot = try await db.collection("groups")
+            .whereField("members", arrayContains: userId)
+            .getDocuments()
+        
+        return try snapshot.documents.map { document in
+            let data = document.data()
+            
+            // If any of these fields are missing, throw an error
+            guard
+                let name = data["name"] as? String,
+                let members = data["members"] as? [String],
+                let createdAt = (data["createdAt"] as? Timestamp)?.dateValue(),
+                let createdBy = data["createdBy"] as? String
+            else {
+                throw NSError(domain: "", code: -1,
+                             userInfo: [NSLocalizedDescriptionKey: "Invalid group data"])
+            }
+            
+            return UserGroup(
+                id: document.documentID,
+                name: name,
+                photoUrl: data["photoUrl"] as? String,
+                memberCount: members.count,
+                createdAt: createdAt,
+                createdBy: createdBy
+            )
+        }
     }
 }
+
+//
+//extension Sequence {
+//    func asyncCompactMap<T>(
+//        _ transform: (Element) async -> T?
+//    ) async -> [T] {
+//        var values = [T]()
+//        
+//        for element in self {
+//            if let newElement = await transform(element) {
+//                values.append(newElement)
+//            }
+//        }
+//        return values
+//    }
+//}
 
 ```
 
@@ -2086,18 +2272,27 @@ class AppState: ObservableObject {
     @MainActor
     func refreshAllPosts() async {
         do {
-            // Fetch posts for home feed
             let snapshot = try await Firestore.firestore()
                 .collection("posts")
                 .order(by: "createdAt", descending: true)
                 .limit(to: 20)
                 .getDocuments()
             
-            posts = snapshot.documents.compactMap { try? $0.data(as: Post.self) }
-            print("Fetched \(posts.count) posts for home feed")
-            posts.forEach { post in
-                print("Post image path: \(post.imagePath)")
+            posts = snapshot.documents.compactMap { document in
+                do {
+                    var post = try document.data(as: Post.self)
+                    post.id = document.documentID // Ensure ID is set
+                    if post.id?.isEmpty ?? true {
+                        print("Warning: Empty post ID for document: \(document.documentID)")
+                        return nil
+                    }
+                    return post
+                } catch {
+                    print("Error decoding post: \(error)")
+                    return nil
+                }
             }
+            print("Fetched \(posts.count) posts for home feed")
         } catch {
             print("Error refreshing all posts: \(error)")
         }
@@ -2358,12 +2553,21 @@ class PostDetailViewModel: ObservableObject {
     
     @MainActor
     func fetchLikeStatus() async {
+        guard let postId = post.id, !postId.isEmpty else {
+            print("Warning: Invalid post ID in fetchLikeStatus")
+            isLiked = false
+            likeCount = 0
+            return
+        }
+        
         do {
-            let status = try await dataService.fetchLikeStatus(for: post.id ?? "")
+            let status = try await dataService.fetchLikeStatus(for: postId)
             isLiked = status.isLiked
             likeCount = status.count
         } catch {
             print("Error fetching like status: \(error)")
+            isLiked = false
+            likeCount = 0
         }
     }
     
@@ -2379,24 +2583,29 @@ class PostDetailViewModel: ObservableObject {
     
     @MainActor
     func toggleLike() {
-        Task {
-            do {
-                isLiked.toggle()
-                if isLiked {
-                    likeCount += 1
-                } else {
-                    likeCount -= 1
-                }
-                
-                try await dataService.toggleLike(for: post.id ?? "")
-            } catch {
-                // Revert on failure
-                isLiked.toggle()
-                likeCount += isLiked ? 1 : -1
-                print("Error toggling like: \(error)")
-            }
-        }
-    }
+           guard let postId = post.id, !postId.isEmpty else {
+               print("Warning: Invalid post ID in toggleLike")
+               return
+           }
+           
+           Task {
+               do {
+                   isLiked.toggle()
+                   if isLiked {
+                       likeCount += 1
+                   } else {
+                       likeCount -= 1
+                   }
+                   
+                   try await dataService.toggleLike(for: postId)
+               } catch {
+                   // Revert on failure
+                   isLiked.toggle()
+                   likeCount += isLiked ? 1 : -1
+                   print("Error toggling like: \(error)")
+               }
+           }
+       }
     
     @MainActor
     func addComment() async {
@@ -2527,6 +2736,62 @@ class ProfileViewModel: ObservableObject {
 
 ```
 
+# Smile/ViewModels/SearchViewModel.swift
+
+```swift
+//
+//  SearchViewModel.swift
+//  Smile
+//
+//  Created by David Ding on 11/9/24.
+//
+
+import SwiftUI
+import Combine
+import FirebaseAuth
+
+@MainActor
+class SearchViewModel: ObservableObject {
+    @Published var searchText = ""
+    @Published var searchResults: [UserPreview] = []
+    private var searchTask: Task<Void, Never>?
+    private let dataService: DataService
+    private var cancellables = Set<AnyCancellable>()
+    
+    init(dataService: DataService = FirebaseDataService()) {
+        self.dataService = dataService
+        setupSearchSubscription()
+    }
+    
+    private func setupSearchSubscription() {
+        $searchText
+            .debounce(for: .milliseconds(300), scheduler: RunLoop.main)
+            .sink { [weak self] text in
+                guard let self = self else { return }
+                self.searchTask?.cancel()
+                
+                guard !text.isEmpty else {
+                    self.searchResults = []
+                    return
+                }
+                
+                self.searchTask = Task {
+                    do {
+                        let results = try await self.dataService.searchUsers(matching: text)
+                        if !Task.isCancelled {
+                            self.searchResults = results
+                        }
+                    } catch {
+                        print("Search error: \(error)")
+                    }
+                }
+            }
+            .store(in: &cancellables)
+    }
+}
+
+```
+
 # Smile/ViewModels/TaggingViewModel.swift
 
 ```swift
@@ -2610,6 +2875,86 @@ import Foundation
 
 ```
 
+# Smile/Views/CreateGroupView.swift
+
+```swift
+//
+//  CreateGroupView.swift
+//  Smile
+//
+//  Created by David Ding on 11/9/24.
+//
+import SwiftUI
+
+struct CreateGroupView: View {
+    @Environment(\.dismiss) private var dismiss
+    @StateObject private var viewModel = CreateGroupViewModel()
+    @State private var groupName = ""
+    var onGroupCreated: () -> Void
+    
+    var body: some View {
+        VStack(spacing: 20) {
+            Text("New Group")
+                .font(.title2)
+                .fontWeight(.bold)
+            
+            Text("Enter a name for the group")
+                .font(.subheadline)
+                .foregroundColor(.gray)
+            
+            TextField("Group name", text: $groupName)
+                .textFieldStyle(RoundedBorderTextFieldStyle())
+                .padding(.horizontal)
+            
+            HStack(spacing: 20) {
+                Button("Cancel") {
+                    dismiss()
+                }
+                .buttonStyle(.bordered)
+                
+                Button("Create") {
+                    Task {
+                        await viewModel.createGroup(name: groupName)
+                        onGroupCreated()  // Call the refresh callback
+                        dismiss()
+                    }
+                }
+                .buttonStyle(.borderedProminent)
+                .disabled(groupName.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty)
+            }
+        }
+        .padding()
+        .frame(maxWidth: 300)
+        .background(Color(.systemBackground))
+        .cornerRadius(12)
+        .shadow(radius: 10)
+        .onAppear {
+            viewModel.onGroupCreated = onGroupCreated
+        }
+    }
+}
+
+@MainActor
+class CreateGroupViewModel: ObservableObject {
+    private let dataService: DataService
+    var onGroupCreated: (() -> Void)?
+    
+    init(dataService: DataService = FirebaseDataService()) {
+        self.dataService = dataService
+    }
+    
+    func createGroup(name: String) async {
+        do {
+            _ = try await dataService.createGroup(name: name)
+            onGroupCreated?()  // Notify that a group was created
+        } catch {
+            print("Error creating group: \(error)")
+        }
+    }
+}
+
+```
+
 # Smile/Views/GroupsView.swift
 
 ```swift
@@ -2623,8 +2968,158 @@ import Foundation
 import SwiftUI
 
 struct GroupsView: View {
+    @StateObject private var viewModel = GroupsViewModel()
+    @State private var showingCreateGroup = false
+    @State private var searchText = ""
+    
+    let columns = Array(repeating: GridItem(.flexible(), spacing: 16), count: 2)
+    
     var body: some View {
-        Text("Groups")
+        NavigationView {
+            VStack(spacing: 0) {
+                // Search bar
+                searchBar
+                
+                // Groups grid
+                ScrollView {
+                    LazyVGrid(columns: columns, spacing: 16) {
+                        ForEach(viewModel.filteredGroups) { group in
+                            NavigationLink(destination: GroupDetailView(group: group)) {
+                                GroupCell(group: group)
+                            }
+                        }
+                    }
+                    .padding()
+                }
+            }
+            .navigationTitle("My Groups")
+            .toolbar {
+                ToolbarItem(placement: .navigationBarTrailing) {
+                    Button {
+                        showingCreateGroup = true
+                    } label: {
+                        Image(systemName: "plus")
+                    }
+                }
+            }
+            .sheet(isPresented: $showingCreateGroup) {
+                CreateGroupView(onGroupCreated: {
+                    Task {
+                        await viewModel.fetchGroups()
+                    }
+                })
+                .presentationDetents([.height(250)])
+            }
+            .task {
+                await viewModel.fetchGroups()  // Initial fetch
+            }
+        }
+    }
+    
+    
+    private var searchBar: some View {
+        HStack {
+            Image(systemName: "magnifyingglass")
+                .foregroundColor(.gray)
+            
+            TextField("Search groups", text: $searchText)
+                .textFieldStyle(.plain)
+            
+            if !searchText.isEmpty {
+                Button {
+                    searchText = ""
+                } label: {
+                    Image(systemName: "xmark.circle.fill")
+                        .foregroundColor(.gray)
+                }
+            }
+        }
+        .padding(10)
+        .background(Color(.systemGray6))
+        .cornerRadius(10)
+        .padding()
+    }
+}
+
+struct GroupCell: View {
+    let group: UserGroup
+
+    var body: some View {
+        VStack {
+            // Group photo
+            AsyncImage(url: URL(string: group.photoUrl ?? "")) { image in
+                image
+                    .resizable()
+                    .aspectRatio(contentMode: .fill)
+            } placeholder: {
+                Image(systemName: "person.3.fill")
+                    .font(.system(size: 40))
+                    .foregroundColor(.gray)
+                    .frame(width: 80, height: 80)
+                    .background(Color(.systemGray6))
+            }
+            .frame(width: 150, height: 150)
+            .clipShape(RoundedRectangle(cornerRadius: 12))
+            
+            // Group name
+            Text(group.name)
+                .font(.system(size: 16, weight: .semibold))
+                .lineLimit(1)
+            
+            // Member count
+            Text("\(group.memberCount) members")
+                .font(.system(size: 14))
+                .foregroundColor(.gray)
+        }
+        .frame(maxWidth: .infinity)
+    }
+}
+
+// Group model
+struct UserGroup: Identifiable {
+    let id: String
+    let name: String
+    let photoUrl: String?
+    let memberCount: Int
+    let createdAt: Date
+    let createdBy: String
+}
+
+// ViewModel
+@MainActor
+class GroupsViewModel: ObservableObject {
+    @Published var groups: [UserGroup] = []
+    @Published var searchText = ""
+    private let dataService: DataService
+    
+    var filteredGroups: [UserGroup] {
+        guard !searchText.isEmpty else { return groups }
+        return groups.filter { $0.name.localizedCaseInsensitiveContains(searchText) }
+    }
+    
+    init(dataService: DataService = FirebaseDataService()) {
+        self.dataService = dataService
+        Task {
+            await fetchGroups()
+        }
+    }
+    
+    func fetchGroups() async {
+        do {
+            self.groups = try await dataService.fetchUserGroups()
+        } catch {
+            print("Error fetching groups: \(error)")
+        }
+    }
+}
+
+// Placeholder for group detail view
+struct GroupDetailView: View {
+    let group: UserGroup
+    
+    var body: some View {
+        Text("Group Detail View - Coming Soon")
+            .navigationTitle(group.name)
     }
 }
 
@@ -2653,16 +3148,12 @@ struct HomeView: View {
     
     var body: some View {
         NavigationView {
-            ScrollView {
-                LazyVStack(spacing: 20) {
-                    ForEach(appState.posts) { post in
-                        PostImageView(
-                            imagePath: post.imagePath,
-                            size: 300
-                        )
+            ScrollView(.vertical, showsIndicators: false) {
+                LazyVStack(spacing: 0) {
+                    ForEach(appState.posts, id: \.uniqueId) { post in
+                        PostFeedCell(post: post)
                     }
                 }
-                .padding(.top)
             }
             .navigationTitle("Home")
             .task {
@@ -2672,6 +3163,143 @@ struct HomeView: View {
                 await appState.refreshAllPosts()
             }
         }
+    }
+}
+
+struct PostFeedCell: View {
+    @StateObject private var viewModel: PostDetailViewModel
+    let post: Post
+    
+    init(post: Post) {
+        self.post = post
+        _viewModel = StateObject(wrappedValue: PostDetailViewModel(post: post))
+    }
+    
+    var body: some View {
+        VStack(alignment: .leading, spacing: 12) {
+            // User info header
+            HStack(spacing: 8) {
+                AsyncImage(url: URL(string: viewModel.userProfilePicture ?? "")) { image in
+                    image
+                        .resizable()
+                        .aspectRatio(contentMode: .fill)
+                } placeholder: {
+                    Circle()
+                        .foregroundColor(.gray)
+                }
+                .frame(width: 36, height: 36)
+                .clipShape(Circle())
+                
+                Text(post.username)
+                    .font(.subheadline)
+                    .fontWeight(.semibold)
+                
+                Spacer()
+                
+                Button {
+                    // More options
+                } label: {
+                    Image(systemName: "ellipsis")
+                }
+            }
+            .padding(.horizontal, 16)
+            .padding(.vertical, 8)
+            
+            // Post image
+            GeometryReader { geometry in
+                PostImageView(
+                    imagePath: post.imagePath,
+                    size: geometry.size.width
+                )
+                .frame(width: geometry.size.width, height: geometry.size.width)
+            }
+            .aspectRatio(1, contentMode: .fit)
+            
+            // Action buttons
+            HStack(spacing: 20) {
+                Button {
+                    viewModel.toggleLike()
+                } label: {
+                    Image(systemName: viewModel.isLiked ? "heart.fill" : "heart")
+                        .foregroundColor(viewModel.isLiked ? .red : .primary)
+                }
+                
+                NavigationLink {
+                    PostDetailView(post: post)
+                } label: {
+                    Image(systemName: "bubble.right")
+                        .foregroundColor(.primary)
+                }
+                
+                Button {
+                    // Share
+                } label: {
+                    Image(systemName: "square.and.arrow.up")
+                        .foregroundColor(.primary)
+                }
+                
+                Spacer()
+            }
+            .font(.system(size: 22))
+            .padding(.horizontal, 16)
+            .padding(.top, 8)
+            
+            // Likes count
+            if viewModel.likeCount > 0 {
+                Text("\(viewModel.likeCount) likes")
+                    .font(.system(size: 14, weight: .semibold))
+                    .padding(.horizontal, 16)
+            }
+            
+            // Caption
+            if !post.caption.isEmpty {
+                HStack(alignment: .top, spacing: 6) {
+                    Text(post.username)
+                        .fontWeight(.semibold)
+                    Text(post.caption)
+                        .lineLimit(2)
+                }
+                .font(.system(size: 14))
+                .padding(.horizontal, 16)
+            }
+            
+            // Comments preview
+            if !viewModel.comments.isEmpty {
+                VStack(alignment: .leading, spacing: 6) {
+                    ForEach(viewModel.comments.prefix(2)) { comment in
+                        HStack(alignment: .top, spacing: 6) {
+                            Text(comment.username)
+                                .fontWeight(.semibold)
+                            Text(comment.text)
+                                .lineLimit(1)
+                        }
+                        .font(.system(size: 14))
+                    }
+                    
+                    if viewModel.comments.count > 2 {
+                        Button {
+                            // View all comments
+                        } label: {
+                            Text("View all \(viewModel.comments.count) comments")
+                                .font(.system(size: 14))
+                                .foregroundColor(.secondary)
+                        }
+                    }
+                }
+                .padding(.horizontal, 16)
+            }
+            
+            // Timestamp
+            if let date = post.createdAt {
+                Text(date, style: .relative)
+                    .font(.system(size: 12))
+                    .foregroundColor(.secondary)
+                    .padding(.horizontal, 16)
+                    .padding(.top, 4)
+            }
+        }
+        .padding(.vertical, 8)
+        Divider()
     }
 }
 
@@ -2758,10 +3386,14 @@ struct LoginView: View {
     @State private var firstName = ""
     @State private var lastName = ""
     
+    // Add this computed property
+    private var formattedUsername: String {
+        username.lowercased().trimmingCharacters(in: .whitespaces)
+    }
+    
     var body: some View {
         NavigationView {
             Form {
-                
                 if !isSignUp {
                     Section(header: Text("Login")) {
                         TextField("Email", text: $email)
@@ -2779,6 +3411,9 @@ struct LoginView: View {
                         SecureField("Password", text: $password)
                         TextField("Username", text: $username)
                             .autocapitalization(.none)
+                            .onChange(of: username) { newValue in
+                                username = newValue.lowercased().filter { !$0.isWhitespace }
+                            }
                         TextField("First Name", text: $firstName)
                         TextField("Last Name", text: $lastName)
                     }
@@ -2790,7 +3425,7 @@ struct LoginView: View {
                             viewModel.signUp(
                                 email: email,
                                 password: password,
-                                username: username,
+                                username: formattedUsername,
                                 firstName: firstName,
                                 lastName: lastName
                             )
@@ -2805,7 +3440,6 @@ struct LoginView: View {
                         isSignUp.toggle()
                     }
                 }
-                
             }
             .navigationTitle(isSignUp ? "Sign Up" : "Sign In")
             .alert(item: Binding<AuthErrorWrapper?>(
@@ -2857,9 +3491,9 @@ struct PostDetailView: View {
     }
     
     var body: some View {
-        NavigationView {
+        GeometryReader { geometry in
             ScrollView {
-                VStack(spacing: 12) {
+                VStack(alignment: .leading, spacing: 12) {
                     // User info header
                     HStack {
                         AsyncImage(url: URL(string: viewModel.userProfilePicture ?? "")) { image in
@@ -2886,14 +3520,15 @@ struct PostDetailView: View {
                     }
                     .padding(.horizontal)
                     
-                    // Post image using our new PostImageView
+                    // Post image
                     PostImageView(
                         imagePath: post.imagePath,
-                        size: UIScreen.main.bounds.width
+                        size: geometry.size.width
                     )
+                    .frame(width: geometry.size.width)
                     
                     // Action buttons
-                    HStack {
+                    HStack(spacing: 16) {
                         Button {
                             viewModel.toggleLike()
                         } label: {
@@ -2902,7 +3537,6 @@ struct PostDetailView: View {
                         }
                         
                         Button {
-                            // Focus comment field
                             viewModel.isCommentingActive = true
                         } label: {
                             Image(systemName: "bubble.right")
@@ -2924,54 +3558,53 @@ struct PostDetailView: View {
                         Text("\(viewModel.likeCount) likes")
                             .font(.subheadline)
                             .fontWeight(.semibold)
-                            .frame(maxWidth: .infinity, alignment: .leading)
                             .padding(.horizontal)
                     }
                     
                     // Caption
                     if !post.caption.isEmpty {
-                        HStack {
+                        HStack(alignment: .top, spacing: 4) {
                             Text(post.username)
-                                .fontWeight(.semibold) +
-                            Text(" ") +
+                                .fontWeight(.semibold)
                             Text(post.caption)
+                                .fixedSize(horizontal: false, vertical: true)
                         }
-                        .frame(maxWidth: .infinity, alignment: .leading)
                         .padding(.horizontal)
                     }
                     
                     // Comments
-                    LazyVStack(alignment: .leading, spacing: 8) {
-                        ForEach(viewModel.comments) { comment in
-                            HStack(alignment: .top) {
-                                Text(comment.username)
-                                    .fontWeight(.semibold) +
-                                Text(" ") +
-                                Text(comment.text)
-                                
-                                Spacer()
-                                
-                                Text(comment.timeAgo)
-                                    .font(.caption)
-                                    .foregroundColor(.gray)
-                            }
+                    ForEach(viewModel.comments) { comment in
+                        HStack(alignment: .top, spacing: 4) {
+                            Text(comment.username)
+                                .fontWeight(.semibold)
+                            Text(comment.text)
+                                .fixedSize(horizontal: false, vertical: true)
+                            Spacer()
+                            Text(comment.timeAgo)
+                                .font(.caption)
+                                .foregroundColor(.gray)
                         }
-                    }
-                    .padding(.horizontal)
-                }
-            }
-            .navigationBarTitleDisplayMode(.inline)
-            .toolbar {
-                ToolbarItem(placement: .navigationBarLeading) {
-                    Button {
-                        dismiss()
-                    } label: {
-                        Image(systemName: "xmark")
+                        .padding(.horizontal)
                     }
                 }
+                .frame(width: geometry.size.width)
             }
-            
-            // Comment input field
+        }
+        .ignoresSafeArea(.all, edges: .top)
+        .overlay(alignment: .top) {
+            HStack {
+                Button {
+                    dismiss()
+                } label: {
+                    Image(systemName: "xmark")
+                        .foregroundColor(.primary)
+                        .padding()
+                }
+                Spacer()
+            }
+            .background(.thinMaterial)
+        }
+        .overlay(alignment: .bottom) {
             if viewModel.isCommentingActive {
                 CommentInputView(
                     text: $viewModel.newCommentText,
@@ -2981,12 +3614,13 @@ struct PostDetailView: View {
                         }
                     }
                 )
+                .background(.thinMaterial)
             }
         }
     }
 }
 
-// Helper view for comment input remains unchanged
+// Update CommentInputView to ensure proper width
 struct CommentInputView: View {
     @Binding var text: String
     let onSubmit: () -> Void
@@ -3002,6 +3636,7 @@ struct CommentInputView: View {
             .disabled(text.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty)
         }
         .padding()
+        .frame(maxWidth: .infinity)
         .background(Color(.systemBackground))
         .overlay(
             Rectangle()
@@ -3293,19 +3928,35 @@ struct ProfileView: View {
                 .padding()
             }
             
+            // Calculate the size for each grid item - screen width minus total spacing, divided by 3
+            let width = (UIScreen.main.bounds.width - 40) / 3  // 40 accounts for spacing and edges
+
             // Photo Grid
-            LazyVGrid(columns: columns, spacing: 2) {
+            LazyVGrid(columns: Array(repeating: GridItem(.flexible(), spacing: 10), count: 3), spacing: 10) {
                 ForEach(selectedTab == .photos ? appState.taggedPosts : appState.userPosts) { post in
                     PostImageView(
                         imagePath: post.imagePath,
-                        size: (UIScreen.main.bounds.width - 4) / 3
+                        size: width
                     )
-                    .id(post.uniqueId)  // Add explicit ID here
+                    .frame(width: width, height: width)  // Enforce square aspect ratio
+                    .clipped()
+                    .overlay(
+                        Rectangle()
+                            .stroke(Color.gray.opacity(0.2), lineWidth: 0.5)
+                    )
+                    .id(post.uniqueId)
                     .onTapGesture {
                         selectedPost = post
                     }
                 }
             }
+            .padding(.horizontal, 10)
+            .sheet(item: $selectedPost) { post in
+                PostDetailView(post: post)
+                    .presentationDragIndicator(.visible)
+                    .presentationDetents([.large])
+            }
+            
             if viewModel.isLoading {
                 ProgressView()
                     .padding()
@@ -3403,8 +4054,85 @@ struct RootView_Previews: PreviewProvider {
 import SwiftUI
 
 struct SearchView: View {
+    @StateObject private var viewModel = SearchViewModel()
+    
     var body: some View {
-        Text("Search")
+        NavigationView {
+            VStack(spacing: 0) {
+                // Search bar
+                searchBar
+                
+                // Results list
+                ScrollView {
+                    LazyVStack(spacing: 0) {
+                        ForEach(viewModel.searchResults) { user in
+                            NavigationLink(destination: ProfileView(userId: user.id)) {
+                                UserSearchCell(userPreview: user)
+                            }
+                        }
+                    }
+                }
+            }
+            .navigationTitle("Search")
+        }
+    }
+    
+    private var searchBar: some View {
+        HStack {
+            Image(systemName: "magnifyingglass")
+                .foregroundColor(.gray)
+            
+            TextField("Search users", text: $viewModel.searchText)
+                .textFieldStyle(.plain)
+                .autocapitalization(.none)
+                .disableAutocorrection(true)
+            
+            if !viewModel.searchText.isEmpty {
+                Button {
+                    viewModel.searchText = ""
+                } label: {
+                    Image(systemName: "xmark.circle.fill")
+                        .foregroundColor(.gray)
+                }
+            }
+        }
+        .padding(10)
+        .background(Color(.systemGray6))
+        .cornerRadius(10)
+        .padding()
+    }
+}
+
+struct UserSearchCell: View {
+    let userPreview: UserPreview
+    
+    var body: some View {
+        HStack(spacing: 12) {
+            // Profile Image
+            AsyncImage(url: URL(string: userPreview.profilePictureUrl ?? "")) { image in
+                image
+                    .resizable()
+                    .aspectRatio(contentMode: .fill)
+            } placeholder: {
+                Image("defaultAvatar")
+                    .resizable()
+                    .aspectRatio(contentMode: .fill)
+            }
+            .frame(width: 44, height: 44)
+            .clipShape(Circle())
+            
+            // Username
+            Text(userPreview.username)
+                .font(.system(size: 14, weight: .semibold))
+            
+            Spacer()
+            
+            Image(systemName: "chevron.right")
+                .foregroundColor(.gray)
+        }
+        .padding(.horizontal)
+        .padding(.vertical, 8)
+        .contentShape(Rectangle())
     }
 }
 
