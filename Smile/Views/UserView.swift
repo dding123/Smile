@@ -44,17 +44,22 @@ struct UserView: View {
             }
             .padding()
         }
+        .task {
+            print("UserView task starting profile load") // Debug print
+            await viewModel.loadProfile()
+            print("UserView profile loaded: \(String(describing: viewModel.user))") // Debug print
+        }
         .navigationTitle(viewModel.user?.username ?? "")
         .navigationBarTitleDisplayMode(.inline)
     }
 }
 
-struct UserView_Previews: PreviewProvider {
-    static var previews: some View {
-        PreviewHelpers.PreviewContainer {
-            NavigationView {
-                UserView(userId: PreviewHelpers.sampleUsers[1].id)
-            }
-        }
-    }
-}
+//struct UserView_Previews: PreviewProvider {
+//    static var previews: some View {
+//        PreviewHelpers.PreviewContainer {
+//            NavigationView {
+//                UserView(userId: PreviewHelpers.sampleUsers[1].id)
+//            }
+//        }
+//    }
+//}

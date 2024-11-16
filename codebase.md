@@ -121,6 +121,10 @@ social media app
 		0969DFCA2CD04087002A7BEA /* PostDetailViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0969DFC92CD04083002A7BEA /* PostDetailViewModel.swift */; };
 		0969DFCC2CD04360002A7BEA /* Comment.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0969DFCB2CD0435C002A7BEA /* Comment.swift */; };
 		098AF2A42CA4D9710095B1CD /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 098AF2A32CA4D9710095B1CD /* GoogleService-Info.plist */; };
+		09A49D922CE1C3AA00040397 /* BaseProfileView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 09A49D912CE1C3AA00040397 /* BaseProfileView.swift */; };
+		09A49D942CE1C3CB00040397 /* UserView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 09A49D932CE1C3CB00040397 /* UserView.swift */; };
+		09A49D982CE1C58C00040397 /* PreviewHelpers.swift in Sources */ = {isa = PBXBuildFile; fileRef = 09A49D972CE1C58C00040397 /* PreviewHelpers.swift */; };
+		09A49D9A2CE1C89D00040397 /* BaseProfileViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 09A49D992CE1C89D00040397 /* BaseProfileViewModel.swift */; };
 		09AAFA432CD5627C004CD75D /* UserTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 09AAFA422CD5627C004CD75D /* UserTests.swift */; };
 		09AAFA472CDC0740004CD75D /* AppState.swift in Sources */ = {isa = PBXBuildFile; fileRef = 09AAFA452CDC073C004CD75D /* AppState.swift */; };
 		09AAFA492CDC5055004CD75D /* PostImageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 09AAFA482CDC5055004CD75D /* PostImageView.swift */; };
@@ -174,6 +178,10 @@ social media app
 		0969DFC92CD04083002A7BEA /* PostDetailViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostDetailViewModel.swift; sourceTree = "<group>"; };
 		0969DFCB2CD0435C002A7BEA /* Comment.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Comment.swift; sourceTree = "<group>"; };
 		098AF2A32CA4D9710095B1CD /* GoogleService-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
+		09A49D912CE1C3AA00040397 /* BaseProfileView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BaseProfileView.swift; sourceTree = "<group>"; };
+		09A49D932CE1C3CB00040397 /* UserView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserView.swift; sourceTree = "<group>"; };
+		09A49D972CE1C58C00040397 /* PreviewHelpers.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PreviewHelpers.swift; sourceTree = "<group>"; };
+		09A49D992CE1C89D00040397 /* BaseProfileViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BaseProfileViewModel.swift; sourceTree = "<group>"; };
 		09AAFA422CD5627C004CD75D /* UserTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserTests.swift; sourceTree = "<group>"; };
 		09AAFA452CDC073C004CD75D /* AppState.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppState.swift; sourceTree = "<group>"; };
 		09AAFA482CDC5055004CD75D /* PostImageView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostImageView.swift; sourceTree = "<group>"; };
@@ -255,6 +263,7 @@ social media app
 		090F42C92A67A5EA0035774E /* Preview Content */ = {
 			isa = PBXGroup;
 			children = (
+				09A49D972CE1C58C00040397 /* PreviewHelpers.swift */,
 				090F42CA2A67A5EA0035774E /* Preview Assets.xcassets */,
 			);
 			path = "Preview Content";
@@ -275,6 +284,8 @@ social media app
 		094627E12C5090C800C8FE90 /* Views */ = {
 			isa = PBXGroup;
 			children = (
+				09A49D932CE1C3CB00040397 /* UserView.swift */,
+				09A49D912CE1C3AA00040397 /* BaseProfileView.swift */,
 				09AAFA502CE0579A004CD75D /* CreateGroupView.swift */,
 				09AAFA482CDC5055004CD75D /* PostImageView.swift */,
 				0969DFC72CD04060002A7BEA /* PostDetailView.swift */,
@@ -296,6 +307,7 @@ social media app
 		094627E22C5090D000C8FE90 /* ViewModels */ = {
 			isa = PBXGroup;
 			children = (
+				09A49D992CE1C89D00040397 /* BaseProfileViewModel.swift */,
 				09AAFA4E2CE04EA0004CD75D /* SearchViewModel.swift */,
 				0969DFC92CD04083002A7BEA /* PostDetailViewModel.swift */,
 				0969DFBD2CCF402B002A7BEA /* ProfileViewModel.swift */,
@@ -466,6 +478,7 @@ social media app
 				0969DFBC2CCB50A1002A7BEA /* ProfileImageType.swift in Sources */,
 				09E28BC62A78B14A00C003A1 /* GroupsView.swift in Sources */,
 				0969DFCC2CD04360002A7BEA /* Comment.swift in Sources */,
+				09A49D922CE1C3AA00040397 /* BaseProfileView.swift in Sources */,
 				0969DF9D2CBDFED7002A7BEA /* HomeViewModel.swift in Sources */,
 				0969DFB62CC88096002A7BEA /* TaggingViewModel.swift in Sources */,
 				09E28BC42A78B13700C003A1 /* UploadView.swift in Sources */,
@@ -484,9 +497,11 @@ social media app
 				094627F72C50921E00C8FE90 /* NetworkService.swift in Sources */,
 				09AAFA492CDC5055004CD75D /* PostImageView.swift in Sources */,
 				094627F12C5091F600C8FE90 /* UserViewModel.swift in Sources */,
+				09A49D982CE1C58C00040397 /* PreviewHelpers.swift in Sources */,
 				0969DFC82CD0406B002A7BEA /* PostDetailView.swift in Sources */,
 				09AAFA472CDC0740004CD75D /* AppState.swift in Sources */,
 				0969DFB42CC8803C002A7BEA /* UserPreview.swift in Sources */,
+				09A49D942CE1C3CB00040397 /* UserView.swift in Sources */,
 				094627ED2C5091B700C8FE90 /* LoginView.swift in Sources */,
 				0969DFC22CCF43DA002A7BEA /* TabNavigator.swift in Sources */,
 				094627F52C50920E00C8FE90 /* AuthService.swift in Sources */,
@@ -494,6 +509,7 @@ social media app
 				0969DFBA2CCB4E18002A7BEA /* ImagePicker.swift in Sources */,
 				09E28BC02A78B11F00C003A1 /* ProfileView.swift in Sources */,
 				090F42C42A67A5E90035774E /* SmileApp.swift in Sources */,
+				09A49D9A2CE1C89D00040397 /* BaseProfileViewModel.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1282,31 +1298,51 @@ import FirebaseStorage
 
 struct Post: Identifiable, Codable {
     @DocumentID var id: String?
-    var userId: String
-    var username: String
-    var imagePath: String
-    var caption: String
-    var taggedUsers: [String]
+    let userId: String
+    let username: String
+    let imagePath: String
+    let caption: String
+    let taggedUsers: [String]
     @ServerTimestamp var createdAt: Date?
-    var likeCount: Int
-    var commentCount: Int
+    let likeCount: Int
+    let commentCount: Int
     
     var uniqueId: String {
-        if let id = id {
-            return id
-        }
-        // Include more unique information if ID is nil
-        return "\(userId)-\(createdAt?.timeIntervalSince1970 ?? 0)"
+        id ?? "\(userId)-\(createdAt?.timeIntervalSince1970 ?? 0)"
     }
     
-    // Custom Codable implementation to handle the imagePath
+    // Default memberwise initializer for creating posts
+    init(
+        id: String? = nil,
+        userId: String,
+        username: String,
+        imagePath: String,
+        caption: String,
+        taggedUsers: [String] = [],
+        createdAt: Date? = nil,
+        likeCount: Int = 0,
+        commentCount: Int = 0
+    ) {
+        self.id = id
+        self.userId = userId
+        self.username = username
+        self.imagePath = imagePath
+        self.caption = caption
+        self.taggedUsers = taggedUsers
+        self.createdAt = createdAt
+        self.likeCount = likeCount
+        self.commentCount = commentCount
+    }
+}
+
+// Separate extension for Codable implementation
+extension Post {
     enum CodingKeys: String, CodingKey {
         case id, userId, username, imagePath, caption, taggedUsers, createdAt, likeCount, commentCount
     }
     
     init(from decoder: Decoder) throws {
         let container = try decoder.container(keyedBy: CodingKeys.self)
-//        print("Decoding post. Available keys: \(container.allKeys)")
         
         self.id = try container.decodeIfPresent(String.self, forKey: .id)
         self.userId = try container.decode(String.self, forKey: .userId)
@@ -1320,24 +1356,37 @@ struct Post: Identifiable, Codable {
     }
 }
 
-// Helper struct to manage image loading
+// Separate helper struct for image handling
 struct PostImage {
+    enum PostImageError: Error {
+        case invalidPath
+        case downloadFailed(Error)
+        
+        var localizedDescription: String {
+            switch self {
+            case .invalidPath:
+                return "Invalid image path"
+            case .downloadFailed(let error):
+                return "Failed to download image: \(error.localizedDescription)"
+            }
+        }
+    }
+    
     static func getURL(for path: String) async throws -> URL {
         // If the path is already a full URL string, try to use it directly
         if let url = URL(string: path), url.scheme != nil {
             return url
         }
         
-        print("Getting download URL for path: \(path)")
-        let storageRef = Storage.storage().reference().child(path)
+        guard !path.isEmpty else {
+            throw PostImageError.invalidPath
+        }
         
         do {
-            let url = try await storageRef.downloadURL()
-            print("Successfully got download URL: \(url)")
-            return url
+            let storageRef = Storage.storage().reference().child(path)
+            return try await storageRef.downloadURL()
         } catch {
-            print("Error getting download URL: \(error)")
-            throw error
+            throw PostImageError.downloadFailed(error)
         }
     }
 }
@@ -1451,6 +1500,144 @@ struct UserPreview: Identifiable, Hashable {
     "author" : "xcode",
     "version" : 1
   }
+}
+
+```
+
+# Smile/Preview Content/PreviewHelpers.swift
+
+```swift
+//
+//  PreviewHelpers.swift
+//  Smile
+//
+//  Created by David Ding on 11/10/24.
+//
+import SwiftUI
+
+struct PreviewHelpers {
+    // MARK: - Users
+    static let demoUser = User(
+        id: "demo-user-id",
+        email: "demo@example.com",
+        username: "demouser",
+        firstName: "Alex",
+        lastName: "Rivers",
+        profilePictureUrl: "https://picsum.photos/200",
+        bannerPictureUrl: "https://picsum.photos/800/400"
+    )
+    
+    static let sampleUsers = [
+        demoUser,
+        User(
+            id: "user-2",
+            email: "sarah@example.com",
+            username: "sarahsmith",
+            firstName: "Sarah",
+            lastName: "Smith",
+            profilePictureUrl: "https://picsum.photos/201",
+            bannerPictureUrl: "https://picsum.photos/800/401"
+        ),
+        User(
+            id: "user-3",
+            email: "mike@example.com",
+            username: "mikechen",
+            firstName: "Mike",
+            lastName: "Chen",
+            profilePictureUrl: "https://picsum.photos/202",
+            bannerPictureUrl: "https://picsum.photos/800/402"
+        )
+    ]
+    
+    // MARK: - Posts
+    static let samplePosts = [
+        Post(
+            userId: demoUser.id,
+            username: demoUser.username,
+            imagePath: "path/to/image1.jpg",
+            caption: "Beautiful sunset at the beach! #nature #peace",
+            taggedUsers: ["sarahsmith"],
+            createdAt: Date().addingTimeInterval(-3600),
+            likeCount: 42,
+            commentCount: 7
+        ),
+        Post(
+            userId: demoUser.id,
+            username: demoUser.username,
+            imagePath: "path/to/image2.jpg",
+            caption: "Coffee time with friends ☕️ #coffeelover",
+            taggedUsers: ["mikechen", "sarahsmith"],
+            createdAt: Date().addingTimeInterval(-7200),
+            likeCount: 89,
+            commentCount: 12
+        )
+    ]
+    
+    // MARK: - Comments
+    static let sampleComments = [
+        Comment(
+            userId: "user-2",
+            username: "sarahsmith",
+            text: "This looks amazing! "
+        ),
+        Comment(
+            userId: "user-3",
+            username: "mikechen",
+            text: "Great shot!"
+        )
+    ]
+    
+    // MARK: - View Models
+    static let mockAuthViewModel: AuthViewModel = {
+        let viewModel = AuthViewModel()
+        viewModel.currentUser = demoUser
+        return viewModel
+    }()
+    
+    // MARK: - Helper Methods
+    static func mockBaseProfileViewModel(for userId: String = demoUser.id) -> BaseProfileViewModel {
+        BaseProfileViewModel(userId: userId)
+    }
+    
+    static func mockProfileViewModel() -> ProfileViewModel {
+        ProfileViewModel(authViewModel: mockAuthViewModel)
+    }
+}
+
+// MARK: - Preview Container Views
+extension PreviewHelpers {
+    /// A container view that provides common environment objects for previews
+    struct PreviewContainer<Content: View>: View {
+        let content: Content
+        
+        init(@ViewBuilder content: () -> Content) {
+            self.content = content()
+        }
+        
+        var body: some View {
+            content
+                .environmentObject(mockAuthViewModel)
+        }
+    }
+}
+
+// MARK: - Example TabView Preview
+struct TabViewPreview_Previews: PreviewProvider {
+    static var previews: some View {
+        PreviewHelpers.PreviewContainer {
+            TabView {
+                ProfileView()
+                    .tabItem {
+                        Label("Profile", systemImage: "person")
+                    }
+                
+                UserView(userId: PreviewHelpers.sampleUsers[1].id)
+                    .tabItem {
+                        Label("User", systemImage: "person.2")
+                    }
+            }
+        }
+    }
 }
 
 ```
@@ -2120,16 +2307,43 @@ class FirebaseDataService: DataService {
     }
     
     func fetchUserProfile(userId: String) async throws -> User {
+        guard !userId.isEmpty else {
+            throw NSError(
+                domain: "FirebaseDataService",
+                code: -1,
+                userInfo: [NSLocalizedDescriptionKey: "User ID cannot be empty"]
+            )
+        }
+        
+        print("Fetching user profile for ID: \(userId)") // Debug print
+        
         let db = Firestore.firestore()
         let document = try await db.collection("users").document(userId).getDocument()
+        
+        // Debug print the raw data
+        print("Firestore document data: \(String(describing: document.data()))")
         
         guard let data = document.data(),
               let username = data["username"] as? String,
               let email = data["email"] as? String,
               let firstName = data["firstName"] as? String,
               let lastName = data["lastName"] as? String else {
-            throw NSError(domain: "", code: -1, userInfo: [NSLocalizedDescriptionKey: "Failed to get user data"])
+            // Print which fields are missing
+            let data = document.data()
+            print("Missing or invalid fields in user document:")
+            print("username: \(data?["username"] ?? "missing")")
+            print("email: \(data?["email"] ?? "missing")")
+            print("firstName: \(data?["firstName"] ?? "missing")")
+            print("lastName: \(data?["lastName"] ?? "missing")")
+            throw NSError(
+                domain: "FirebaseDataService",
+                code: -1,
+                userInfo: [NSLocalizedDescriptionKey: "Failed to get user data"]
+            )
         }
+        
+        // If we get here, we successfully created a user
+        print("Successfully created User object with username: \(username)")
         
         return User(
             id: userId,
@@ -2469,6 +2683,98 @@ class AuthViewModel: ObservableObject {
 
 ```
 
+# Smile/ViewModels/BaseProfileViewModel.swift
+
+```swift
+//
+//  BaseProfileViewModel.swift
+//  Smile
+//
+//  Created by David Ding on 11/10/24.
+//
+import SwiftUI
+import Firebase
+import Combine
+
+class BaseProfileViewModel: ObservableObject {
+    enum Tab {
+        case photos
+        case uploads
+    }
+    
+    // Change from private to protected
+    internal var userId: String {
+        didSet {
+            if oldValue != userId {
+                Task { @MainActor in
+                    await loadProfile()
+                }
+            }
+        }
+    }
+    
+    @Published var uploadedPosts: [Post] = []
+    @Published var taggedPosts: [Post] = []
+    @Published var isLoading = false
+    @Published var error: String?
+    @Published var user: User?
+    
+    private let dataService: DataService
+    private var lastUploadedPost: Post?
+    private var lastTaggedPost: Post?
+    private var hasMoreUploadedPosts = true
+    private var hasMoreTaggedPosts = true
+    
+    init(userId: String) {
+        self.userId = userId
+        self.dataService = FirebaseDataService()
+    }
+    
+    @MainActor
+    func loadProfile() async {
+        isLoading = true
+        do {
+            print("Loading profile for userId: \(userId)") // Debug print
+            user = try await dataService.fetchUserProfile(userId: userId)
+            print("Loaded user: \(String(describing: user))") // Debug print
+            await loadUserPosts()
+        } catch {
+            print("Error loading profile: \(error)")
+            self.error = error.localizedDescription
+        }
+        isLoading = false
+    }
+    
+    @MainActor
+    private func loadUserPosts() async {
+        isLoading = true
+        do {
+            let uploaded = try await dataService.fetchUserPosts(
+                userId: userId,
+                limit: 12,
+                after: nil
+            )
+            uploadedPosts = uploaded
+            lastUploadedPost = uploaded.last
+            hasMoreUploadedPosts = uploaded.count == 12
+            
+            let tagged = try await dataService.fetchTaggedPosts(
+                userId: userId,
+                limit: 12,
+                after: nil
+            )
+            taggedPosts = tagged
+            lastTaggedPost = tagged.last
+            hasMoreTaggedPosts = tagged.count == 12
+        } catch let loadError {
+            error = loadError.localizedDescription
+        }
+        isLoading = false
+    }
+}
+
+```
+
 # Smile/ViewModels/HomeViewModel.swift
 
 ```swift
@@ -2637,101 +2943,47 @@ import SwiftUI
 import Firebase
 import Combine
 
-class ProfileViewModel: ObservableObject {
-    @Published var uploadedPosts: [Post] = []
-    @Published var taggedPosts: [Post] = []
-    @Published var isLoading = false
-    @Published var error: String?
+class ProfileViewModel: BaseProfileViewModel {
+    private var authViewModel: AuthViewModel
+    @Published var isImagePickerShowing = false
+    @Published var profileImageType: ProfileImageType = .profilePicture
+    @Published var showingSettingsSheet = false
     
-    private let dataService: DataService
-    private let userId: String
-    private var lastUploadedPost: Post?
-    private var lastTaggedPost: Post?
-    private var hasMoreUploadedPosts = true
-    private var hasMoreTaggedPosts = true
-    
-    init(dataService: DataService = FirebaseDataService(), userId: String) {
-        self.dataService = dataService
-        self.userId = userId
-        Task {
-            await fetchInitialPosts()
-        }
+    init(authViewModel: AuthViewModel) {
+        self.authViewModel = authViewModel
+        super.init(userId: authViewModel.currentUser?.id ?? "")
     }
     
-    @MainActor
-    func fetchInitialPosts() async {
-        isLoading = true
-        do {
-//            // Reset everything for fresh load
-//            uploadedPosts = []
-//            taggedPosts = []
-//            lastUploadedPost = nil
-//            lastTaggedPost = nil
-//            hasMoreUploadedPosts = true
-//            hasMoreTaggedPosts = true
-            
-            // Fetch initial batch of posts with nil for 'after' parameter
-            let uploaded = try await dataService.fetchUserPosts(
-                userId: userId,
-                limit: 12,
-                after: nil
-            )
-            
-//            print("Fetched \(uploaded.count) uploaded posts") // Add debug print
-            uploadedPosts = uploaded
-            lastUploadedPost = uploaded.last
-            hasMoreUploadedPosts = uploaded.count == 12
-            
-            let tagged = try await dataService.fetchTaggedPosts(
-                userId: userId,
-                limit: 12,
-                after: nil
-            )
-//            print("Fetched \(tagged.count) tagged posts") // Add debug print
-            taggedPosts = tagged
-            lastTaggedPost = tagged.last
-            hasMoreTaggedPosts = tagged.count == 12
-            
-        } catch {
-            print("Error fetching posts: \(error)") // Add debug print
-            self.error = error.localizedDescription
-        }
-        isLoading = false
-    }
-    
-    @MainActor
-    func loadMorePosts(forTab tab: ProfileView.Tab) async {
-        guard !isLoading else { return }
-        
-        if tab == .uploads && !hasMoreUploadedPosts { return }
-        if tab == .photos && !hasMoreTaggedPosts { return }
-        
-        isLoading = true
-        do {
-            if tab == .uploads {
-                let newPosts = try await dataService.fetchUserPosts(
-                    userId: userId,
-                    limit: 12,
-                    after: lastUploadedPost
-                )
-                uploadedPosts.append(contentsOf: newPosts)
-                lastUploadedPost = newPosts.last
-                hasMoreUploadedPosts = newPosts.count == 12
-            } else {
-                let newPosts = try await dataService.fetchTaggedPosts(
-                    userId: userId,
-                    limit: 12,
-                    after: lastTaggedPost
-                )
-                taggedPosts.append(contentsOf: newPosts)
-                lastTaggedPost = newPosts.last
-                hasMoreTaggedPosts = newPosts.count == 12
+    func updateAuthViewModel(_ newAuthViewModel: AuthViewModel) {
+        self.authViewModel = newAuthViewModel
+        if let userId = newAuthViewModel.currentUser?.id {
+            self.userId = userId
+            Task {
+                await loadProfile()
             }
-        } catch {
-            self.error = error.localizedDescription
         }
-        isLoading = false
     }
+    
+    func signOut() async {
+        await authViewModel.signOut()
+    }
+    
+    func updateProfileImage(_ image: UIImage, type: ProfileImageType) async {
+        do {
+            try await authViewModel.updateProfileImage(image, type: type)
+            await loadProfile() // Reload profile to show updated image
+        } catch {
+            print("Error updating profile image: \(error)")
+        }
+    }
+    
+    // Future methods could include:
+    // - updateProfile(firstName:lastName:bio:)
+    // - updatePrivacySettings
+    // - updateNotificationPreferences
+    // - deleteAccount
+    // - blockUser
+    // - etc.
 }
 
 ```
@@ -2872,6 +3124,173 @@ class TaggingViewModel: ObservableObject {
 //
 
 import Foundation
+
+```
+
+# Smile/Views/BaseProfileView.swift
+
+```swift
+//
+//  BaseProfileView.swift
+//  Smile
+//
+//  Created by David Ding on 11/10/24.
+//
+
+
+import SwiftUI
+
+struct BaseProfileView<Content: View>: View {
+    let userId: String
+    let bannerHeight: CGFloat = 200
+    let profileImageSize: CGFloat = 120
+    @ObservedObject var viewModel: BaseProfileViewModel 
+    @State private var selectedTab: BaseProfileViewModel.Tab = .photos
+    @State private var selectedPost: Post? = nil
+    let additionalContent: () -> Content
+    
+    init(userId: String, viewModel: BaseProfileViewModel, @ViewBuilder additionalContent: @escaping () -> Content) {
+        self.userId = userId
+        self.viewModel = viewModel
+        self.additionalContent = additionalContent
+    }
+    
+    var body: some View {
+        ScrollView {
+            ZStack(alignment: .bottomLeading) {
+                // Banner image
+                bannerImage
+                
+                // Profile image
+                profileImage
+                    .offset(x: 20, y: profileImageSize / 2)
+            }
+            
+            Spacer().frame(height: profileImageSize / 2 + 20)
+            
+            // User info
+            userInfo
+            
+            // Additional content passed from specific views
+            additionalContent()
+            
+            // Post grid section
+            postGridSection
+        }
+        .ignoresSafeArea(.container, edges: .top)
+        .task {
+            await viewModel.loadProfile()
+        }
+        .refreshable {
+            await viewModel.loadProfile()
+        }
+    }
+    
+    private var bannerImage: some View {
+        Group {
+            if let user = viewModel.user,
+               let bannerUrl = user.bannerPictureUrl,
+               let url = URL(string: bannerUrl) {
+                AsyncImage(url: url) { image in
+                    image
+                        .resizable()
+                        .aspectRatio(contentMode: .fill)
+                } placeholder: {
+                    Image("bannerImage")
+                        .resizable()
+                        .aspectRatio(contentMode: .fill)
+                }
+                .frame(height: bannerHeight)
+                .clipped()
+            } else {
+                Image("bannerImage")
+                    .resizable()
+                    .aspectRatio(contentMode: .fill)
+                    .frame(height: bannerHeight)
+                    .clipped()
+            }
+        }
+    }
+    
+    private var profileImage: some View {
+        Group {
+            if let user = viewModel.user,
+               let profileUrl = user.profilePictureUrl,
+               let url = URL(string: profileUrl) {
+                AsyncImage(url: url) { image in
+                    image
+                        .resizable()
+                        .aspectRatio(contentMode: .fill)
+                } placeholder: {
+                    Image("defaultAvatar")
+                        .resizable()
+                        .aspectRatio(contentMode: .fill)
+                }
+            } else {
+                Image("defaultAvatar")
+                    .resizable()
+                    .aspectRatio(contentMode: .fill)
+            }
+        }
+        .frame(width: profileImageSize, height: profileImageSize)
+        .clipShape(Circle())
+        .overlay(Circle().stroke(Color.white, lineWidth: 4))
+        .shadow(radius: 10)
+    }
+    
+    private var userInfo: some View {
+        VStack(alignment: .leading, spacing: 8) {
+            if let displayUser = viewModel.user {
+                Text("\(displayUser.firstName) \(displayUser.lastName)")
+                    .font(.title2)
+                    .fontWeight(.bold)
+                
+                Text("@\(displayUser.username)")
+                    .font(.subheadline)
+                    .foregroundColor(.gray)
+            }
+        }
+        .padding(.horizontal)
+    }
+    
+    private var postGridSection: some View {
+        VStack {
+            Picker("Post Type", selection: $selectedTab) {
+                Text("Photos").tag(BaseProfileViewModel.Tab.photos)
+                Text("Uploads").tag(BaseProfileViewModel.Tab.uploads)
+            }
+            .pickerStyle(SegmentedPickerStyle())
+            .padding()
+            
+            let columns: [GridItem] = Array(repeating: .init(.flexible(), spacing: 2), count: 3)
+            let width = (UIScreen.main.bounds.width - 4) / 3
+            
+            LazyVGrid(columns: columns, spacing: 2) {
+                ForEach(selectedTab == .photos ? viewModel.taggedPosts : viewModel.uploadedPosts) { post in
+                    PostImageView(
+                        imagePath: post.imagePath,
+                        size: width
+                    )
+                    .frame(width: width, height: width)
+                    .clipped()
+                    .onTapGesture {
+                        selectedPost = post
+                    }
+                }
+            }
+            .sheet(item: $selectedPost) { post in
+                PostDetailView(post: post)
+                    .presentationDragIndicator(.visible)
+                    .presentationDetents([.large])
+            }
+            
+            if viewModel.isLoading {
+                ProgressView()
+                    .padding()
+            }
+        }
+    }
+}
 
 ```
 
@@ -3814,194 +4233,76 @@ struct PostView: View {
 import SwiftUI
 
 struct ProfileView: View {
-    let bannerHeight: CGFloat = 200
-    let profileImageSize: CGFloat = 120
-    @EnvironmentObject var appState: AppState
     @EnvironmentObject var authViewModel: AuthViewModel
-    @State private var showingImagePicker = false
-    @State private var profileImageType: ProfileImageType = .profilePicture
     @StateObject private var viewModel: ProfileViewModel
-    @State private var selectedTab: Tab = .photos
-    @State private var selectedPost: Post? = nil
     
-    enum Tab {
-        case photos
-        case uploads
-    }
-    
-    let columns: [GridItem] = Array(repeating: .init(.flexible(), spacing: 2), count: 3)
-    
-    init(userId: String) {
-        _viewModel = StateObject(wrappedValue: ProfileViewModel(userId: userId))
+    init() {
+        // This temporary AuthViewModel will be replaced in onAppear
+        self._viewModel = StateObject(wrappedValue: ProfileViewModel(authViewModel: AuthViewModel()))
     }
     
     var body: some View {
-        ScrollView {
-            ZStack(alignment: .bottomLeading) {
-                // Banner Button
+        BaseProfileView(userId: authViewModel.currentUser?.id ?? "", viewModel: viewModel) {
+            VStack(spacing: 12) {
                 Button {
-                    profileImageType = .bannerPicture
-                    showingImagePicker = true
+                    viewModel.profileImageType = .profilePicture
+                    viewModel.isImagePickerShowing = true
                 } label: {
-                    if let user = authViewModel.currentUser,
-                       let bannerUrl = user.bannerPictureUrl,
-                       let url = URL(string: bannerUrl) {
-                        AsyncImage(url: url) { image in
-                            image
-                                .resizable()
-                                .aspectRatio(contentMode: .fill)
-                        } placeholder: {
-                            Image("bannerImage")
-                                .resizable()
-                                .aspectRatio(contentMode: .fill)
-                        }
-                        .frame(height: bannerHeight)
-                        .clipped()
-                    } else {
-                        Image("bannerImage")
-                            .resizable()
-                            .aspectRatio(contentMode: .fill)
-                            .frame(height: bannerHeight)
-                            .clipped()
-                    }
+                    Label("Change Profile Picture", systemImage: "camera")
+                        .foregroundColor(.blue)
                 }
                 
-                // Profile Image Button
                 Button {
-                    profileImageType = .profilePicture
-                    showingImagePicker = true
+                    viewModel.profileImageType = .bannerPicture
+                    viewModel.isImagePickerShowing = true
                 } label: {
-                    if let user = authViewModel.currentUser,
-                       let profileUrl = user.profilePictureUrl,
-                       let url = URL(string: profileUrl) {
-                        AsyncImage(url: url) { image in
-                            image
-                                .resizable()
-                                .aspectRatio(contentMode: .fill)
-                                .frame(width: profileImageSize, height: profileImageSize)
-                                .clipShape(Circle())
-                                .overlay(Circle().stroke(Color.white, lineWidth: 4))
-                                .shadow(radius: 10)
-                        } placeholder: {
-                            Image("defaultAvatar")
-                                .resizable()
-                                .aspectRatio(contentMode: .fill)
-                                .frame(width: profileImageSize, height: profileImageSize)
-                                .clipShape(Circle())
-                                .overlay(Circle().stroke(Color.white, lineWidth: 4))
-                                .shadow(radius: 10)
-                        }
-                    } else {
-                        Image("defaultAvatar")
-                            .resizable()
-                            .aspectRatio(contentMode: .fill)
-                            .frame(width: profileImageSize, height: profileImageSize)
-                            .clipShape(Circle())
-                            .overlay(Circle().stroke(Color.white, lineWidth: 4))
-                            .shadow(radius: 10)
+                    Label("Change Banner Picture", systemImage: "photo")
+                        .foregroundColor(.blue)
+                }
+                
+                Button {
+                    viewModel.showingSettingsSheet = true
+                } label: {
+                    Label("Settings", systemImage: "gear")
+                        .foregroundColor(.blue)
+                }
+                
+                Button {
+                    Task {
+                        await viewModel.signOut()
                     }
-                }
-                .offset(x: 20, y: profileImageSize / 2)
-            }
-            
-            Spacer().frame(height: profileImageSize / 2 + 20)
-            
-            VStack(alignment: .leading, spacing: 8) {
-                if let user = authViewModel.currentUser {
-                    Text("\(user.firstName) \(user.lastName)")
-                        .font(.title2)
-                        .fontWeight(.bold)
-                    
-                    Text("@\(user.username)")
-                        .font(.subheadline)
-                        .foregroundColor(.gray)
+                } label: {
+                    Label("Sign Out", systemImage: "rectangle.portrait.and.arrow.right")
+                        .foregroundColor(.red)
                 }
             }
-            .padding(.horizontal)
-            
-            HStack {
-                Picker("", selection: $selectedTab) {
-                    Text("Photos").tag(Tab.photos)
-                    Text("Uploads").tag(Tab.uploads)
-                }
-                .pickerStyle(SegmentedPickerStyle())
-                .padding()
-            }
-            
-            // Calculate the size for each grid item - screen width minus total spacing, divided by 3
-            let width = (UIScreen.main.bounds.width - 40) / 3  // 40 accounts for spacing and edges
-
-            // Photo Grid
-            LazyVGrid(columns: Array(repeating: GridItem(.flexible(), spacing: 10), count: 3), spacing: 10) {
-                ForEach(selectedTab == .photos ? appState.taggedPosts : appState.userPosts) { post in
-                    PostImageView(
-                        imagePath: post.imagePath,
-                        size: width
-                    )
-                    .frame(width: width, height: width)  // Enforce square aspect ratio
-                    .clipped()
-                    .overlay(
-                        Rectangle()
-                            .stroke(Color.gray.opacity(0.2), lineWidth: 0.5)
-                    )
-                    .id(post.uniqueId)
-                    .onTapGesture {
-                        selectedPost = post
-                    }
+            .padding()
+        }
+        .sheet(isPresented: $viewModel.isImagePickerShowing) {
+            ImagePicker(imageType: viewModel.profileImageType) { image in
+                Task {
+                    await viewModel.updateProfileImage(image, type: viewModel.profileImageType)
                 }
             }
-            .padding(.horizontal, 10)
-            .sheet(item: $selectedPost) { post in
-                PostDetailView(post: post)
-                    .presentationDragIndicator(.visible)
-                    .presentationDetents([.large])
-            }
-            
-            if viewModel.isLoading {
-                ProgressView()
-                    .padding()
-            }
         }
-        .ignoresSafeArea(.container, edges: .top)
-        .sheet(isPresented: $showingImagePicker) {
-            ImagePicker(imageType: profileImageType) { image in
-                handleProfileImageUpdate(image, type: profileImageType)
-            }
+        .sheet(isPresented: $viewModel.showingSettingsSheet) {
+            Text("Settings")
+                .presentationDetents([.medium])
         }
-        .task {
-            await appState.refreshUserPosts()
-        }
-        .refreshable {
-            await appState.refreshUserPosts()
-        }
-    }
-    
-    private func handleProfileImageUpdate(_ image: UIImage, type: ProfileImageType) {
-        Task {
-            do {
-                try await authViewModel.updateProfileImage(image, type: type)
-            } catch {
-                print("Error updating profile image: \(error)")
-            }
+        .onAppear {
+            // Update the viewModel to use the actual authViewModel from environment
+            viewModel.updateAuthViewModel(authViewModel)
         }
     }
 }
 
-struct ProfileView_Previews: PreviewProvider {
-    static var previews: some View {
-        let mockViewModel = AuthViewModel()
-        mockViewModel.currentUser = User(
-            id: "preview-id",
-            email: "preview@example.com",
-            username: "previewuser",
-            firstName: "John",
-            lastName: "Doe"
-        )
-        
-        return ProfileView(userId: "preview-id")
-            .environmentObject(mockViewModel)
-    }
-}
+//struct ProfileView_Previews: PreviewProvider {
+//    static var previews: some View {
+//        PreviewHelpers.PreviewContainer {
+//            ProfileView()
+//        }
+//    }
+//}
 
 ```
 
@@ -4066,8 +4367,9 @@ struct SearchView: View {
                 ScrollView {
                     LazyVStack(spacing: 0) {
                         ForEach(viewModel.searchResults) { user in
-                            NavigationLink(destination: ProfileView(userId: user.id)) {
+                            NavigationLink(destination: UserView(userId: user.id)) {
                                 UserSearchCell(userPreview: user)
+                            }
                             }
                         }
                     }
@@ -4075,7 +4377,7 @@ struct SearchView: View {
             }
             .navigationTitle("Search")
         }
-    }
+    
     
     private var searchBar: some View {
         HStack {
@@ -4181,7 +4483,7 @@ struct TabNavigator: View {
                     Label("Groups", systemImage: "person.3")
                 }
             
-            ProfileView(userId: authViewModel.currentUser?.id ?? "")
+            ProfileView()
                 .tabItem {
                     Label("Me", systemImage: "person")
                 }
@@ -4189,12 +4491,13 @@ struct TabNavigator: View {
     }
 }
 
-struct TabNavigator_Previews: PreviewProvider {
-    static var previews: some View {
-        TabNavigator()
-            .environmentObject(AuthViewModel())
-    }
-}
+//struct TabNavigator_Previews: PreviewProvider {
+//    static var previews: some View {
+//        PreviewHelpers.PreviewContainer {
+//            TabNavigator()
+//        }
+//    }
+//}
 
 ```
 
@@ -4419,6 +4722,77 @@ struct UploadView_Previews: PreviewProvider {
         UploadView()
     }
 }
+
+```
+
+# Smile/Views/UserView.swift
+
+```swift
+//
+//  UserView.swift
+//  Smile
+//
+//  Created by David Ding on 11/10/24.
+//
+import SwiftUI
+
+struct UserView: View {
+    let userId: String
+    @State private var isFollowing = false
+    @StateObject private var viewModel: BaseProfileViewModel
+    
+    init(userId: String) {
+        self.userId = userId
+        self._viewModel = StateObject(wrappedValue: BaseProfileViewModel(userId: userId))
+    }
+    
+    var body: some View {
+        BaseProfileView(userId: userId, viewModel: viewModel) { 
+            VStack(spacing: 12) {
+                Button {
+                    isFollowing.toggle()
+                } label: {
+                    Label(isFollowing ? "Following" : "Follow",
+                          systemImage: isFollowing ? "person.badge.check" : "person.badge.plus")
+                        .foregroundColor(isFollowing ? .gray : .blue)
+                        .padding(.horizontal, 20)
+                        .padding(.vertical, 8)
+                        .background(isFollowing ? Color.gray.opacity(0.2) : Color.blue.opacity(0.2))
+                        .clipShape(Capsule())
+                }
+                
+                Button {
+                    // Message functionality to be implemented
+                } label: {
+                    Label("Message", systemImage: "message")
+                        .foregroundColor(.blue)
+                        .padding(.horizontal, 20)
+                        .padding(.vertical, 8)
+                        .background(Color.blue.opacity(0.2))
+                        .clipShape(Capsule())
+                }
+            }
+            .padding()
+        }
+        .task {
+            print("UserView task starting profile load") // Debug print
+            await viewModel.loadProfile()
+            print("UserView profile loaded: \(String(describing: viewModel.user))") // Debug print
+        }
+        .navigationTitle(viewModel.user?.username ?? "")
+        .navigationBarTitleDisplayMode(.inline)
+    }
+}
+
+//struct UserView_Previews: PreviewProvider {
+//    static var previews: some View {
+//        PreviewHelpers.PreviewContainer {
+//            NavigationView {
+//                UserView(userId: PreviewHelpers.sampleUsers[1].id)
+//            }
+//        }
+//    }
+//}
 
 ```
 

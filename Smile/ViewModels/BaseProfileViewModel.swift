@@ -44,13 +44,17 @@ class BaseProfileViewModel: ObservableObject {
     
     @MainActor
     func loadProfile() async {
+        isLoading = true
         do {
+            print("Loading profile for userId: \(userId)") // Debug print
             user = try await dataService.fetchUserProfile(userId: userId)
+            print("Loaded user: \(String(describing: user))") // Debug print
             await loadUserPosts()
-        } catch let loadError {
-            print("Error loading profile: \(loadError)")
-            error = loadError.localizedDescription
+        } catch {
+            print("Error loading profile: \(error)")
+            self.error = error.localizedDescription
         }
+        isLoading = false
     }
     
     @MainActor

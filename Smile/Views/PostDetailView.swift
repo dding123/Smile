@@ -18,118 +18,130 @@ struct PostDetailView: View {
     }
     
     var body: some View {
-        GeometryReader { geometry in
-            ScrollView {
-                VStack(alignment: .leading, spacing: 12) {
-                    // User info header
-                    HStack {
-                        AsyncImage(url: URL(string: viewModel.userProfilePicture ?? "")) { image in
-                            image
-                                .resizable()
-                                .aspectRatio(contentMode: .fill)
-                        } placeholder: {
-                            Circle()
-                                .foregroundColor(.gray)
-                        }
-                        .frame(width: 40, height: 40)
-                        .clipShape(Circle())
-                        
-                        Text(post.username)
-                            .font(.headline)
-                        
-                        Spacer()
-                        
-                        Button {
-                            // Add more options menu
-                        } label: {
-                            Image(systemName: "ellipsis")
-                        }
-                    }
-                    .padding(.horizontal)
-                    
-                    // Post image
-                    PostImageView(
-                        imagePath: post.imagePath,
-                        size: geometry.size.width
-                    )
-                    .frame(width: geometry.size.width)
-                    
-                    // Action buttons
-                    HStack(spacing: 16) {
-                        Button {
-                            viewModel.toggleLike()
-                        } label: {
-                            Image(systemName: viewModel.isLiked ? "heart.fill" : "heart")
-                                .foregroundColor(viewModel.isLiked ? .red : .primary)
-                        }
-                        
-                        Button {
-                            viewModel.isCommentingActive = true
-                        } label: {
-                            Image(systemName: "bubble.right")
-                        }
-                        
-                        Button {
-                            // Share functionality
-                        } label: {
-                            Image(systemName: "square.and.arrow.up")
-                        }
-                        
-                        Spacer()
-                    }
-                    .font(.title3)
-                    .padding(.horizontal)
-                    
-                    // Likes count
-                    if viewModel.likeCount > 0 {
-                        Text("\(viewModel.likeCount) likes")
-                            .font(.subheadline)
-                            .fontWeight(.semibold)
-                            .padding(.horizontal)
-                    }
-                    
-                    // Caption
-                    if !post.caption.isEmpty {
-                        HStack(alignment: .top, spacing: 4) {
-                            Text(post.username)
-                                .fontWeight(.semibold)
-                            Text(post.caption)
-                                .fixedSize(horizontal: false, vertical: true)
-                        }
-                        .padding(.horizontal)
-                    }
-                    
-                    // Comments
-                    ForEach(viewModel.comments) { comment in
-                        HStack(alignment: .top, spacing: 4) {
-                            Text(comment.username)
-                                .fontWeight(.semibold)
-                            Text(comment.text)
-                                .fixedSize(horizontal: false, vertical: true)
-                            Spacer()
-                            Text(comment.timeAgo)
-                                .font(.caption)
-                                .foregroundColor(.gray)
-                        }
-                        .padding(.horizontal)
-                    }
-                }
-                .frame(width: geometry.size.width)
-            }
-        }
-        .ignoresSafeArea(.all, edges: .top)
-        .overlay(alignment: .top) {
+        VStack(spacing: 0) {
+            // Header
             HStack {
                 Button {
                     dismiss()
                 } label: {
                     Image(systemName: "xmark")
                         .foregroundColor(.primary)
-                        .padding()
                 }
+                
                 Spacer()
+                
+                Text("Post")
+                    .font(.headline)
+                
+                Spacer()
+                
+                // Empty view for balance
+                Image(systemName: "xmark")
+                    .opacity(0)
             }
-            .background(.thinMaterial)
+            .padding()
+            .background(Color(.systemBackground))
+            
+            // Content
+            GeometryReader { geometry in
+                ScrollView {
+                    VStack(alignment: .leading, spacing: 12) {
+                        // User info header
+                        HStack {
+                            AsyncImage(url: URL(string: viewModel.userProfilePicture ?? "")) { image in
+                                image
+                                    .resizable()
+                                    .aspectRatio(contentMode: .fill)
+                            } placeholder: {
+                                Circle()
+                                    .foregroundColor(.gray)
+                            }
+                            .frame(width: 40, height: 40)
+                            .clipShape(Circle())
+                            
+                            Text(post.username)
+                                .font(.headline)
+                            
+                            Spacer()
+                            
+                            Button {
+                                // Add more options menu
+                            } label: {
+                                Image(systemName: "ellipsis")
+                            }
+                        }
+                        .padding(.horizontal)
+                        
+                        // Rest of the content remains the same
+                        PostImageView(
+                            imagePath: post.imagePath,
+                            size: geometry.size.width
+                        )
+                        .frame(width: geometry.size.width)
+                        
+                        // Action buttons
+                        HStack(spacing: 16) {
+                            Button {
+                                viewModel.toggleLike()
+                            } label: {
+                                Image(systemName: viewModel.isLiked ? "heart.fill" : "heart")
+                                    .foregroundColor(viewModel.isLiked ? .red : .primary)
+                            }
+                            
+                            Button {
+                                viewModel.isCommentingActive = true
+                            } label: {
+                                Image(systemName: "bubble.right")
+                            }
+                            
+                            Button {
+                                // Share functionality
+                            } label: {
+                                Image(systemName: "square.and.arrow.up")
+                            }
+                            
+                            Spacer()
+                        }
+                        .font(.title3)
+                        .padding(.horizontal)
+                        
+                        // Likes count
+                        if viewModel.likeCount > 0 {
+                            Text("\(viewModel.likeCount) likes")
+                                .font(.subheadline)
+                                .fontWeight(.semibold)
+                                .padding(.horizontal)
+                        }
+                        
+                        // Caption
+                        if !post.caption.isEmpty {
+                            HStack(alignment: .top, spacing: 4) {
+                                Text(post.username)
+                                    .fontWeight(.semibold)
+                                Text(post.caption)
+                                    .fixedSize(horizontal: false, vertical: true)
+                            }
+                            .padding(.horizontal)
+                        }
+                        
+                        // Comments
+                        ForEach(viewModel.comments) { comment in
+                            HStack(alignment: .top, spacing: 4) {
+                                Text(comment.username)
+                                    .fontWeight(.semibold)
+                                Text(comment.text)
+                                    .fixedSize(horizontal: false, vertical: true)
+                                Spacer()
+                                Text(comment.timeAgo)
+                                    .font(.caption)
+                                    .foregroundColor(.gray)
+                            }
+                            .padding(.horizontal)
+                        }
+                    }
+                    .frame(width: geometry.size.width)
+                }
+            }
         }
         .overlay(alignment: .bottom) {
             if viewModel.isCommentingActive {

@@ -40,10 +40,10 @@ struct TabNavigator: View {
     }
 }
 
-struct TabNavigator_Previews: PreviewProvider {
-    static var previews: some View {
-        PreviewHelpers.PreviewContainer {
-            TabNavigator()
-        }
-    }
-}
+//struct TabNavigator_Previews: PreviewProvider {
+//    static var previews: some View {
+//        PreviewHelpers.PreviewContainer {
+//            TabNavigator()
+//        }
+//    }
+//}

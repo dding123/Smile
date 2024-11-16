@@ -444,16 +444,43 @@ class FirebaseDataService: DataService {
     }
     
     func fetchUserProfile(userId: String) async throws -> User {
+        guard !userId.isEmpty else {
+            throw NSError(
+                domain: "FirebaseDataService",
+                code: -1,
+                userInfo: [NSLocalizedDescriptionKey: "User ID cannot be empty"]
+            )
+        }
+        
+        print("Fetching user profile for ID: \(userId)") // Debug print
+        
         let db = Firestore.firestore()
         let document = try await db.collection("users").document(userId).getDocument()
+        
+        // Debug print the raw data
+        print("Firestore document data: \(String(describing: document.data()))")
         
         guard let data = document.data(),
               let username = data["username"] as? String,
               let email = data["email"] as? String,
               let firstName = data["firstName"] as? String,
               let lastName = data["lastName"] as? String else {
-            throw NSError(domain: "", code: -1, userInfo: [NSLocalizedDescriptionKey: "Failed to get user data"])
+            // Print which fields are missing
+            let data = document.data()
+            print("Missing or invalid fields in user document:")
+            print("username: \(data?["username"] ?? "missing")")
+            print("email: \(data?["email"] ?? "missing")")
+            print("firstName: \(data?["firstName"] ?? "missing")")
+            print("lastName: \(data?["lastName"] ?? "missing")")
+            throw NSError(
+                domain: "FirebaseDataService",
+                code: -1,
+                userInfo: [NSLocalizedDescriptionKey: "Failed to get user data"]
+            )
         }
+        
+        // If we get here, we successfully created a user
+        print("Successfully created User object with username: \(username)")
         
         return User(
             id: userId,
