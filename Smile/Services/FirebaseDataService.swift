@@ -59,7 +59,7 @@ class FirebaseDataService: DataService {
         metadata.contentType = "image/jpeg"
         
         _ = try await storageRef.putDataAsync(data, metadata: metadata)
-        print("Image uploaded successfully to path: \(path)")
+//        print("Image uploaded successfully to path: \(path)")
         
         // Return the path instead of URL
         return path
@@ -452,13 +452,13 @@ class FirebaseDataService: DataService {
             )
         }
         
-        print("Fetching user profile for ID: \(userId)") // Debug print
+//        print("Fetching user profile for ID: \(userId)") // Debug print
         
         let db = Firestore.firestore()
         let document = try await db.collection("users").document(userId).getDocument()
         
         // Debug print the raw data
-        print("Firestore document data: \(String(describing: document.data()))")
+//        print("Firestore document data: \(String(describing: document.data()))")
         
         guard let data = document.data(),
               let username = data["username"] as? String,
@@ -466,12 +466,12 @@ class FirebaseDataService: DataService {
               let firstName = data["firstName"] as? String,
               let lastName = data["lastName"] as? String else {
             // Print which fields are missing
-            let data = document.data()
-            print("Missing or invalid fields in user document:")
-            print("username: \(data?["username"] ?? "missing")")
-            print("email: \(data?["email"] ?? "missing")")
-            print("firstName: \(data?["firstName"] ?? "missing")")
-            print("lastName: \(data?["lastName"] ?? "missing")")
+//            let data = document.data()
+//            print("Missing or invalid fields in user document:")
+//            print("username: \(data?["username"] ?? "missing")")
+//            print("email: \(data?["email"] ?? "missing")")
+//            print("firstName: \(data?["firstName"] ?? "missing")")
+//            print("lastName: \(data?["lastName"] ?? "missing")")
             throw NSError(
                 domain: "FirebaseDataService",
                 code: -1,
@@ -480,7 +480,7 @@ class FirebaseDataService: DataService {
         }
         
         // If we get here, we successfully created a user
-        print("Successfully created User object with username: \(username)")
+//        print("Successfully created User object with username: \(username)")
         
         return User(
             id: userId,

@@ -45,9 +45,9 @@ struct UserView: View {
             .padding()
         }
         .task {
-            print("UserView task starting profile load") // Debug print
+//            print("UserView task starting profile load") // Debug print
             await viewModel.loadProfile()
-            print("UserView profile loaded: \(String(describing: viewModel.user))") // Debug print
+//            print("UserView profile loaded: \(String(describing: viewModel.user))") // Debug print
         }
         .navigationTitle(viewModel.user?.username ?? "")
         .navigationBarTitleDisplayMode(.inline)

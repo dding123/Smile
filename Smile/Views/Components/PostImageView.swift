@@ -30,23 +30,28 @@ struct PostImageView: View {
     @State private var loadError: Error?
     
     var body: some View {
-        Group {
-            if let image = image {
-                Image(uiImage: image)
-                    .resizable()
-                    .aspectRatio(contentMode: .fill)
-            } else if loadError != nil {
-                VStack {
-                    Image(systemName: "exclamationmark.triangle")
-                    Text("Error")
-                        .font(.caption)
+        GeometryReader { geometry in
+            Group {
+                if let image = image {
+                    Image(uiImage: image)
+                        .resizable()
+                        .aspectRatio(contentMode: .fill)
+                        .frame(width: size, height: size)
+                } else if loadError != nil {
+                    VStack {
+                        Image(systemName: "exclamationmark.triangle")
+                        Text("Error")
+                            .font(Theme.Typography.caption)
+                    }
+                    .foregroundColor(.red)
+                    .frame(width: size, height: size)
+                } else {
+                    ProgressView()
+                        .frame(width: size, height: size)
                 }
-                .foregroundColor(.red)
-            } else {
-                ProgressView()
             }
         }
-        .frame(height: size)
+        .frame(width: size, height: size)
         .clipped()
         .task(id: imagePath) {
             await loadImage()

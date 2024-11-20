@@ -32,20 +32,16 @@ class AppState: ObservableObject {
             posts = snapshot.documents.compactMap { document in
                 do {
                     var post = try document.data(as: Post.self)
-                    post.id = document.documentID // Ensure ID is set
-                    if post.id?.isEmpty ?? true {
-                        print("Warning: Empty post ID for document: \(document.documentID)")
-                        return nil
-                    }
+                    post.id = document.documentID
+                    print("Loaded post: \(post.id ?? "unknown"), imagePath: \(post.imagePath)")
                     return post
                 } catch {
                     print("Error decoding post: \(error)")
                     return nil
                 }
             }
-            print("Fetched \(posts.count) posts for home feed")
         } catch {
-            print("Error refreshing all posts: \(error)")
+            print("Error refreshing posts: \(error)")
         }
     }
     
@@ -79,7 +75,7 @@ class AppState: ObservableObject {
             await refreshUserPosts()
             await refreshAllPosts()
             
-            print("AppState postAdded: Posts refreshed")
+//            print("AppState postAdded: Posts refreshed")
             
             // Print the paths of the most recent posts to verify
             if let latestPost = userPosts.first {

@@ -46,9 +46,9 @@ class BaseProfileViewModel: ObservableObject {
     func loadProfile() async {
         isLoading = true
         do {
-            print("Loading profile for userId: \(userId)") // Debug print
+//            print("Loading profile for userId: \(userId)") // Debug print
             user = try await dataService.fetchUserProfile(userId: userId)
-            print("Loaded user: \(String(describing: user))") // Debug print
+//            print("Loaded user: \(String(describing: user))") // Debug print
             await loadUserPosts()
         } catch {
             print("Error loading profile: \(error)")
