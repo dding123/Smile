@@ -528,19 +528,3 @@ class FirebaseDataService: DataService {
         }
     }
 }
-
-//
-//extension Sequence {
-//    func asyncCompactMap<T>(
-//        _ transform: (Element) async -> T?
-//    ) async -> [T] {
-//        var values = [T]()
-//        
-//        for element in self {
-//            if let newElement = await transform(element) {
-//                values.append(newElement)
-//            }
-//        }
-//        return values
-//    }
-//}

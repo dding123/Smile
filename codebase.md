@@ -125,6 +125,8 @@ social media app
 		09A49D942CE1C3CB00040397 /* UserView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 09A49D932CE1C3CB00040397 /* UserView.swift */; };
 		09A49D982CE1C58C00040397 /* PreviewHelpers.swift in Sources */ = {isa = PBXBuildFile; fileRef = 09A49D972CE1C58C00040397 /* PreviewHelpers.swift */; };
 		09A49D9A2CE1C89D00040397 /* BaseProfileViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 09A49D992CE1C89D00040397 /* BaseProfileViewModel.swift */; };
+		09A49D9C2CE9DD0B00040397 /* Theme.swift in Sources */ = {isa = PBXBuildFile; fileRef = 09A49D9B2CE9DD0600040397 /* Theme.swift */; };
+		09A49DA32CED60A900040397 /* PostFeedCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 09A49DA22CED60A900040397 /* PostFeedCell.swift */; };
 		09AAFA432CD5627C004CD75D /* UserTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 09AAFA422CD5627C004CD75D /* UserTests.swift */; };
 		09AAFA472CDC0740004CD75D /* AppState.swift in Sources */ = {isa = PBXBuildFile; fileRef = 09AAFA452CDC073C004CD75D /* AppState.swift */; };
 		09AAFA492CDC5055004CD75D /* PostImageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 09AAFA482CDC5055004CD75D /* PostImageView.swift */; };
@@ -182,6 +184,8 @@ social media app
 		09A49D932CE1C3CB00040397 /* UserView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserView.swift; sourceTree = "<group>"; };
 		09A49D972CE1C58C00040397 /* PreviewHelpers.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PreviewHelpers.swift; sourceTree = "<group>"; };
 		09A49D992CE1C89D00040397 /* BaseProfileViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BaseProfileViewModel.swift; sourceTree = "<group>"; };
+		09A49D9B2CE9DD0600040397 /* Theme.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Theme.swift; sourceTree = "<group>"; };
+		09A49DA22CED60A900040397 /* PostFeedCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostFeedCell.swift; sourceTree = "<group>"; };
 		09AAFA422CD5627C004CD75D /* UserTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserTests.swift; sourceTree = "<group>"; };
 		09AAFA452CDC073C004CD75D /* AppState.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppState.swift; sourceTree = "<group>"; };
 		09AAFA482CDC5055004CD75D /* PostImageView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostImageView.swift; sourceTree = "<group>"; };
@@ -284,10 +288,10 @@ social media app
 		094627E12C5090C800C8FE90 /* Views */ = {
 			isa = PBXGroup;
 			children = (
+				09A49D9F2CED606700040397 /* Components */,
 				09A49D932CE1C3CB00040397 /* UserView.swift */,
 				09A49D912CE1C3AA00040397 /* BaseProfileView.swift */,
 				09AAFA502CE0579A004CD75D /* CreateGroupView.swift */,
-				09AAFA482CDC5055004CD75D /* PostImageView.swift */,
 				0969DFC72CD04060002A7BEA /* PostDetailView.swift */,
 				0969DFC52CCF4466002A7BEA /* RootView.swift */,
 				0969DFC12CCF43D0002A7BEA /* TabNavigator.swift */,
@@ -333,6 +337,7 @@ social media app
 		094627E42C5090DF00C8FE90 /* Utils */ = {
 			isa = PBXGroup;
 			children = (
+				09A49D9B2CE9DD0600040397 /* Theme.swift */,
 				094627F82C50922A00C8FE90 /* Constants.swift */,
 			);
 			path = Utils;
@@ -343,6 +348,15 @@ social media app
 			children = (
 			);
 			path = Resources;
+			sourceTree = "<group>";
+		};
+		09A49D9F2CED606700040397 /* Components */ = {
+			isa = PBXGroup;
+			children = (
+				09A49DA22CED60A900040397 /* PostFeedCell.swift */,
+				09AAFA482CDC5055004CD75D /* PostImageView.swift */,
+			);
+			path = Components;
 			sourceTree = "<group>";
 		};
 		09AAFA4A2CDC588D004CD75D /* State */ = {
@@ -486,6 +500,7 @@ social media app
 				094627E72C50912200C8FE90 /* User.swift in Sources */,
 				0969DFBE2CCF402F002A7BEA /* ProfileViewModel.swift in Sources */,
 				094627FB2C50930600C8FE90 /* AuthViewModel.swift in Sources */,
+				09A49D9C2CE9DD0B00040397 /* Theme.swift in Sources */,
 				0969DF9F2CBDFEEC002A7BEA /* PostView.swift in Sources */,
 				090F42C62A67A5E90035774E /* HomeView.swift in Sources */,
 				0969DFCA2CD04087002A7BEA /* PostDetailViewModel.swift in Sources */,
@@ -500,6 +515,7 @@ social media app
 				09A49D982CE1C58C00040397 /* PreviewHelpers.swift in Sources */,
 				0969DFC82CD0406B002A7BEA /* PostDetailView.swift in Sources */,
 				09AAFA472CDC0740004CD75D /* AppState.swift in Sources */,
+				09A49DA32CED60A900040397 /* PostFeedCell.swift in Sources */,
 				0969DFB42CC8803C002A7BEA /* UserPreview.swift in Sources */,
 				09A49D942CE1C3CB00040397 /* UserView.swift in Sources */,
 				094627ED2C5091B700C8FE90 /* LoginView.swift in Sources */,
@@ -1127,6 +1143,50 @@ struct App_Previews: PreviewProvider {
 
 ```
 
+# Smile/Assets.xcassets/AppBackground.colorset/Contents.json
+
+```json
+{
+  "colors" : [
+    {
+      "color" : {
+        "color-space" : "srgb",
+        "components" : {
+          "alpha" : "1.000",
+          "blue" : "0xF7",
+          "green" : "0xF2",
+          "red" : "0xF2"
+        }
+      },
+      "idiom" : "universal"
+    },
+    {
+      "appearances" : [
+        {
+          "appearance" : "luminosity",
+          "value" : "dark"
+        }
+      ],
+      "color" : {
+        "color-space" : "srgb",
+        "components" : {
+          "alpha" : "1.000",
+          "blue" : "0x00",
+          "green" : "0x00",
+          "red" : "0x00"
+        }
+      },
+      "idiom" : "universal"
+    }
+  ],
+  "info" : {
+    "author" : "xcode",
+    "version" : 1
+  }
+}
+
+```
+
 # Smile/Assets.xcassets/AppIcon.appiconset/Contents.json
 
 ```json
@@ -1151,6 +1211,50 @@ struct App_Previews: PreviewProvider {
 
 This is a binary file of the type: Image
 
+# Smile/Assets.xcassets/AppSurface.colorset/Contents.json
+
+```json
+{
+  "colors" : [
+    {
+      "color" : {
+        "color-space" : "srgb",
+        "components" : {
+          "alpha" : "1.000",
+          "blue" : "0xFF",
+          "green" : "0xFF",
+          "red" : "0xFF"
+        }
+      },
+      "idiom" : "universal"
+    },
+    {
+      "appearances" : [
+        {
+          "appearance" : "luminosity",
+          "value" : "dark"
+        }
+      ],
+      "color" : {
+        "color-space" : "srgb",
+        "components" : {
+          "alpha" : "1.000",
+          "blue" : "0x1E",
+          "green" : "0x1C",
+          "red" : "0x1C"
+        }
+      },
+      "idiom" : "universal"
+    }
+  ],
+  "info" : {
+    "author" : "xcode",
+    "version" : 1
+  }
+}
+
+```
+
 # Smile/Assets.xcassets/bannerImage.imageset/codioful-formerly-gradienta-LeG68PrXA6Y-unsplash.jpg
 
 This is a binary file of the type: Image
@@ -1172,6 +1276,94 @@ This is a binary file of the type: Image
     {
       "idiom" : "universal",
       "scale" : "3x"
+    }
+  ],
+  "info" : {
+    "author" : "xcode",
+    "version" : 1
+  }
+}
+
+```
+
+# Smile/Assets.xcassets/BrandPrimary.colorset/Contents.json
+
+```json
+{
+  "colors" : [
+    {
+      "color" : {
+        "color-space" : "srgb",
+        "components" : {
+          "alpha" : "1.000",
+          "blue" : "0x00",
+          "green" : "0xD9",
+          "red" : "0xFF"
+        }
+      },
+      "idiom" : "universal"
+    },
+    {
+      "appearances" : [
+        {
+          "appearance" : "luminosity",
+          "value" : "dark"
+        }
+      ],
+      "color" : {
+        "color-space" : "srgb",
+        "components" : {
+          "alpha" : "1.000",
+          "blue" : "0x57",
+          "green" : "0xE6",
+          "red" : "0xFF"
+        }
+      },
+      "idiom" : "universal"
+    }
+  ],
+  "info" : {
+    "author" : "xcode",
+    "version" : 1
+  }
+}
+
+```
+
+# Smile/Assets.xcassets/BrandSecondary.colorset/Contents.json
+
+```json
+{
+  "colors" : [
+    {
+      "color" : {
+        "color-space" : "srgb",
+        "components" : {
+          "alpha" : "1.000",
+          "blue" : "0x6C",
+          "green" : "0xD8",
+          "red" : "0x78"
+        }
+      },
+      "idiom" : "universal"
+    },
+    {
+      "appearances" : [
+        {
+          "appearance" : "luminosity",
+          "value" : "dark"
+        }
+      ],
+      "color" : {
+        "color-space" : "srgb",
+        "components" : {
+          "alpha" : "1.000",
+          "blue" : "0x86",
+          "green" : "0xE8",
+          "red" : "0x90"
+        }
+      },
+      "idiom" : "universal"
     }
   ],
   "info" : {
@@ -1922,7 +2114,7 @@ class FirebaseDataService: DataService {
         metadata.contentType = "image/jpeg"
         
         _ = try await storageRef.putDataAsync(data, metadata: metadata)
-        print("Image uploaded successfully to path: \(path)")
+//        print("Image uploaded successfully to path: \(path)")
         
         // Return the path instead of URL
         return path
@@ -2315,13 +2507,13 @@ class FirebaseDataService: DataService {
             )
         }
         
-        print("Fetching user profile for ID: \(userId)") // Debug print
+//        print("Fetching user profile for ID: \(userId)") // Debug print
         
         let db = Firestore.firestore()
         let document = try await db.collection("users").document(userId).getDocument()
         
         // Debug print the raw data
-        print("Firestore document data: \(String(describing: document.data()))")
+//        print("Firestore document data: \(String(describing: document.data()))")
         
         guard let data = document.data(),
               let username = data["username"] as? String,
@@ -2329,12 +2521,12 @@ class FirebaseDataService: DataService {
               let firstName = data["firstName"] as? String,
               let lastName = data["lastName"] as? String else {
             // Print which fields are missing
-            let data = document.data()
-            print("Missing or invalid fields in user document:")
-            print("username: \(data?["username"] ?? "missing")")
-            print("email: \(data?["email"] ?? "missing")")
-            print("firstName: \(data?["firstName"] ?? "missing")")
-            print("lastName: \(data?["lastName"] ?? "missing")")
+//            let data = document.data()
+//            print("Missing or invalid fields in user document:")
+//            print("username: \(data?["username"] ?? "missing")")
+//            print("email: \(data?["email"] ?? "missing")")
+//            print("firstName: \(data?["firstName"] ?? "missing")")
+//            print("lastName: \(data?["lastName"] ?? "missing")")
             throw NSError(
                 domain: "FirebaseDataService",
                 code: -1,
@@ -2343,7 +2535,7 @@ class FirebaseDataService: DataService {
         }
         
         // If we get here, we successfully created a user
-        print("Successfully created User object with username: \(username)")
+//        print("Successfully created User object with username: \(username)")
         
         return User(
             id: userId,
@@ -2495,20 +2687,16 @@ class AppState: ObservableObject {
             posts = snapshot.documents.compactMap { document in
                 do {
                     var post = try document.data(as: Post.self)
-                    post.id = document.documentID // Ensure ID is set
-                    if post.id?.isEmpty ?? true {
-                        print("Warning: Empty post ID for document: \(document.documentID)")
-                        return nil
-                    }
+                    post.id = document.documentID
+                    print("Loaded post: \(post.id ?? "unknown"), imagePath: \(post.imagePath)")
                     return post
                 } catch {
                     print("Error decoding post: \(error)")
                     return nil
                 }
             }
-            print("Fetched \(posts.count) posts for home feed")
         } catch {
-            print("Error refreshing all posts: \(error)")
+            print("Error refreshing posts: \(error)")
         }
     }
     
@@ -2542,7 +2730,7 @@ class AppState: ObservableObject {
             await refreshUserPosts()
             await refreshAllPosts()
             
-            print("AppState postAdded: Posts refreshed")
+//            print("AppState postAdded: Posts refreshed")
             
             // Print the paths of the most recent posts to verify
             if let latestPost = userPosts.first {
@@ -2567,6 +2755,72 @@ class AppState: ObservableObject {
 //
 
 import Foundation
+
+```
+
+# Smile/Utils/Theme.swift
+
+```swift
+//
+//  Theme.swift
+//  Smile
+//
+//  Created by David Ding on 11/17/24.
+//
+
+import SwiftUI
+
+enum Theme {
+    enum Colors {
+        static let brandPrimary = Color("BrandPrimary")
+        static let brandSecondary = Color("BrandSecondary")
+        static let background = Color("AppBackground")
+        static let surface = Color("AppSurface")
+        static let textPrimary = Color("BrandPrimary")
+        static let textSecondary = Color("BrandSecondary")
+    }
+    
+    enum Typography {
+        static let titleLarge = Font.system(size: 24, weight: .bold)
+        static let titleMedium = Font.system(size: 20, weight: .semibold)
+        static let titleSmall = Font.system(size: 16, weight: .semibold)
+        static let bodyLarge = Font.system(size: 16, weight: .regular)
+        static let bodyMedium = Font.system(size: 14, weight: .regular)
+        static let caption = Font.system(size: 12, weight: .regular)
+    }
+    
+    enum Metrics {
+        static let padding: CGFloat = 16
+        static let cornerRadius: CGFloat = 12
+        static let iconSize: CGFloat = 24
+        static let avatarSize: CGFloat = 40
+    }
+    
+    enum Animation {
+        static let `default` = SwiftUI.Animation.easeInOut(duration: 0.2)
+        static let spring = SwiftUI.Animation.spring(response: 0.3, dampingFraction: 0.7)
+    }
+}
+
+// MARK: - View Modifiers
+extension Theme {
+    struct CardStyle: ViewModifier {
+        func body(content: Content) -> some View {
+            content
+                .padding(Metrics.padding)
+                .background(Colors.surface)
+                .cornerRadius(Metrics.cornerRadius)
+                .shadow(color: .black.opacity(0.05), radius: 8)
+        }
+    }
+}
+
+// MARK: - View Extensions
+extension View {
+    func cardStyle() -> some View {
+        modifier(Theme.CardStyle())
+    }
+}
 
 ```
 
@@ -2734,9 +2988,9 @@ class BaseProfileViewModel: ObservableObject {
     func loadProfile() async {
         isLoading = true
         do {
-            print("Loading profile for userId: \(userId)") // Debug print
+//            print("Loading profile for userId: \(userId)") // Debug print
             user = try await dataService.fetchUserProfile(userId: userId)
-            print("Loaded user: \(String(describing: user))") // Debug print
+//            print("Loaded user: \(String(describing: user))") // Debug print
             await loadUserPosts()
         } catch {
             print("Error loading profile: \(error)")
@@ -3294,6 +3548,258 @@ struct BaseProfileView<Content: View>: View {
 
 ```
 
+# Smile/Views/Components/PostFeedCell.swift
+
+```swift
+//
+//  PostFeedCell.swift
+//  Smile
+//
+//  Created by David Ding on 11/19/24.
+//
+import SwiftUI
+
+struct PostFeedCell: View {
+    @StateObject private var viewModel: PostDetailViewModel
+    let post: Post
+    
+    // Calculate image size based on screen width
+    private var imageSize: CGFloat {
+        UIScreen.main.bounds.width - (Theme.Metrics.padding * 4)
+    }
+    
+    init(post: Post) {
+        self.post = post
+        _viewModel = StateObject(wrappedValue: PostDetailViewModel(post: post))
+    }
+    
+    var body: some View {
+        VStack(alignment: .leading, spacing: Theme.Metrics.padding) {
+            // Header
+            header
+            
+            // Image
+            postImage
+                .frame(width: imageSize, height: imageSize)
+                .clipped()
+            
+            // Actions
+            actions
+            
+            // Content
+            content
+        }
+        .cardStyle()
+        .padding(.horizontal, Theme.Metrics.padding)
+    }
+    
+    private var header: some View {
+        HStack(spacing: Theme.Metrics.padding) {
+            AsyncImage(url: URL(string: viewModel.userProfilePicture ?? "")) { image in
+                image
+                    .resizable()
+                    .aspectRatio(contentMode: .fill)
+            } placeholder: {
+                Color.gray.opacity(0.3)
+            }
+            .frame(width: Theme.Metrics.avatarSize, height: Theme.Metrics.avatarSize)
+            .clipShape(Circle())
+            
+            VStack(alignment: .leading, spacing: 2) {
+                Text(post.username)
+                    .font(Theme.Typography.titleSmall)
+                if let date = post.createdAt {
+                    Text(date, style: .relative)
+                        .font(Theme.Typography.caption)
+                        .foregroundColor(Theme.Colors.textSecondary)
+                }
+            }
+            
+            Spacer()
+            
+            Menu {
+                Button(action: {}) {
+                    Label("Report", systemImage: "flag")
+                }
+                Button(action: {}) {
+                    Label("Share", systemImage: "square.and.arrow.up")
+                }
+            } label: {
+                Image(systemName: "ellipsis")
+                    .foregroundColor(Theme.Colors.textSecondary)
+                    .padding(8)
+            }
+        }
+    }
+    
+    private var postImage: some View {
+        PostImageView(imagePath: post.imagePath, size: imageSize)
+            .clipShape(RoundedRectangle(cornerRadius: Theme.Metrics.cornerRadius))
+    }
+    
+    private var actions: some View {
+        HStack(spacing: Theme.Metrics.padding * 1.5) {
+            Button {
+                viewModel.toggleLike()
+            } label: {
+                HStack(spacing: 4) {
+                    Image(systemName: viewModel.isLiked ? "heart.fill" : "heart")
+                        .foregroundColor(viewModel.isLiked ? .red : Theme.Colors.textPrimary)
+                    Text("\(viewModel.likeCount)")
+                        .font(Theme.Typography.bodyMedium)
+                }
+            }
+            
+            NavigationLink {
+                PostDetailView(post: post)
+            } label: {
+                HStack(spacing: 4) {
+                    Image(systemName: "bubble.right")
+                    Text("\(post.commentCount)")
+                        .font(Theme.Typography.bodyMedium)
+                }
+            }
+            
+            Button {
+                // Share functionality
+            } label: {
+                Image(systemName: "square.and.arrow.up")
+            }
+            
+            Spacer()
+        }
+        .foregroundColor(Theme.Colors.textPrimary)
+    }
+    
+    private var content: some View {
+        VStack(alignment: .leading, spacing: 8) {
+            if !post.caption.isEmpty {
+                Text(post.username).font(Theme.Typography.titleSmall) +
+                Text(" \(post.caption)")
+                    .font(Theme.Typography.bodyMedium)
+            }
+            
+            if !viewModel.comments.isEmpty {
+                VStack(alignment: .leading, spacing: 4) {
+                    ForEach(viewModel.comments.prefix(2)) { comment in
+                        HStack {
+                            Text(comment.username)
+                                .font(Theme.Typography.bodyMedium)
+                                .fontWeight(.semibold)
+                            Text(comment.text)
+                                .font(Theme.Typography.bodyMedium)
+                                .lineLimit(1)
+                        }
+                    }
+                }
+                .padding(.top, 4)
+            }
+        }
+    }
+}
+
+```
+
+# Smile/Views/Components/PostImageView.swift
+
+```swift
+//
+//  PostImageView.swift
+//  Smile
+//
+//  Created by David Ding on 11/6/24.
+//
+
+import SwiftUI
+import FirebaseStorage
+
+actor ImageCache {
+    static let shared = ImageCache()
+    private var cache: [String: UIImage] = [:]
+    
+    func image(for key: String) -> UIImage? {
+        cache[key]
+    }
+    
+    func setImage(_ image: UIImage, for key: String) {
+        cache[key] = image
+    }
+}
+
+struct PostImageView: View {
+    let imagePath: String
+    let size: CGFloat
+    
+    @State private var image: UIImage?
+    @State private var isLoading = true
+    @State private var loadError: Error?
+    
+    var body: some View {
+        GeometryReader { geometry in
+            Group {
+                if let image = image {
+                    Image(uiImage: image)
+                        .resizable()
+                        .aspectRatio(contentMode: .fill)
+                        .frame(width: size, height: size)
+                } else if loadError != nil {
+                    VStack {
+                        Image(systemName: "exclamationmark.triangle")
+                        Text("Error")
+                            .font(Theme.Typography.caption)
+                    }
+                    .foregroundColor(.red)
+                    .frame(width: size, height: size)
+                } else {
+                    ProgressView()
+                        .frame(width: size, height: size)
+                }
+            }
+        }
+        .frame(width: size, height: size)
+        .clipped()
+        .task(id: imagePath) {
+            await loadImage()
+        }
+    }
+    
+    private func loadImage() async {
+        // First check cache
+        if let cached = await ImageCache.shared.image(for: imagePath) {
+            await MainActor.run {
+                self.image = cached
+                self.isLoading = false
+            }
+            return
+        }
+        
+        do {
+            let url = try await PostImage.getURL(for: imagePath)
+            let (data, _) = try await URLSession.shared.data(from: url)
+            
+            guard let uiImage = UIImage(data: data) else {
+                throw NSError(domain: "", code: -1, userInfo: [NSLocalizedDescriptionKey: "Invalid image data"])
+            }
+            
+            // Cache the image
+            await ImageCache.shared.setImage(uiImage, for: imagePath)
+            
+            await MainActor.run {
+                self.image = uiImage
+                self.isLoading = false
+            }
+        } catch {
+            print("Error loading image for path \(imagePath): \(error)")
+            await MainActor.run {
+                self.loadError = error
+                self.isLoading = false
+            }
+        }
+    }
+}
+
+```
+
 # Smile/Views/CreateGroupView.swift
 
 ```swift
@@ -3567,158 +4073,28 @@ struct HomeView: View {
     
     var body: some View {
         NavigationView {
-            ScrollView(.vertical, showsIndicators: false) {
-                LazyVStack(spacing: 0) {
-                    ForEach(appState.posts, id: \.uniqueId) { post in
-                        PostFeedCell(post: post)
+            ZStack {
+                Theme.Colors.background
+                    .ignoresSafeArea()
+                
+                ScrollView {
+                    LazyVStack(spacing: Theme.Metrics.padding) {
+                        ForEach(appState.posts) { post in
+                            PostFeedCell(post: post)
+                                .id(post.uniqueId) // Ensure unique identification
+                        }
                     }
+                    .padding(.vertical, Theme.Metrics.padding)
+                }
+                .refreshable {
+                    await appState.refreshAllPosts()
                 }
             }
             .navigationTitle("Home")
             .task {
                 await appState.refreshAllPosts()
             }
-            .refreshable {
-                await appState.refreshAllPosts()
-            }
         }
-    }
-}
-
-struct PostFeedCell: View {
-    @StateObject private var viewModel: PostDetailViewModel
-    let post: Post
-    
-    init(post: Post) {
-        self.post = post
-        _viewModel = StateObject(wrappedValue: PostDetailViewModel(post: post))
-    }
-    
-    var body: some View {
-        VStack(alignment: .leading, spacing: 12) {
-            // User info header
-            HStack(spacing: 8) {
-                AsyncImage(url: URL(string: viewModel.userProfilePicture ?? "")) { image in
-                    image
-                        .resizable()
-                        .aspectRatio(contentMode: .fill)
-                } placeholder: {
-                    Circle()
-                        .foregroundColor(.gray)
-                }
-                .frame(width: 36, height: 36)
-                .clipShape(Circle())
-                
-                Text(post.username)
-                    .font(.subheadline)
-                    .fontWeight(.semibold)
-                
-                Spacer()
-                
-                Button {
-                    // More options
-                } label: {
-                    Image(systemName: "ellipsis")
-                }
-            }
-            .padding(.horizontal, 16)
-            .padding(.vertical, 8)
-            
-            // Post image
-            GeometryReader { geometry in
-                PostImageView(
-                    imagePath: post.imagePath,
-                    size: geometry.size.width
-                )
-                .frame(width: geometry.size.width, height: geometry.size.width)
-            }
-            .aspectRatio(1, contentMode: .fit)
-            
-            // Action buttons
-            HStack(spacing: 20) {
-                Button {
-                    viewModel.toggleLike()
-                } label: {
-                    Image(systemName: viewModel.isLiked ? "heart.fill" : "heart")
-                        .foregroundColor(viewModel.isLiked ? .red : .primary)
-                }
-                
-                NavigationLink {
-                    PostDetailView(post: post)
-                } label: {
-                    Image(systemName: "bubble.right")
-                        .foregroundColor(.primary)
-                }
-                
-                Button {
-                    // Share
-                } label: {
-                    Image(systemName: "square.and.arrow.up")
-                        .foregroundColor(.primary)
-                }
-                
-                Spacer()
-            }
-            .font(.system(size: 22))
-            .padding(.horizontal, 16)
-            .padding(.top, 8)
-            
-            // Likes count
-            if viewModel.likeCount > 0 {
-                Text("\(viewModel.likeCount) likes")
-                    .font(.system(size: 14, weight: .semibold))
-                    .padding(.horizontal, 16)
-            }
-            
-            // Caption
-            if !post.caption.isEmpty {
-                HStack(alignment: .top, spacing: 6) {
-                    Text(post.username)
-                        .fontWeight(.semibold)
-                    Text(post.caption)
-                        .lineLimit(2)
-                }
-                .font(.system(size: 14))
-                .padding(.horizontal, 16)
-            }
-            
-            // Comments preview
-            if !viewModel.comments.isEmpty {
-                VStack(alignment: .leading, spacing: 6) {
-                    ForEach(viewModel.comments.prefix(2)) { comment in
-                        HStack(alignment: .top, spacing: 6) {
-                            Text(comment.username)
-                                .fontWeight(.semibold)
-                            Text(comment.text)
-                                .lineLimit(1)
-                        }
-                        .font(.system(size: 14))
-                    }
-                    
-                    if viewModel.comments.count > 2 {
-                        Button {
-                            // View all comments
-                        } label: {
-                            Text("View all \(viewModel.comments.count) comments")
-                                .font(.system(size: 14))
-                                .foregroundColor(.secondary)
-                        }
-                    }
-                }
-                .padding(.horizontal, 16)
-            }
-            
-            // Timestamp
-            if let date = post.createdAt {
-                Text(date, style: .relative)
-                    .font(.system(size: 12))
-                    .foregroundColor(.secondary)
-                    .padding(.horizontal, 16)
-                    .padding(.top, 4)
-            }
-        }
-        .padding(.vertical, 8)
-        Divider()
     }
 }
 
@@ -3910,118 +4286,130 @@ struct PostDetailView: View {
     }
     
     var body: some View {
-        GeometryReader { geometry in
-            ScrollView {
-                VStack(alignment: .leading, spacing: 12) {
-                    // User info header
-                    HStack {
-                        AsyncImage(url: URL(string: viewModel.userProfilePicture ?? "")) { image in
-                            image
-                                .resizable()
-                                .aspectRatio(contentMode: .fill)
-                        } placeholder: {
-                            Circle()
-                                .foregroundColor(.gray)
-                        }
-                        .frame(width: 40, height: 40)
-                        .clipShape(Circle())
-                        
-                        Text(post.username)
-                            .font(.headline)
-                        
-                        Spacer()
-                        
-                        Button {
-                            // Add more options menu
-                        } label: {
-                            Image(systemName: "ellipsis")
-                        }
-                    }
-                    .padding(.horizontal)
-                    
-                    // Post image
-                    PostImageView(
-                        imagePath: post.imagePath,
-                        size: geometry.size.width
-                    )
-                    .frame(width: geometry.size.width)
-                    
-                    // Action buttons
-                    HStack(spacing: 16) {
-                        Button {
-                            viewModel.toggleLike()
-                        } label: {
-                            Image(systemName: viewModel.isLiked ? "heart.fill" : "heart")
-                                .foregroundColor(viewModel.isLiked ? .red : .primary)
-                        }
-                        
-                        Button {
-                            viewModel.isCommentingActive = true
-                        } label: {
-                            Image(systemName: "bubble.right")
-                        }
-                        
-                        Button {
-                            // Share functionality
-                        } label: {
-                            Image(systemName: "square.and.arrow.up")
-                        }
-                        
-                        Spacer()
-                    }
-                    .font(.title3)
-                    .padding(.horizontal)
-                    
-                    // Likes count
-                    if viewModel.likeCount > 0 {
-                        Text("\(viewModel.likeCount) likes")
-                            .font(.subheadline)
-                            .fontWeight(.semibold)
-                            .padding(.horizontal)
-                    }
-                    
-                    // Caption
-                    if !post.caption.isEmpty {
-                        HStack(alignment: .top, spacing: 4) {
-                            Text(post.username)
-                                .fontWeight(.semibold)
-                            Text(post.caption)
-                                .fixedSize(horizontal: false, vertical: true)
-                        }
-                        .padding(.horizontal)
-                    }
-                    
-                    // Comments
-                    ForEach(viewModel.comments) { comment in
-                        HStack(alignment: .top, spacing: 4) {
-                            Text(comment.username)
-                                .fontWeight(.semibold)
-                            Text(comment.text)
-                                .fixedSize(horizontal: false, vertical: true)
-                            Spacer()
-                            Text(comment.timeAgo)
-                                .font(.caption)
-                                .foregroundColor(.gray)
-                        }
-                        .padding(.horizontal)
-                    }
-                }
-                .frame(width: geometry.size.width)
-            }
-        }
-        .ignoresSafeArea(.all, edges: .top)
-        .overlay(alignment: .top) {
+        VStack(spacing: 0) {
+            // Header
             HStack {
                 Button {
                     dismiss()
                 } label: {
                     Image(systemName: "xmark")
                         .foregroundColor(.primary)
-                        .padding()
                 }
+                
                 Spacer()
+                
+                Text("Post")
+                    .font(.headline)
+                
+                Spacer()
+                
+                // Empty view for balance
+                Image(systemName: "xmark")
+                    .opacity(0)
             }
-            .background(.thinMaterial)
+            .padding()
+            .background(Color(.systemBackground))
+            
+            // Content
+            GeometryReader { geometry in
+                ScrollView {
+                    VStack(alignment: .leading, spacing: 12) {
+                        // User info header
+                        HStack {
+                            AsyncImage(url: URL(string: viewModel.userProfilePicture ?? "")) { image in
+                                image
+                                    .resizable()
+                                    .aspectRatio(contentMode: .fill)
+                            } placeholder: {
+                                Circle()
+                                    .foregroundColor(.gray)
+                            }
+                            .frame(width: 40, height: 40)
+                            .clipShape(Circle())
+                            
+                            Text(post.username)
+                                .font(.headline)
+                            
+                            Spacer()
+                            
+                            Button {
+                                // Add more options menu
+                            } label: {
+                                Image(systemName: "ellipsis")
+                            }
+                        }
+                        .padding(.horizontal)
+                        
+                        // Rest of the content remains the same
+                        PostImageView(
+                            imagePath: post.imagePath,
+                            size: geometry.size.width
+                        )
+                        .frame(width: geometry.size.width)
+                        
+                        // Action buttons
+                        HStack(spacing: 16) {
+                            Button {
+                                viewModel.toggleLike()
+                            } label: {
+                                Image(systemName: viewModel.isLiked ? "heart.fill" : "heart")
+                                    .foregroundColor(viewModel.isLiked ? .red : .primary)
+                            }
+                            
+                            Button {
+                                viewModel.isCommentingActive = true
+                            } label: {
+                                Image(systemName: "bubble.right")
+                            }
+                            
+                            Button {
+                                // Share functionality
+                            } label: {
+                                Image(systemName: "square.and.arrow.up")
+                            }
+                            
+                            Spacer()
+                        }
+                        .font(.title3)
+                        .padding(.horizontal)
+                        
+                        // Likes count
+                        if viewModel.likeCount > 0 {
+                            Text("\(viewModel.likeCount) likes")
+                                .font(.subheadline)
+                                .fontWeight(.semibold)
+                                .padding(.horizontal)
+                        }
+                        
+                        // Caption
+                        if !post.caption.isEmpty {
+                            HStack(alignment: .top, spacing: 4) {
+                                Text(post.username)
+                                    .fontWeight(.semibold)
+                                Text(post.caption)
+                                    .fixedSize(horizontal: false, vertical: true)
+                            }
+                            .padding(.horizontal)
+                        }
+                        
+                        // Comments
+                        ForEach(viewModel.comments) { comment in
+                            HStack(alignment: .top, spacing: 4) {
+                                Text(comment.username)
+                                    .fontWeight(.semibold)
+                                Text(comment.text)
+                                    .fixedSize(horizontal: false, vertical: true)
+                                Spacer()
+                                Text(comment.timeAgo)
+                                    .font(.caption)
+                                    .foregroundColor(.gray)
+                            }
+                            .padding(.horizontal)
+                        }
+                    }
+                    .frame(width: geometry.size.width)
+                }
+            }
         }
         .overlay(alignment: .bottom) {
             if viewModel.isCommentingActive {
@@ -4063,101 +4451,6 @@ struct CommentInputView: View {
                 .foregroundColor(.gray.opacity(0.3)),
             alignment: .top
         )
-    }
-}
-
-```
-
-# Smile/Views/PostImageView.swift
-
-```swift
-//
-//  PostImageView.swift
-//  Smile
-//
-//  Created by David Ding on 11/6/24.
-//
-
-import SwiftUI
-import FirebaseStorage
-
-actor ImageCache {
-    static let shared = ImageCache()
-    private var cache: [String: UIImage] = [:]
-    
-    func image(for key: String) -> UIImage? {
-        cache[key]
-    }
-    
-    func setImage(_ image: UIImage, for key: String) {
-        cache[key] = image
-    }
-}
-
-struct PostImageView: View {
-    let imagePath: String
-    let size: CGFloat
-    
-    @State private var image: UIImage?
-    @State private var isLoading = true
-    @State private var loadError: Error?
-    
-    var body: some View {
-        Group {
-            if let image = image {
-                Image(uiImage: image)
-                    .resizable()
-                    .aspectRatio(contentMode: .fill)
-            } else if loadError != nil {
-                VStack {
-                    Image(systemName: "exclamationmark.triangle")
-                    Text("Error")
-                        .font(.caption)
-                }
-                .foregroundColor(.red)
-            } else {
-                ProgressView()
-            }
-        }
-        .frame(height: size)
-        .clipped()
-        .task(id: imagePath) {
-            await loadImage()
-        }
-    }
-    
-    private func loadImage() async {
-        // First check cache
-        if let cached = await ImageCache.shared.image(for: imagePath) {
-            await MainActor.run {
-                self.image = cached
-                self.isLoading = false
-            }
-            return
-        }
-        
-        do {
-            let url = try await PostImage.getURL(for: imagePath)
-            let (data, _) = try await URLSession.shared.data(from: url)
-            
-            guard let uiImage = UIImage(data: data) else {
-                throw NSError(domain: "", code: -1, userInfo: [NSLocalizedDescriptionKey: "Invalid image data"])
-            }
-            
-            // Cache the image
-            await ImageCache.shared.setImage(uiImage, for: imagePath)
-            
-            await MainActor.run {
-                self.image = uiImage
-                self.isLoading = false
-            }
-        } catch {
-            print("Error loading image for path \(imagePath): \(error)")
-            await MainActor.run {
-                self.loadError = error
-                self.isLoading = false
-            }
-        }
     }
 }
 
@@ -4775,9 +5068,9 @@ struct UserView: View {
             .padding()
         }
         .task {
-            print("UserView task starting profile load") // Debug print
+//            print("UserView task starting profile load") // Debug print
             await viewModel.loadProfile()
-            print("UserView profile loaded: \(String(describing: viewModel.user))") // Debug print
+//            print("UserView profile loaded: \(String(describing: viewModel.user))") // Debug print
         }
         .navigationTitle(viewModel.user?.username ?? "")
         .navigationBarTitleDisplayMode(.inline)

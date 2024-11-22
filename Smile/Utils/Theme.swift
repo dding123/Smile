@@ -51,10 +51,3 @@ extension Theme {
         }
     }
 }
-
-// MARK: - View Extensions
-extension View {
-    func cardStyle() -> some View {
-        modifier(Theme.CardStyle())
-    }
-}

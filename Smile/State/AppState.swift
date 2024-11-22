@@ -33,7 +33,7 @@ class AppState: ObservableObject {
                 do {
                     var post = try document.data(as: Post.self)
                     post.id = document.documentID
-                    print("Loaded post: \(post.id ?? "unknown"), imagePath: \(post.imagePath)")
+//                    print("Loaded post: \(post.id ?? "unknown"), imagePath: \(post.imagePath)")
                     return post
                 } catch {
                     print("Error decoding post: \(error)")

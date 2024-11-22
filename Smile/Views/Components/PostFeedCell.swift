@@ -56,7 +56,7 @@ struct PostFeedCell: View {
                 Text(post.username)
                     .font(Theme.Typography.titleSmall)
                 if let date = post.createdAt {
-                    Text(date, style: .relative)
+                    formattedDate(date)
                         .font(Theme.Typography.caption)
                         .foregroundColor(Theme.Colors.textSecondary)
                 }
