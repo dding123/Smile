@@ -1,3 +1,11 @@
+//
+//  PostsGridView.swift
+//  Smile
+//
+//  Created by David Ding on 12/22/24.
+//
+import SwiftUI
+
 struct PostsGridView: View {
     @State private var selectedTab = 0
     @State private var selectedPost: Post? = nil

@@ -85,12 +85,7 @@ struct PreviewHelpers {
         return viewModel
     }()
     
-    // MARK: - Helper Methods
-    static func mockBaseProfileViewModel(for userId: String = demoUser.id) -> BaseProfileViewModel {
-        BaseProfileViewModel(userId: userId)
-    }
-    
-    static func mockProfileViewModel() -> ProfileViewModel {
+    @MainActor static func mockProfileViewModel() -> ProfileViewModel {
         ProfileViewModel(authViewModel: mockAuthViewModel)
     }
 }

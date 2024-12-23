@@ -10,49 +10,112 @@ import SwiftUI
 struct ProfileView: View {
     @EnvironmentObject var authViewModel: AuthViewModel
     @StateObject private var viewModel: ProfileViewModel
+    var bannerHeight: CGFloat { UIScreen.main.bounds.height * 0.20 }
+    var profileImageSize: CGFloat { UIScreen.main.bounds.width * 0.28 } 
     
     init() {
-        // This temporary AuthViewModel will be replaced in onAppear
-        self._viewModel = StateObject(wrappedValue: ProfileViewModel(authViewModel: AuthViewModel()))
+        _viewModel = StateObject(wrappedValue: ProfileViewModel(authViewModel: AuthViewModel()))
     }
     
     var body: some View {
-        BaseProfileView(userId: authViewModel.currentUser?.id ?? "", viewModel: viewModel) {
-            VStack(spacing: 12) {
-                Button {
-                    viewModel.profileImageType = .profilePicture
-                    viewModel.isImagePickerShowing = true
-                } label: {
-                    Label("Change Profile Picture", systemImage: "camera")
-                        .foregroundColor(.blue)
-                }
-                
-                Button {
-                    viewModel.profileImageType = .bannerPicture
-                    viewModel.isImagePickerShowing = true
-                } label: {
-                    Label("Change Banner Picture", systemImage: "photo")
-                        .foregroundColor(.blue)
-                }
-                
-                Button {
-                    viewModel.showingSettingsSheet = true
-                } label: {
-                    Label("Settings", systemImage: "gear")
-                        .foregroundColor(.blue)
-                }
-                
-                Button {
-                    Task {
-                        await viewModel.signOut()
+        ScrollView {
+            VStack(spacing: 0) {
+                // Banner and Profile Section
+                ZStack(alignment: .bottomLeading) {
+                    // Banner Image with Settings Button
+                    ZStack(alignment: .bottomTrailing) {
+                        if let user = viewModel.user,
+                           let bannerUrl = user.bannerPictureUrl,
+                           let url = URL(string: bannerUrl) {
+                            AsyncImage(url: url) { image in
+                                image
+                                    .resizable()
+                                    .aspectRatio(contentMode: .fill)
+                            } placeholder: {
+                                Image("bannerImage")
+                                    .resizable()
+                                    .aspectRatio(contentMode: .fill)
+                            }
+                            .frame(height: bannerHeight)
+                            .clipped()
+                        } else {
+                            Image("bannerImage")
+                                .resizable()
+                                .aspectRatio(contentMode: .fill)
+                                .frame(height: bannerHeight)
+                                .clipped()
+                        }
+                        
+                        Button {
+                            viewModel.showingSettingsSheet = true
+                        } label: {
+                            Image(systemName: "gearshape.fill")
+                                .font(.title2)
+                                .foregroundColor(.white)
+                                .padding(8)
+                                .background(.black.opacity(0.3))
+                                .clipShape(Circle())
+                        }
+                        .padding()
                     }
-                } label: {
-                    Label("Sign Out", systemImage: "rectangle.portrait.and.arrow.right")
-                        .foregroundColor(.red)
+                    
+                    // Profile Image
+                    Button {
+                        viewModel.profileImageType = .profilePicture
+                        viewModel.isImagePickerShowing = true
+                    } label: {
+                        if let user = viewModel.user,
+                           let profileUrl = user.profilePictureUrl,
+                           let url = URL(string: profileUrl) {
+                            AsyncImage(url: url) { image in
+                                image
+                                    .resizable()
+                                    .aspectRatio(contentMode: .fill)
+                            } placeholder: {
+                                Image("defaultAvatar")
+                                    .resizable()
+                                    .aspectRatio(contentMode: .fill)
+                            }
+                            .frame(width: profileImageSize, height: profileImageSize)
+                            .clipShape(Circle())
+                            .overlay(Circle().stroke(Color.white, lineWidth: 4))
+                        } else {
+                            Image("defaultAvatar")
+                                .resizable()
+                                .aspectRatio(contentMode: .fill)
+                                .frame(width: profileImageSize, height: profileImageSize)
+                                .clipShape(Circle())
+                                .overlay(Circle().stroke(Color.white, lineWidth: 4))
+                        }
+                    }
+                    .offset(x: UIScreen.main.bounds.width * 0.08, y: profileImageSize / 2)
+                    .shadow(radius: 10)
                 }
+                
+                // User Info
+                VStack(alignment: .leading, spacing: 8) {
+                    Spacer()
+                        .frame(height: profileImageSize/2 + 20)
+                    
+                    if let user = viewModel.user {
+                        Text("\(user.firstName) \(user.lastName)")
+                            .font(.title2)
+                            .fontWeight(.bold)
+                        
+                        Text("@\(user.username)")
+                            .font(.subheadline)
+                            .foregroundColor(.gray)
+                    }
+                }
+                .padding(.horizontal)
+                
+                // Posts Grid
+                PostsGridView(uploadedPosts: viewModel.uploadedPosts,
+                            taggedPosts: viewModel.taggedPosts)
+                    .padding(.top)
             }
-            .padding()
         }
+        .ignoresSafeArea(.container, edges: .top)
         .sheet(isPresented: $viewModel.isImagePickerShowing) {
             ImagePicker(imageType: viewModel.profileImageType) { image in
                 Task {
@@ -61,20 +124,18 @@ struct ProfileView: View {
             }
         }
         .sheet(isPresented: $viewModel.showingSettingsSheet) {
-            Text("Settings")
-                .presentationDetents([.medium])
+            SettingsView(viewModel: viewModel)
         }
         .onAppear {
-            // Update the viewModel to use the actual authViewModel from environment
             viewModel.updateAuthViewModel(authViewModel)
         }
     }
 }
 
-//struct ProfileView_Previews: PreviewProvider {
-//    static var previews: some View {
-//        PreviewHelpers.PreviewContainer {
-//            ProfileView()
-//        }
-//    }
-//}
+struct ProfileView_Previews: PreviewProvider {
+    static var previews: some View {
+        PreviewHelpers.PreviewContainer {
+            ProfileView()
+        }
+    }
+}

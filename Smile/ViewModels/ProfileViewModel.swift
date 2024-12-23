@@ -9,40 +9,48 @@ import SwiftUI
 import Firebase
 import Combine
 
-class ProfileViewModel: BaseProfileViewModel {
-    private var authViewModel: AuthViewModel
+@MainActor
+class ProfileViewModel: ProfileLoading {
+    @Published var user: User?
+    @Published var uploadedPosts: [Post] = []
+    @Published var taggedPosts: [Post] = []
+    @Published var isLoading = false
+    @Published var error: String?
     @Published var isImagePickerShowing = false
     @Published var profileImageType: ProfileImageType = .profilePicture
     @Published var showingSettingsSheet = false
     
-    init(authViewModel: AuthViewModel) {
+    let dataService: DataService
+    var userId: String { authViewModel.currentUser?.id ?? "" }
+    
+    private var authViewModel: AuthViewModel
+    
+    init(authViewModel: AuthViewModel, dataService: DataService = FirebaseDataService()) {
         self.authViewModel = authViewModel
-        super.init(userId: authViewModel.currentUser?.id ?? "")
+        self.dataService = dataService
+        loadProfile()
     }
     
     func updateAuthViewModel(_ newAuthViewModel: AuthViewModel) {
         self.authViewModel = newAuthViewModel
-        if let userId = newAuthViewModel.currentUser?.id {
-            self.userId = userId
-            Task {
-                await loadProfile()
-            }
+        if authViewModel.currentUser != nil {
+            loadProfile()
+        }
+    }
+    
+    func updateProfileImage(_ image: UIImage, type: ProfileImageType) async {
+        do {
+            try await authViewModel.updateProfileImage(image, type: type)
+            await loadUserPosts()
+        } catch {
+            self.error = error.localizedDescription
         }
     }
     
     func signOut() async {
         await authViewModel.signOut()
     }
-    
-    func updateProfileImage(_ image: UIImage, type: ProfileImageType) async {
-        do {
-            try await authViewModel.updateProfileImage(image, type: type)
-            await loadProfile() // Reload profile to show updated image
-        } catch {
-            print("Error updating profile image: \(error)")
-        }
-    }
-    
+}
     // Future methods could include:
     // - updateProfile(firstName:lastName:bio:)
     // - updatePrivacySettings
@@ -50,4 +58,4 @@ class ProfileViewModel: BaseProfileViewModel {
     // - deleteAccount
     // - blockUser
     // - etc.
-}
+

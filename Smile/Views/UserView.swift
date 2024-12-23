@@ -8,49 +8,127 @@ import SwiftUI
 
 struct UserView: View {
     let userId: String
-    @State private var isFollowing = false
-    @StateObject private var viewModel: BaseProfileViewModel
+    @StateObject private var viewModel: UserViewModel
+    let bannerHeight: CGFloat = 200
+    let profileImageSize: CGFloat = 120
     
     init(userId: String) {
         self.userId = userId
-        self._viewModel = StateObject(wrappedValue: BaseProfileViewModel(userId: userId))
+        _viewModel = StateObject(wrappedValue: UserViewModel(userId: userId))
     }
     
     var body: some View {
-        BaseProfileView(userId: userId, viewModel: viewModel) { 
-            VStack(spacing: 12) {
-                Button {
-                    isFollowing.toggle()
-                } label: {
-                    Label(isFollowing ? "Following" : "Follow",
-                          systemImage: isFollowing ? "person.badge.check" : "person.badge.plus")
-                        .foregroundColor(isFollowing ? .gray : .blue)
-                        .padding(.horizontal, 20)
-                        .padding(.vertical, 8)
-                        .background(isFollowing ? Color.gray.opacity(0.2) : Color.blue.opacity(0.2))
-                        .clipShape(Capsule())
+        ScrollView {
+            VStack(spacing: 0) {
+                // Banner and Profile Section
+                ZStack(alignment: .bottomLeading) {
+                    // Banner Image
+                    if let user = viewModel.user,
+                       let bannerUrl = user.bannerPictureUrl,
+                       let url = URL(string: bannerUrl) {
+                        AsyncImage(url: url) { image in
+                            image
+                                .resizable()
+                                .aspectRatio(contentMode: .fill)
+                        } placeholder: {
+                            Image("bannerImage")
+                                .resizable()
+                                .aspectRatio(contentMode: .fill)
+                        }
+                        .frame(height: bannerHeight)
+                        .clipped()
+                    } else {
+                        Image("bannerImage")
+                            .resizable()
+                            .aspectRatio(contentMode: .fill)
+                            .frame(height: bannerHeight)
+                            .clipped()
+                    }
+                    
+                    // Profile Image
+                    if let user = viewModel.user,
+                       let profileUrl = user.profilePictureUrl,
+                       let url = URL(string: profileUrl) {
+                        AsyncImage(url: url) { image in
+                            image
+                                .resizable()
+                                .aspectRatio(contentMode: .fill)
+                        } placeholder: {
+                            Image("defaultAvatar")
+                                .resizable()
+                                .aspectRatio(contentMode: .fill)
+                        }
+                        .frame(width: profileImageSize, height: profileImageSize)
+                        .clipShape(Circle())
+                        .overlay(Circle().stroke(Color.white, lineWidth: 4))
+                        .offset(x: 20, y: profileImageSize / 2)
+                        .shadow(radius: 10)
+                    } else {
+                        Image("defaultAvatar")
+                            .resizable()
+                            .aspectRatio(contentMode: .fill)
+                            .frame(width: profileImageSize, height: profileImageSize)
+                            .clipShape(Circle())
+                            .overlay(Circle().stroke(Color.white, lineWidth: 4))
+                            .offset(x: 20, y: profileImageSize / 2)
+                            .shadow(radius: 10)
+                    }
                 }
                 
-                Button {
-                    // Message functionality to be implemented
-                } label: {
-                    Label("Message", systemImage: "message")
-                        .foregroundColor(.blue)
-                        .padding(.horizontal, 20)
-                        .padding(.vertical, 8)
-                        .background(Color.blue.opacity(0.2))
-                        .clipShape(Capsule())
+                // User Info
+                VStack(alignment: .leading, spacing: 8) {
+                    Spacer()
+                        .frame(height: profileImageSize/2 + 20)
+                    
+                    if let user = viewModel.user {
+                        Text("\(user.firstName) \(user.lastName)")
+                            .font(.title2)
+                            .fontWeight(.bold)
+                        
+                        Text("@\(user.username)")
+                            .font(.subheadline)
+                            .foregroundColor(.gray)
+                    }
+                    
+                    // Follow/Message Buttons
+                    HStack(spacing: 12) {
+                        Button {
+                            viewModel.toggleFollow()
+                        } label: {
+                            Label(viewModel.isFollowing ? "Following" : "Follow",
+                                  systemImage: viewModel.isFollowing ? "person.badge.check" : "person.badge.plus")
+                                .foregroundColor(viewModel.isFollowing ? .gray : .blue)
+                                .padding(.horizontal, 20)
+                                .padding(.vertical, 8)
+                                .background(viewModel.isFollowing ? Color.gray.opacity(0.2) : Color.blue.opacity(0.2))
+                                .clipShape(Capsule())
+                        }
+                        
+                        Button {
+                            viewModel.sendMessage()
+                        } label: {
+                            Label("Message", systemImage: "message")
+                                .foregroundColor(.blue)
+                                .padding(.horizontal, 20)
+                                .padding(.vertical, 8)
+                                .background(Color.blue.opacity(0.2))
+                                .clipShape(Capsule())
+                        }
+                    }
+                    .padding(.top)
                 }
+                .padding(.horizontal)
+                
+                // Posts Grid
+                PostsGridView(uploadedPosts: viewModel.uploadedPosts,
+                            taggedPosts: viewModel.taggedPosts)
+                    .padding(.top)
             }
-            .padding()
         }
+        .ignoresSafeArea(.container, edges: .top)
         .task {
-//            print("UserView task starting profile load") // Debug print
             await viewModel.loadProfile()
-//            print("UserView profile loaded: \(String(describing: viewModel.user))") // Debug print
         }
-        .navigationTitle(viewModel.user?.username ?? "")
-        .navigationBarTitleDisplayMode(.inline)
     }
 }
 

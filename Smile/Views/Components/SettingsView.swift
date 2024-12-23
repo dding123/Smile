@@ -1,3 +1,11 @@
+//
+//  SettingsView.swift
+//  Smile
+//
+//  Created by David Ding on 12/22/24.
+//
+import SwiftUI
+
 struct SettingsView: View {
     @ObservedObject var viewModel: ProfileViewModel
     @Environment(\.dismiss) var dismiss
