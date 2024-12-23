@@ -59,15 +59,13 @@ class AuthViewModel: ObservableObject {
     }
     
     @MainActor
-    func signOut() {
-        Task {
-            do {
-                try await dataService.signOut()
-                currentUser = nil
-                authError = ""
-            } catch {
-                authError = error.localizedDescription
-            }
+    func signOut() async {
+        do {
+            try await dataService.signOut()
+            currentUser = nil
+            authError = ""
+        } catch {
+            authError = error.localizedDescription
         }
     }
     

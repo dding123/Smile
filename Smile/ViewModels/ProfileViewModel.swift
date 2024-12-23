@@ -28,13 +28,18 @@ class ProfileViewModel: ProfileLoading {
     init(authViewModel: AuthViewModel, dataService: DataService = FirebaseDataService()) {
         self.authViewModel = authViewModel
         self.dataService = dataService
-        loadProfile()
+        self.user = authViewModel.currentUser  // Directly set the user
+        Task {
+            await loadProfile()
+        }
     }
     
     func updateAuthViewModel(_ newAuthViewModel: AuthViewModel) {
         self.authViewModel = newAuthViewModel
         if authViewModel.currentUser != nil {
-            loadProfile()
+            Task {
+                await loadProfile()
+            }
         }
     }
     

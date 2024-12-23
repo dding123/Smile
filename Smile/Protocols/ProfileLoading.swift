@@ -18,26 +18,24 @@ protocol ProfileLoading: ObservableObject {
     var dataService: DataService { get }
     var userId: String { get }
     
-    func loadProfile()
+    func loadProfile() async
     func loadUserPosts() async
 }
 
 @MainActor
 extension ProfileLoading {
-    func loadProfile() {
+    func loadProfile() async {  // Added async keyword
         isLoading = true
         
-        Task {
-            do {
-                user = try await dataService.fetchUserProfile(userId: userId)
-                await loadUserPosts()
-            } catch {
-                self.error = error.localizedDescription
-            }
-            isLoading = false
+        do {
+            user = try await dataService.fetchUserProfile(userId: userId)
+            await loadUserPosts()
+        } catch {
+            self.error = error.localizedDescription
         }
+        isLoading = false
     }
-    
+
     func loadUserPosts() async {
         do {
             let uploaded = try await dataService.fetchUserPosts(userId: userId, limit: 12, after: nil)

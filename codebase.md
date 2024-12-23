@@ -122,10 +122,10 @@ social media app
 		0969DFCC2CD04360002A7BEA /* Comment.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0969DFCB2CD0435C002A7BEA /* Comment.swift */; };
 		098AF2A42CA4D9710095B1CD /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 098AF2A32CA4D9710095B1CD /* GoogleService-Info.plist */; };
 		099E3F832D18F15600253B08 /* ProfileLoading.swift in Sources */ = {isa = PBXBuildFile; fileRef = 099E3F822D18F15100253B08 /* ProfileLoading.swift */; };
-		09A49D922CE1C3AA00040397 /* BaseProfileView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 09A49D912CE1C3AA00040397 /* BaseProfileView.swift */; };
+		099E3F852D18F51C00253B08 /* PostsGridView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 099E3F842D18F51C00253B08 /* PostsGridView.swift */; };
+		099E3F872D18F52C00253B08 /* SettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 099E3F862D18F52C00253B08 /* SettingsView.swift */; };
 		09A49D942CE1C3CB00040397 /* UserView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 09A49D932CE1C3CB00040397 /* UserView.swift */; };
 		09A49D982CE1C58C00040397 /* PreviewHelpers.swift in Sources */ = {isa = PBXBuildFile; fileRef = 09A49D972CE1C58C00040397 /* PreviewHelpers.swift */; };
-		09A49D9A2CE1C89D00040397 /* BaseProfileViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 09A49D992CE1C89D00040397 /* BaseProfileViewModel.swift */; };
 		09A49D9C2CE9DD0B00040397 /* Theme.swift in Sources */ = {isa = PBXBuildFile; fileRef = 09A49D9B2CE9DD0600040397 /* Theme.swift */; };
 		09A49DA32CED60A900040397 /* PostFeedCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 09A49DA22CED60A900040397 /* PostFeedCell.swift */; };
 		09AAFA432CD5627C004CD75D /* UserTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 09AAFA422CD5627C004CD75D /* UserTests.swift */; };
@@ -184,10 +184,10 @@ social media app
 		0969DFCB2CD0435C002A7BEA /* Comment.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Comment.swift; sourceTree = "<group>"; };
 		098AF2A32CA4D9710095B1CD /* GoogleService-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		099E3F822D18F15100253B08 /* ProfileLoading.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileLoading.swift; sourceTree = "<group>"; };
-		09A49D912CE1C3AA00040397 /* BaseProfileView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BaseProfileView.swift; sourceTree = "<group>"; };
+		099E3F842D18F51C00253B08 /* PostsGridView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostsGridView.swift; sourceTree = "<group>"; };
+		099E3F862D18F52C00253B08 /* SettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsView.swift; sourceTree = "<group>"; };
 		09A49D932CE1C3CB00040397 /* UserView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserView.swift; sourceTree = "<group>"; };
 		09A49D972CE1C58C00040397 /* PreviewHelpers.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PreviewHelpers.swift; sourceTree = "<group>"; };
-		09A49D992CE1C89D00040397 /* BaseProfileViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BaseProfileViewModel.swift; sourceTree = "<group>"; };
 		09A49D9B2CE9DD0600040397 /* Theme.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Theme.swift; sourceTree = "<group>"; };
 		09A49DA22CED60A900040397 /* PostFeedCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostFeedCell.swift; sourceTree = "<group>"; };
 		09AAFA422CD5627C004CD75D /* UserTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserTests.swift; sourceTree = "<group>"; };
@@ -297,7 +297,6 @@ social media app
 			children = (
 				09A49D9F2CED606700040397 /* Components */,
 				09A49D932CE1C3CB00040397 /* UserView.swift */,
-				09A49D912CE1C3AA00040397 /* BaseProfileView.swift */,
 				09AAFA502CE0579A004CD75D /* CreateGroupView.swift */,
 				0969DFC72CD04060002A7BEA /* PostDetailView.swift */,
 				0969DFC52CCF4466002A7BEA /* RootView.swift */,
@@ -318,7 +317,6 @@ social media app
 		094627E22C5090D000C8FE90 /* ViewModels */ = {
 			isa = PBXGroup;
 			children = (
-				09A49D992CE1C89D00040397 /* BaseProfileViewModel.swift */,
 				09AAFA4E2CE04EA0004CD75D /* SearchViewModel.swift */,
 				0969DFC92CD04083002A7BEA /* PostDetailViewModel.swift */,
 				0969DFBD2CCF402B002A7BEA /* ProfileViewModel.swift */,
@@ -370,6 +368,8 @@ social media app
 		09A49D9F2CED606700040397 /* Components */ = {
 			isa = PBXGroup;
 			children = (
+				099E3F862D18F52C00253B08 /* SettingsView.swift */,
+				099E3F842D18F51C00253B08 /* PostsGridView.swift */,
 				09A49DA22CED60A900040397 /* PostFeedCell.swift */,
 				09AAFA482CDC5055004CD75D /* PostImageView.swift */,
 			);
@@ -509,7 +509,7 @@ social media app
 				0969DFBC2CCB50A1002A7BEA /* ProfileImageType.swift in Sources */,
 				09E28BC62A78B14A00C003A1 /* GroupsView.swift in Sources */,
 				0969DFCC2CD04360002A7BEA /* Comment.swift in Sources */,
-				09A49D922CE1C3AA00040397 /* BaseProfileView.swift in Sources */,
+				099E3F852D18F51C00253B08 /* PostsGridView.swift in Sources */,
 				0969DF9D2CBDFED7002A7BEA /* HomeViewModel.swift in Sources */,
 				0969DFB62CC88096002A7BEA /* TaggingViewModel.swift in Sources */,
 				09E28BC42A78B13700C003A1 /* UploadView.swift in Sources */,
@@ -524,6 +524,7 @@ social media app
 				0969DFCA2CD04087002A7BEA /* PostDetailViewModel.swift in Sources */,
 				099E3F832D18F15600253B08 /* ProfileLoading.swift in Sources */,
 				0908AEC42C9B950200F13C0E /* DataService.swift in Sources */,
+				099E3F872D18F52C00253B08 /* SettingsView.swift in Sources */,
 				09AAFA512CE0579A004CD75D /* CreateGroupView.swift in Sources */,
 				0908AEC82C9B965A00F13C0E /* TaggingView.swift in Sources */,
 				094627E92C50913800C8FE90 /* Post.swift in Sources */,
@@ -545,7 +546,6 @@ social media app
 				0969DFBA2CCB4E18002A7BEA /* ImagePicker.swift in Sources */,
 				09E28BC02A78B11F00C003A1 /* ProfileView.swift in Sources */,
 				090F42C42A67A5E90035774E /* SmileApp.swift in Sources */,
-				09A49D9A2CE1C89D00040397 /* BaseProfileViewModel.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1806,12 +1806,7 @@ struct PreviewHelpers {
         return viewModel
     }()
     
-    // MARK: - Helper Methods
-    static func mockBaseProfileViewModel(for userId: String = demoUser.id) -> BaseProfileViewModel {
-        BaseProfileViewModel(userId: userId)
-    }
-    
-    static func mockProfileViewModel() -> ProfileViewModel {
+    @MainActor static func mockProfileViewModel() -> ProfileViewModel {
         ProfileViewModel(authViewModel: mockAuthViewModel)
     }
 }
@@ -1863,7 +1858,10 @@ struct TabViewPreview_Previews: PreviewProvider {
 //
 //  Created by David Ding on 12/22/24.
 //
+import SwiftUI
+import Combine
 
+@MainActor
 protocol ProfileLoading: ObservableObject {
     var user: User? { get set }
     var uploadedPosts: [Post] { get set }
@@ -1878,8 +1876,8 @@ protocol ProfileLoading: ObservableObject {
     func loadUserPosts() async
 }
 
+@MainActor
 extension ProfileLoading {
-    @MainActor
     func loadProfile() {
         isLoading = true
         
@@ -1894,13 +1892,12 @@ extension ProfileLoading {
         }
     }
     
-    @MainActor
     func loadUserPosts() async {
         do {
-            let uploaded = try await dataService.fetchUserPosts(userId: userId, limit: 12)
+            let uploaded = try await dataService.fetchUserPosts(userId: userId, limit: 12, after: nil)
             uploadedPosts = uploaded
             
-            let tagged = try await dataService.fetchTaggedPosts(userId: userId, limit: 12)
+            let tagged = try await dataService.fetchTaggedPosts(userId: userId, limit: 12, after: nil)
             taggedPosts = tagged
         } catch {
             self.error = error.localizedDescription
@@ -3059,98 +3056,6 @@ class AuthViewModel: ObservableObject {
 
 ```
 
-# Smile/ViewModels/BaseProfileViewModel.swift
-
-```swift
-//
-//  BaseProfileViewModel.swift
-//  Smile
-//
-//  Created by David Ding on 11/10/24.
-//
-import SwiftUI
-import Firebase
-import Combine
-
-class BaseProfileViewModel: ObservableObject {
-    enum Tab {
-        case photos
-        case uploads
-    }
-    
-    // Change from private to protected
-    internal var userId: String {
-        didSet {
-            if oldValue != userId {
-                Task { @MainActor in
-                    await loadProfile()
-                }
-            }
-        }
-    }
-    
-    @Published var uploadedPosts: [Post] = []
-    @Published var taggedPosts: [Post] = []
-    @Published var isLoading = false
-    @Published var error: String?
-    @Published var user: User?
-    
-    private let dataService: DataService
-    private var lastUploadedPost: Post?
-    private var lastTaggedPost: Post?
-    private var hasMoreUploadedPosts = true
-    private var hasMoreTaggedPosts = true
-    
-    init(userId: String) {
-        self.userId = userId
-        self.dataService = FirebaseDataService()
-    }
-    
-    @MainActor
-    func loadProfile() async {
-        isLoading = true
-        do {
-//            print("Loading profile for userId: \(userId)") // Debug print
-            user = try await dataService.fetchUserProfile(userId: userId)
-//            print("Loaded user: \(String(describing: user))") // Debug print
-            await loadUserPosts()
-        } catch {
-            print("Error loading profile: \(error)")
-            self.error = error.localizedDescription
-        }
-        isLoading = false
-    }
-    
-    @MainActor
-    private func loadUserPosts() async {
-        isLoading = true
-        do {
-            let uploaded = try await dataService.fetchUserPosts(
-                userId: userId,
-                limit: 12,
-                after: nil
-            )
-            uploadedPosts = uploaded
-            lastUploadedPost = uploaded.last
-            hasMoreUploadedPosts = uploaded.count == 12
-            
-            let tagged = try await dataService.fetchTaggedPosts(
-                userId: userId,
-                limit: 12,
-                after: nil
-            )
-            taggedPosts = tagged
-            lastTaggedPost = tagged.last
-            hasMoreTaggedPosts = tagged.count == 12
-        } catch let loadError {
-            error = loadError.localizedDescription
-        }
-        isLoading = false
-    }
-}
-
-```
-
 # Smile/ViewModels/HomeViewModel.swift
 
 ```swift
@@ -3351,7 +3256,7 @@ class ProfileViewModel: ProfileLoading {
     func updateProfileImage(_ image: UIImage, type: ProfileImageType) async {
         do {
             try await authViewModel.updateProfileImage(image, type: type)
-            await loadProfile()
+            await loadUserPosts()
         } catch {
             self.error = error.localizedDescription
         }
@@ -3361,13 +3266,12 @@ class ProfileViewModel: ProfileLoading {
         await authViewModel.signOut()
     }
 }
-    
     // Future methods could include:
     // - updateProfile(firstName:lastName:bio:)
     // - updatePrivacySettings
     // - updateNotificationPreferences
     // - deleteAccount
-    // - blockUser
+    // - blockUser 
     // - etc.
 
 
@@ -3535,173 +3439,6 @@ class UserViewModel: ProfileLoading {
     
     func sendMessage() {
         // Implement message sending logic here
-    }
-}
-
-```
-
-# Smile/Views/BaseProfileView.swift
-
-```swift
-//
-//  BaseProfileView.swift
-//  Smile
-//
-//  Created by David Ding on 11/10/24.
-//
-
-
-import SwiftUI
-
-struct BaseProfileView<Content: View>: View {
-    let userId: String
-    let bannerHeight: CGFloat = 200
-    let profileImageSize: CGFloat = 120
-    @ObservedObject var viewModel: BaseProfileViewModel 
-    @State private var selectedTab: BaseProfileViewModel.Tab = .photos
-    @State private var selectedPost: Post? = nil
-    let additionalContent: () -> Content
-    
-    init(userId: String, viewModel: BaseProfileViewModel, @ViewBuilder additionalContent: @escaping () -> Content) {
-        self.userId = userId
-        self.viewModel = viewModel
-        self.additionalContent = additionalContent
-    }
-    
-    var body: some View {
-        ScrollView {
-            ZStack(alignment: .bottomLeading) {
-                // Banner image
-                bannerImage
-                
-                // Profile image
-                profileImage
-                    .offset(x: 20, y: profileImageSize / 2)
-            }
-            
-            Spacer().frame(height: profileImageSize / 2 + 20)
-            
-            // User info
-            userInfo
-            
-            // Additional content passed from specific views
-            additionalContent()
-            
-            // Post grid section
-            postGridSection
-        }
-        .ignoresSafeArea(.container, edges: .top)
-        .task {
-            await viewModel.loadProfile()
-        }
-        .refreshable {
-            await viewModel.loadProfile()
-        }
-    }
-    
-    private var bannerImage: some View {
-        Group {
-            if let user = viewModel.user,
-               let bannerUrl = user.bannerPictureUrl,
-               let url = URL(string: bannerUrl) {
-                AsyncImage(url: url) { image in
-                    image
-                        .resizable()
-                        .aspectRatio(contentMode: .fill)
-                } placeholder: {
-                    Image("bannerImage")
-                        .resizable()
-                        .aspectRatio(contentMode: .fill)
-                }
-                .frame(height: bannerHeight)
-                .clipped()
-            } else {
-                Image("bannerImage")
-                    .resizable()
-                    .aspectRatio(contentMode: .fill)
-                    .frame(height: bannerHeight)
-                    .clipped()
-            }
-        }
-    }
-    
-    private var profileImage: some View {
-        Group {
-            if let user = viewModel.user,
-               let profileUrl = user.profilePictureUrl,
-               let url = URL(string: profileUrl) {
-                AsyncImage(url: url) { image in
-                    image
-                        .resizable()
-                        .aspectRatio(contentMode: .fill)
-                } placeholder: {
-                    Image("defaultAvatar")
-                        .resizable()
-                        .aspectRatio(contentMode: .fill)
-                }
-            } else {
-                Image("defaultAvatar")
-                    .resizable()
-                    .aspectRatio(contentMode: .fill)
-            }
-        }
-        .frame(width: profileImageSize, height: profileImageSize)
-        .clipShape(Circle())
-        .overlay(Circle().stroke(Color.white, lineWidth: 4))
-        .shadow(radius: 10)
-    }
-    
-    private var userInfo: some View {
-        VStack(alignment: .leading, spacing: 8) {
-            if let displayUser = viewModel.user {
-                Text("\(displayUser.firstName) \(displayUser.lastName)")
-                    .font(.title2)
-                    .fontWeight(.bold)
-                
-                Text("@\(displayUser.username)")
-                    .font(.subheadline)
-                    .foregroundColor(.gray)
-            }
-        }
-        .padding(.horizontal)
-    }
-    
-    private var postGridSection: some View {
-        VStack {
-            Picker("Post Type", selection: $selectedTab) {
-                Text("Photos").tag(BaseProfileViewModel.Tab.photos)
-                Text("Uploads").tag(BaseProfileViewModel.Tab.uploads)
-            }
-            .pickerStyle(SegmentedPickerStyle())
-            .padding()
-            
-            let columns: [GridItem] = Array(repeating: .init(.flexible(), spacing: 2), count: 3)
-            let width = (UIScreen.main.bounds.width - 4) / 3
-            
-            LazyVGrid(columns: columns, spacing: 2) {
-                ForEach(selectedTab == .photos ? viewModel.taggedPosts : viewModel.uploadedPosts) { post in
-                    PostImageView(
-                        imagePath: post.imagePath,
-                        size: width
-                    )
-                    .frame(width: width, height: width)
-                    .clipped()
-                    .onTapGesture {
-                        selectedPost = post
-                    }
-                }
-            }
-            .sheet(item: $selectedPost) { post in
-                PostDetailView(post: post)
-                    .presentationDragIndicator(.visible)
-                    .presentationDetents([.large])
-            }
-            
-            if viewModel.isLoading {
-                ProgressView()
-                    .padding()
-            }
-        }
     }
 }
 
@@ -3952,6 +3689,97 @@ struct PostImageView: View {
             await MainActor.run {
                 self.loadError = error
                 self.isLoading = false
+            }
+        }
+    }
+}
+
+```
+
+# Smile/Views/Components/PostsGridView.swift
+
+```swift
+//
+//  PostsGridView.swift
+//  Smile
+//
+//  Created by David Ding on 12/22/24.
+//
+import SwiftUI
+
+struct PostsGridView: View {
+    @State private var selectedTab = 0
+    @State private var selectedPost: Post? = nil
+    let uploadedPosts: [Post]
+    let taggedPosts: [Post]
+    
+    var body: some View {
+        VStack {
+            Picker("Post Type", selection: $selectedTab) {
+                Text("Photos").tag(0)
+                Text("Tagged").tag(1)
+            }
+            .pickerStyle(SegmentedPickerStyle())
+            .padding()
+            
+            let columns = [
+                GridItem(.flexible(), spacing: 2),
+                GridItem(.flexible(), spacing: 2),
+                GridItem(.flexible(), spacing: 2)
+            ]
+            
+            LazyVGrid(columns: columns, spacing: 2) {
+                ForEach(selectedTab == 0 ? uploadedPosts : taggedPosts) { post in
+                    PostImageView(imagePath: post.imagePath,
+                                size: UIScreen.main.bounds.width / 3 - 1)
+                        .clipped()
+                        .onTapGesture {
+                            selectedPost = post
+                        }
+                }
+            }
+            .sheet(item: $selectedPost) { post in
+                PostDetailView(post: post)
+            }
+        }
+    }
+}
+
+```
+
+# Smile/Views/Components/SettingsView.swift
+
+```swift
+//
+//  SettingsView.swift
+//  Smile
+//
+//  Created by David Ding on 12/22/24.
+//
+import SwiftUI
+
+struct SettingsView: View {
+    @ObservedObject var viewModel: ProfileViewModel
+    @Environment(\.dismiss) var dismiss
+    
+    var body: some View {
+        NavigationView {
+            Form {
+                Button("Sign Out") {
+                    Task {
+                        await viewModel.signOut()
+                    }
+                }
+                .foregroundColor(.red)
+            }
+            .navigationTitle("Settings")
+            .navigationBarTitleDisplayMode(.inline)
+            .toolbar {
+                ToolbarItem(placement: .navigationBarTrailing) {
+                    Button("Done") {
+                        dismiss()
+                    }
+                }
             }
         }
     }
@@ -4687,14 +4515,11 @@ import SwiftUI
 struct ProfileView: View {
     @EnvironmentObject var authViewModel: AuthViewModel
     @StateObject private var viewModel: ProfileViewModel
-    @State private var selectedTab = 0
-    
-    let columns = Array(repeating: GridItem(.flexible(), spacing: 1), count: 3)
-    let bannerHeight: CGFloat = 200
-    let profileImageSize: CGFloat = 120
+    var bannerHeight: CGFloat { UIScreen.main.bounds.height * 0.20 }
+    var profileImageSize: CGFloat { UIScreen.main.bounds.width * 0.28 } 
     
     init() {
-        self._viewModel = StateObject(wrappedValue: ProfileViewModel(authViewModel: AuthViewModel()))
+        _viewModel = StateObject(wrappedValue: ProfileViewModel(authViewModel: AuthViewModel()))
     }
     
     var body: some View {
@@ -4702,11 +4527,30 @@ struct ProfileView: View {
             VStack(spacing: 0) {
                 // Banner and Profile Section
                 ZStack(alignment: .bottomLeading) {
-                    // Banner with Settings
-                    ZStack(alignment: .topTrailing) {
-                        // Banner Image same as before...
+                    // Banner Image with Settings Button
+                    ZStack(alignment: .bottomTrailing) {
+                        if let user = viewModel.user,
+                           let bannerUrl = user.bannerPictureUrl,
+                           let url = URL(string: bannerUrl) {
+                            AsyncImage(url: url) { image in
+                                image
+                                    .resizable()
+                                    .aspectRatio(contentMode: .fill)
+                            } placeholder: {
+                                Image("bannerImage")
+                                    .resizable()
+                                    .aspectRatio(contentMode: .fill)
+                            }
+                            .frame(height: bannerHeight)
+                            .clipped()
+                        } else {
+                            Image("bannerImage")
+                                .resizable()
+                                .aspectRatio(contentMode: .fill)
+                                .frame(height: bannerHeight)
+                                .clipped()
+                        }
                         
-                        // Settings Button
                         Button {
                             viewModel.showingSettingsSheet = true
                         } label: {
@@ -4719,13 +4563,61 @@ struct ProfileView: View {
                         }
                         .padding()
                     }
-                    .frame(height: bannerHeight)
-                    .clipped()
                     
-                    // Profile Image same as before...
+                    // Profile Image
+                    Button {
+                        viewModel.profileImageType = .profilePicture
+                        viewModel.isImagePickerShowing = true
+                    } label: {
+                        if let user = viewModel.user,
+                           let profileUrl = user.profilePictureUrl,
+                           let url = URL(string: profileUrl) {
+                            AsyncImage(url: url) { image in
+                                image
+                                    .resizable()
+                                    .aspectRatio(contentMode: .fill)
+                            } placeholder: {
+                                Image("defaultAvatar")
+                                    .resizable()
+                                    .aspectRatio(contentMode: .fill)
+                            }
+                            .frame(width: profileImageSize, height: profileImageSize)
+                            .clipShape(Circle())
+                            .overlay(Circle().stroke(Color.white, lineWidth: 4))
+                        } else {
+                            Image("defaultAvatar")
+                                .resizable()
+                                .aspectRatio(contentMode: .fill)
+                                .frame(width: profileImageSize, height: profileImageSize)
+                                .clipShape(Circle())
+                                .overlay(Circle().stroke(Color.white, lineWidth: 4))
+                        }
+                    }
+                    .offset(x: UIScreen.main.bounds.width * 0.08, y: profileImageSize / 2)
+                    .shadow(radius: 10)
                 }
                 
-                // Rest of the view same as before...
+                // User Info
+                VStack(alignment: .leading, spacing: 8) {
+                    Spacer()
+                        .frame(height: profileImageSize/2 + 20)
+                    
+                    if let user = viewModel.user {
+                        Text("\(user.firstName) \(user.lastName)")
+                            .font(.title2)
+                            .fontWeight(.bold)
+                        
+                        Text("@\(user.username)")
+                            .font(.subheadline)
+                            .foregroundColor(.gray)
+                    }
+                }
+                .padding(.horizontal)
+                
+                // Posts Grid
+                PostsGridView(uploadedPosts: viewModel.uploadedPosts,
+                            taggedPosts: viewModel.taggedPosts)
+                    .padding(.top)
             }
         }
         .ignoresSafeArea(.container, edges: .top)
@@ -4737,8 +4629,7 @@ struct ProfileView: View {
             }
         }
         .sheet(isPresented: $viewModel.showingSettingsSheet) {
-            Text("Settings")
-                .presentationDetents([.medium])
+            SettingsView(viewModel: viewModel)
         }
         .onAppear {
             viewModel.updateAuthViewModel(authViewModel)
@@ -5189,15 +5080,12 @@ import SwiftUI
 struct UserView: View {
     let userId: String
     @StateObject private var viewModel: UserViewModel
-    @State private var selectedTab = 0
-    
-    let columns = Array(repeating: GridItem(.flexible(), spacing: 1), count: 3)
     let bannerHeight: CGFloat = 200
     let profileImageSize: CGFloat = 120
     
     init(userId: String) {
         self.userId = userId
-        self._viewModel = StateObject(wrappedValue: UserViewModel(userId: userId))
+        _viewModel = StateObject(wrappedValue: UserViewModel(userId: userId))
     }
     
     var body: some View {
@@ -5205,15 +5093,63 @@ struct UserView: View {
             VStack(spacing: 0) {
                 // Banner and Profile Section
                 ZStack(alignment: .bottomLeading) {
-                    // Banner Image same as before...
+                    // Banner Image
+                    if let user = viewModel.user,
+                       let bannerUrl = user.bannerPictureUrl,
+                       let url = URL(string: bannerUrl) {
+                        AsyncImage(url: url) { image in
+                            image
+                                .resizable()
+                                .aspectRatio(contentMode: .fill)
+                        } placeholder: {
+                            Image("bannerImage")
+                                .resizable()
+                                .aspectRatio(contentMode: .fill)
+                        }
+                        .frame(height: bannerHeight)
+                        .clipped()
+                    } else {
+                        Image("bannerImage")
+                            .resizable()
+                            .aspectRatio(contentMode: .fill)
+                            .frame(height: bannerHeight)
+                            .clipped()
+                    }
                     
-                    // Profile Image same as before...
+                    // Profile Image
+                    if let user = viewModel.user,
+                       let profileUrl = user.profilePictureUrl,
+                       let url = URL(string: profileUrl) {
+                        AsyncImage(url: url) { image in
+                            image
+                                .resizable()
+                                .aspectRatio(contentMode: .fill)
+                        } placeholder: {
+                            Image("defaultAvatar")
+                                .resizable()
+                                .aspectRatio(contentMode: .fill)
+                        }
+                        .frame(width: profileImageSize, height: profileImageSize)
+                        .clipShape(Circle())
+                        .overlay(Circle().stroke(Color.white, lineWidth: 4))
+                        .offset(x: 20, y: profileImageSize / 2)
+                        .shadow(radius: 10)
+                    } else {
+                        Image("defaultAvatar")
+                            .resizable()
+                            .aspectRatio(contentMode: .fill)
+                            .frame(width: profileImageSize, height: profileImageSize)
+                            .clipShape(Circle())
+                            .overlay(Circle().stroke(Color.white, lineWidth: 4))
+                            .offset(x: 20, y: profileImageSize / 2)
+                            .shadow(radius: 10)
+                    }
                 }
                 
-                // User Info and Actions
-                VStack(alignment: .leading, spacing: 4) {
+                // User Info
+                VStack(alignment: .leading, spacing: 8) {
                     Spacer()
-                        .frame(height: profileImageSize/2 + 16)
+                        .frame(height: profileImageSize/2 + 20)
                     
                     if let user = viewModel.user {
                         Text("\(user.firstName) \(user.lastName)")
@@ -5221,10 +5157,11 @@ struct UserView: View {
                             .fontWeight(.bold)
                         
                         Text("@\(user.username)")
+                            .font(.subheadline)
                             .foregroundColor(.gray)
                     }
                     
-                    // User Actions
+                    // Follow/Message Buttons
                     HStack(spacing: 12) {
                         Button {
                             viewModel.toggleFollow()
@@ -5251,12 +5188,18 @@ struct UserView: View {
                     }
                     .padding(.top)
                 }
-                .padding()
+                .padding(.horizontal)
                 
-                // Photos Grid similar to ProfileView...
+                // Posts Grid
+                PostsGridView(uploadedPosts: viewModel.uploadedPosts,
+                            taggedPosts: viewModel.taggedPosts)
+                    .padding(.top)
             }
         }
         .ignoresSafeArea(.container, edges: .top)
+        .task {
+            await viewModel.loadProfile()
+        }
     }
 }
 

@@ -22,7 +22,9 @@ class UserViewModel: ProfileLoading {
     init(userId: String, dataService: DataService = FirebaseDataService()) {
         self.userId = userId
         self.dataService = dataService
-        loadProfile()
+        Task {
+            await loadProfile()
+        }
     }
     
     func toggleFollow() {

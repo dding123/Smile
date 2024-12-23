@@ -14,8 +14,8 @@ struct ProfileView: View {
     var profileImageSize: CGFloat { UIScreen.main.bounds.width * 0.28 } 
     
     init() {
-        _viewModel = StateObject(wrappedValue: ProfileViewModel(authViewModel: AuthViewModel()))
-    }
+            _viewModel = StateObject(wrappedValue: ProfileViewModel(authViewModel: PreviewHelpers.mockAuthViewModel))
+        }
     
     var body: some View {
         ScrollView {
@@ -93,9 +93,9 @@ struct ProfileView: View {
                 }
                 
                 // User Info
-                VStack(alignment: .leading, spacing: 8) {
+                VStack(alignment: .leading, spacing: 4) {
                     Spacer()
-                        .frame(height: profileImageSize/2 + 20)
+                        .frame(height: profileImageSize/2 + 12)
                     
                     if let user = viewModel.user {
                         Text("\(user.firstName) \(user.lastName)")
@@ -107,12 +107,13 @@ struct ProfileView: View {
                             .foregroundColor(.gray)
                     }
                 }
-                .padding(.horizontal)
+                .padding(.leading, UIScreen.main.bounds.width * 0.08)  // Match profile image offset
+                .frame(maxWidth: .infinity, alignment: .leading)  // Force left alignment
                 
                 // Posts Grid
                 PostsGridView(uploadedPosts: viewModel.uploadedPosts,
                             taggedPosts: viewModel.taggedPosts)
-                    .padding(.top)
+                    .padding(.top, 2)
             }
         }
         .ignoresSafeArea(.container, edges: .top)
@@ -134,8 +135,10 @@ struct ProfileView: View {
 
 struct ProfileView_Previews: PreviewProvider {
     static var previews: some View {
-        PreviewHelpers.PreviewContainer {
+        NavigationView {
             ProfileView()
+                .environmentObject(PreviewHelpers.mockAuthViewModel)
         }
+        .previewDisplayName("Profile with mock data")
     }
 }
