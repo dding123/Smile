@@ -22,18 +22,18 @@ class TaggingViewModel: ObservableObject {
         $searchText
             .debounce(for: .milliseconds(300), scheduler: RunLoop.main)
             .sink { [weak self] text in
-                if !text.isEmpty {
-                    // Cancel any existing search task
-                    self?.searchTask?.cancel()
-                    
-                    // Create a new search task
-                    self?.searchTask = Task {
-                        await self?.searchUsers(matching: text)
-                    }
-                } else {
+                guard let self = self else { return }
+                self.searchTask?.cancel()
+                
+                if text.isEmpty {
                     Task { @MainActor in
-                        self?.searchResults = []
+                        self.searchResults = []  // Ensure results are cleared when search is empty
                     }
+                    return
+                }
+                
+                self.searchTask = Task {
+                    await self.searchUsers(matching: text)
                 }
             }
             .store(in: &cancellables)

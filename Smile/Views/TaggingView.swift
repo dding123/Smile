@@ -14,10 +14,11 @@ struct TaggingView: View {
     @StateObject private var viewModel = TaggingViewModel()
     @EnvironmentObject var appState: AppState
     @EnvironmentObject var authViewModel: AuthViewModel
+    @Environment(\.presentationMode) var presentationMode
     @State private var caption = ""
     let imageData: Data
-    @Environment(\.presentationMode) var presentationMode
     private let dataService: DataService
+    var onUploadSuccess: (() -> Void)?
     
     init(imageData: Data, dataService: DataService = FirebaseDataService()) {
         self.imageData = imageData
@@ -27,13 +28,14 @@ struct TaggingView: View {
     var body: some View {
         NavigationView {
             Form {
-                Section(header: Text("Photo")) {
-                    if let uiImage = UIImage(data: imageData) {
-                        Image(uiImage: uiImage)
-                            .resizable()
-                            .scaledToFit()
-                            .frame(height: 200)
-                    }
+                if let uiImage = UIImage(data: imageData) {
+                    Image(uiImage: uiImage)
+                        .resizable()
+                        .aspectRatio(contentMode: .fill)
+                        .frame(height: UIScreen.main.bounds.width) // Make it square
+                        .clipShape(RoundedRectangle(cornerRadius: 12))
+                        .listRowInsets(EdgeInsets()) // Remove form padding
+                        .listRowBackground(Color.clear) // Remove form background
                 }
                 
                 Section(header: Text("Caption")) {
@@ -60,6 +62,7 @@ struct TaggingView: View {
                                 viewModel.removeTag(user)
                             } else {
                                 viewModel.tagUser(user)
+                                viewModel.searchText = "" // Clear search text after tagging
                             }
                         }
                     }
@@ -79,12 +82,22 @@ struct TaggingView: View {
                         }
                     }
                 }
+            }
+            .navigationTitle("Add Info")
+            .navigationBarTitleDisplayMode(.inline)
+            .toolbar {
+                ToolbarItem(placement: .navigationBarLeading) {
+                    Button("Cancel") {
+                        presentationMode.wrappedValue.dismiss()
+                    }
+                }
                 
-                Button("Upload") {
-                    uploadPost()
+                ToolbarItem(placement: .navigationBarTrailing) {
+                    Button("Share") {
+                        uploadPost()
+                    }
                 }
             }
-            .navigationTitle("New Post")
         }
     }
 
@@ -101,10 +114,7 @@ struct TaggingView: View {
         
         Task {
             do {
-                // Upload image and get path
                 let imagePath = try await dataService.uploadImage(imageData)
-                
-                // Create post with path
                 let taggedUsers = viewModel.taggedUsers.map { $0.id }
                 try await dataService.createPost(
                     userId: currentUser.uid,
@@ -118,15 +128,27 @@ struct TaggingView: View {
                 
                 await MainActor.run {
                     presentationMode.wrappedValue.dismiss()
+                    onUploadSuccess?()
                 }
             } catch {
                 print("Error creating post: \(error.localizedDescription)")
             }
         }
-    }}
-
-#Preview {
-    TaggingView(imageData: UIImage(systemName: "photo")?.pngData() ?? Data())
-        .environmentObject(AuthViewModel())
+    }
 }
 
+extension TaggingView {
+    func onUploadSuccess(action: @escaping () -> Void) -> some View {
+        var view = self
+        view.onUploadSuccess = action
+        return view
+    }
+}
+
+struct TaggingView_Previews: PreviewProvider {
+    static var previews: some View {
+        TaggingView(imageData: UIImage(systemName: "photo")?.pngData() ?? Data())
+            .environmentObject(AuthViewModel())
+            .environmentObject(AppState())
+    }
+}

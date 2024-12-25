@@ -139,6 +139,5 @@ struct ProfileView_Previews: PreviewProvider {
             ProfileView()
                 .environmentObject(PreviewHelpers.mockAuthViewModel)
         }
-        .previewDisplayName("Profile with mock data")
     }
 }

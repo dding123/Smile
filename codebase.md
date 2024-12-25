@@ -1872,26 +1872,24 @@ protocol ProfileLoading: ObservableObject {
     var dataService: DataService { get }
     var userId: String { get }
     
-    func loadProfile()
+    func loadProfile() async
     func loadUserPosts() async
 }
 
 @MainActor
 extension ProfileLoading {
-    func loadProfile() {
+    func loadProfile() async {  // Added async keyword
         isLoading = true
         
-        Task {
-            do {
-                user = try await dataService.fetchUserProfile(userId: userId)
-                await loadUserPosts()
-            } catch {
-                self.error = error.localizedDescription
-            }
-            isLoading = false
+        do {
+            user = try await dataService.fetchUserProfile(userId: userId)
+            await loadUserPosts()
+        } catch {
+            self.error = error.localizedDescription
         }
+        isLoading = false
     }
-    
+
     func loadUserPosts() async {
         do {
             let uploaded = try await dataService.fetchUserPosts(userId: userId, limit: 12, after: nil)
@@ -3007,15 +3005,13 @@ class AuthViewModel: ObservableObject {
     }
     
     @MainActor
-    func signOut() {
-        Task {
-            do {
-                try await dataService.signOut()
-                currentUser = nil
-                authError = ""
-            } catch {
-                authError = error.localizedDescription
-            }
+    func signOut() async {
+        do {
+            try await dataService.signOut()
+            currentUser = nil
+            authError = ""
+        } catch {
+            authError = error.localizedDescription
         }
     }
     
@@ -3243,13 +3239,18 @@ class ProfileViewModel: ProfileLoading {
     init(authViewModel: AuthViewModel, dataService: DataService = FirebaseDataService()) {
         self.authViewModel = authViewModel
         self.dataService = dataService
-        loadProfile()
+        self.user = authViewModel.currentUser  // Directly set the user
+        Task {
+            await loadProfile()
+        }
     }
     
     func updateAuthViewModel(_ newAuthViewModel: AuthViewModel) {
         self.authViewModel = newAuthViewModel
         if authViewModel.currentUser != nil {
-            loadProfile()
+            Task {
+                await loadProfile()
+            }
         }
     }
     
@@ -3271,7 +3272,7 @@ class ProfileViewModel: ProfileLoading {
     // - updatePrivacySettings
     // - updateNotificationPreferences
     // - deleteAccount
-    // - blockUser 
+    // - blockUser
     // - etc.
 
 
@@ -3429,7 +3430,9 @@ class UserViewModel: ProfileLoading {
     init(userId: String, dataService: DataService = FirebaseDataService()) {
         self.userId = userId
         self.dataService = dataService
-        loadProfile()
+        Task {
+            await loadProfile()
+        }
     }
     
     func toggleFollow() {
@@ -4519,8 +4522,8 @@ struct ProfileView: View {
     var profileImageSize: CGFloat { UIScreen.main.bounds.width * 0.28 } 
     
     init() {
-        _viewModel = StateObject(wrappedValue: ProfileViewModel(authViewModel: AuthViewModel()))
-    }
+            _viewModel = StateObject(wrappedValue: ProfileViewModel(authViewModel: PreviewHelpers.mockAuthViewModel))
+        }
     
     var body: some View {
         ScrollView {
@@ -4598,9 +4601,9 @@ struct ProfileView: View {
                 }
                 
                 // User Info
-                VStack(alignment: .leading, spacing: 8) {
+                VStack(alignment: .leading, spacing: 4) {
                     Spacer()
-                        .frame(height: profileImageSize/2 + 20)
+                        .frame(height: profileImageSize/2 + 12)
                     
                     if let user = viewModel.user {
                         Text("\(user.firstName) \(user.lastName)")
@@ -4612,12 +4615,13 @@ struct ProfileView: View {
                             .foregroundColor(.gray)
                     }
                 }
-                .padding(.horizontal)
+                .padding(.leading, UIScreen.main.bounds.width * 0.08)  // Match profile image offset
+                .frame(maxWidth: .infinity, alignment: .leading)  // Force left alignment
                 
                 // Posts Grid
                 PostsGridView(uploadedPosts: viewModel.uploadedPosts,
                             taggedPosts: viewModel.taggedPosts)
-                    .padding(.top)
+                    .padding(.top, 2)
             }
         }
         .ignoresSafeArea(.container, edges: .top)
@@ -4639,8 +4643,9 @@ struct ProfileView: View {
 
 struct ProfileView_Previews: PreviewProvider {
     static var previews: some View {
-        PreviewHelpers.PreviewContainer {
+        NavigationView {
             ProfileView()
+                .environmentObject(PreviewHelpers.mockAuthViewModel)
         }
     }
 }
@@ -4798,39 +4803,96 @@ struct SearchView_Previews: PreviewProvider {
 //
 
 import SwiftUI
+import PhotosUI // Add this line
 
 struct TabNavigator: View {
     @EnvironmentObject var authViewModel: AuthViewModel
+    @EnvironmentObject var appState: AppState
+    @State private var selectedTab = 0
+    @State private var isPickerPresented = false
+    @State private var selectedItem: PhotosPickerItem?
+    @State private var selectedImageData: Data?
     
     var body: some View {
-        TabView {
-            HomeView()
-                .tabItem {
-                    Label("Home", systemImage: "house")
+        ZStack {
+            TabView(selection: $selectedTab) {
+                HomeView()
+                    .tabItem {
+                        Label("Home", systemImage: "house")
+                    }
+                    .tag(0)
+                
+                SearchView()
+                    .tabItem {
+                        Label("Search", systemImage: "magnifyingglass")
+                    }
+                    .tag(1)
+                
+                Group { } // Empty group for upload tab
+                    .tabItem {
+                        Label("Upload", systemImage: "plus.square")
+                    }
+                    .tag(2)
+                
+                GroupsView()
+                    .tabItem {
+                        Label("Groups", systemImage: "person.3")
+                    }
+                    .tag(3)
+                
+                ProfileView()
+                    .tabItem {
+                        Label("Me", systemImage: "person")
+                    }
+                    .tag(4)
+            }
+            .onChange(of: selectedTab) { newValue in
+                if newValue == 2 {
+                    isPickerPresented = true
                 }
+            }
             
-            SearchView()
-                .tabItem {
-                    Label("Search", systemImage: "magnifyingglass")
+            .photosPicker(
+                isPresented: $isPickerPresented,
+                selection: $selectedItem,
+                matching: .images,
+                photoLibrary: .shared()
+            )
+            .onChange(of: selectedItem) { item in
+                if let item = item {
+                    Task {
+                        if let data = try? await item.loadTransferable(type: Data.self) {
+                            selectedImageData = data
+                        }
+                    }
                 }
+                if selectedTab == 2 {
+                    selectedTab = 0
+                }
+            }
             
-            UploadView()
-                .tabItem {
-                    Label("Upload", systemImage: "plus.square")
+            .fullScreenCover(item: Binding(
+                get: { selectedImageData.map { ImageData(data: $0) } },
+                set: { newValue in
+                    selectedImageData = nil
+                    if selectedTab == 2 {
+                        selectedTab = 0
+                    }
                 }
-            
-            GroupsView()
-                .tabItem {
-                    Label("Groups", systemImage: "person.3")
-                }
-            
-            ProfileView()
-                .tabItem {
-                    Label("Me", systemImage: "person")
-                }
+            )) { imageData in
+                TaggingView(imageData: imageData.data)
+                    .environmentObject(authViewModel)
+                    .environmentObject(appState)
+            }
         }
     }
 }
+
+private struct ImageData: Identifiable {
+    let id = UUID()
+    let data: Data
+}
+
 
 //struct TabNavigator_Previews: PreviewProvider {
 //    static var previews: some View {
@@ -4861,10 +4923,11 @@ struct TaggingView: View {
     @StateObject private var viewModel = TaggingViewModel()
     @EnvironmentObject var appState: AppState
     @EnvironmentObject var authViewModel: AuthViewModel
+    @Environment(\.presentationMode) var presentationMode
     @State private var caption = ""
     let imageData: Data
-    @Environment(\.presentationMode) var presentationMode
     private let dataService: DataService
+    var onUploadSuccess: (() -> Void)?
     
     init(imageData: Data, dataService: DataService = FirebaseDataService()) {
         self.imageData = imageData
@@ -4874,13 +4937,14 @@ struct TaggingView: View {
     var body: some View {
         NavigationView {
             Form {
-                Section(header: Text("Photo")) {
-                    if let uiImage = UIImage(data: imageData) {
-                        Image(uiImage: uiImage)
-                            .resizable()
-                            .scaledToFit()
-                            .frame(height: 200)
-                    }
+                if let uiImage = UIImage(data: imageData) {
+                    Image(uiImage: uiImage)
+                        .resizable()
+                        .aspectRatio(contentMode: .fill)
+                        .frame(height: UIScreen.main.bounds.width) // Make it square
+                        .clipShape(RoundedRectangle(cornerRadius: 12))
+                        .listRowInsets(EdgeInsets()) // Remove form padding
+                        .listRowBackground(Color.clear) // Remove form background
                 }
                 
                 Section(header: Text("Caption")) {
@@ -4926,12 +4990,22 @@ struct TaggingView: View {
                         }
                     }
                 }
+            }
+            .navigationTitle("Add Info")
+            .navigationBarTitleDisplayMode(.inline)
+            .toolbar {
+                ToolbarItem(placement: .navigationBarLeading) {
+                    Button("Cancel") {
+                        presentationMode.wrappedValue.dismiss()
+                    }
+                }
                 
-                Button("Upload") {
-                    uploadPost()
+                ToolbarItem(placement: .navigationBarTrailing) {
+                    Button("Share") {
+                        uploadPost()
+                    }
                 }
             }
-            .navigationTitle("New Post")
         }
     }
 
@@ -4948,10 +5022,7 @@ struct TaggingView: View {
         
         Task {
             do {
-                // Upload image and get path
                 let imagePath = try await dataService.uploadImage(imageData)
-                
-                // Create post with path
                 let taggedUsers = viewModel.taggedUsers.map { $0.id }
                 try await dataService.createPost(
                     userId: currentUser.uid,
@@ -4965,18 +5036,30 @@ struct TaggingView: View {
                 
                 await MainActor.run {
                     presentationMode.wrappedValue.dismiss()
+                    onUploadSuccess?()
                 }
             } catch {
                 print("Error creating post: \(error.localizedDescription)")
             }
         }
-    }}
-
-#Preview {
-    TaggingView(imageData: UIImage(systemName: "photo")?.pngData() ?? Data())
-        .environmentObject(AuthViewModel())
+    }
 }
 
+extension TaggingView {
+    func onUploadSuccess(action: @escaping () -> Void) -> some View {
+        var view = self
+        view.onUploadSuccess = action
+        return view
+    }
+}
+
+struct TaggingView_Previews: PreviewProvider {
+    static var previews: some View {
+        TaggingView(imageData: UIImage(systemName: "photo")?.pngData() ?? Data())
+            .environmentObject(AuthViewModel())
+            .environmentObject(AppState())
+    }
+}
 
 ```
 
@@ -5007,55 +5090,44 @@ import SwiftUI
 import PhotosUI
 
 struct UploadView: View {
-    @State private var selectedItem: PhotosPickerItem?
+    @State private var isPickerPresented = false
     @State private var selectedImageData: Data?
-    @State private var showingTaggingView = false
     
     var body: some View {
         NavigationView {
-            VStack {
-                if let selectedImageData,
-                   let uiImage = UIImage(data: selectedImageData) {
-                    Image(uiImage: uiImage)
-                        .resizable()
-                        .scaledToFit()
-                        .frame(height: 300)
-                }
-                
-                PhotosPicker(
-                    selection: $selectedItem,
+            Color.clear // Using Color.clear instead of empty VStack
+                .navigationTitle("Upload")
+                .photosPicker(
+                    isPresented: $isPickerPresented,
+                    selection: .init(get: { nil }, set: { item in
+                        if let item = item {
+                            Task {
+                                if let data = try? await item.loadTransferable(type: Data.self) {
+                                    selectedImageData = data
+                                }
+                            }
+                        }
+                    }),
                     matching: .images,
-                    photoLibrary: .shared()) {
-                        Text("Select a photo")
-                            .padding()
-                            .background(Color.blue)
-                            .foregroundColor(.white)
-                            .cornerRadius(10)
-                    }
-                
-                if selectedImageData != nil {
-                    Button("Next") {
-                        showingTaggingView = true
-                    }
-                    .padding()
-                    .background(Color.green)
-                    .foregroundColor(.white)
-                    .cornerRadius(10)
+                    preferredItemEncoding: .automatic
+                )
+                .fullScreenCover(item: Binding(
+                    get: { selectedImageData.map { ImageData(data: $0) } },
+                    set: { if $0 == nil { selectedImageData = nil; isPickerPresented = true } }
+                )) { imageData in
+                    TaggingView(imageData: imageData.data)
                 }
-            }
-            .navigationTitle("Upload")
-            .onChange(of: selectedItem) { _ in
-                Task {
-                    if let data = try? await selectedItem?.loadTransferable(type: Data.self) {
-                        selectedImageData = data
-                    }
+                .onAppear {
+                    isPickerPresented = true
                 }
-            }
-            .sheet(isPresented: $showingTaggingView) {
-                TaggingView(imageData: selectedImageData ?? Data())
-            }
         }
     }
+}
+
+// Helper struct to make Data conform to Identifiable
+private struct ImageData: Identifiable {
+    let id = UUID()
+    let data: Data
 }
 
 struct UploadView_Previews: PreviewProvider {

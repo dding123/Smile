@@ -9,55 +9,44 @@ import SwiftUI
 import PhotosUI
 
 struct UploadView: View {
-    @State private var selectedItem: PhotosPickerItem?
+    @State private var isPickerPresented = false
     @State private var selectedImageData: Data?
-    @State private var showingTaggingView = false
     
     var body: some View {
         NavigationView {
-            VStack {
-                if let selectedImageData,
-                   let uiImage = UIImage(data: selectedImageData) {
-                    Image(uiImage: uiImage)
-                        .resizable()
-                        .scaledToFit()
-                        .frame(height: 300)
-                }
-                
-                PhotosPicker(
-                    selection: $selectedItem,
+            Color.clear // Using Color.clear instead of empty VStack
+                .navigationTitle("Upload")
+                .photosPicker(
+                    isPresented: $isPickerPresented,
+                    selection: .init(get: { nil }, set: { item in
+                        if let item = item {
+                            Task {
+                                if let data = try? await item.loadTransferable(type: Data.self) {
+                                    selectedImageData = data
+                                }
+                            }
+                        }
+                    }),
                     matching: .images,
-                    photoLibrary: .shared()) {
-                        Text("Select a photo")
-                            .padding()
-                            .background(Color.blue)
-                            .foregroundColor(.white)
-                            .cornerRadius(10)
-                    }
-                
-                if selectedImageData != nil {
-                    Button("Next") {
-                        showingTaggingView = true
-                    }
-                    .padding()
-                    .background(Color.green)
-                    .foregroundColor(.white)
-                    .cornerRadius(10)
+                    preferredItemEncoding: .automatic
+                )
+                .fullScreenCover(item: Binding(
+                    get: { selectedImageData.map { ImageData(data: $0) } },
+                    set: { if $0 == nil { selectedImageData = nil; isPickerPresented = true } }
+                )) { imageData in
+                    TaggingView(imageData: imageData.data)
                 }
-            }
-            .navigationTitle("Upload")
-            .onChange(of: selectedItem) { _ in
-                Task {
-                    if let data = try? await selectedItem?.loadTransferable(type: Data.self) {
-                        selectedImageData = data
-                    }
+                .onAppear {
+                    isPickerPresented = true
                 }
-            }
-            .sheet(isPresented: $showingTaggingView) {
-                TaggingView(imageData: selectedImageData ?? Data())
-            }
         }
     }
+}
+
+// Helper struct to make Data conform to Identifiable
+private struct ImageData: Identifiable {
+    let id = UUID()
+    let data: Data
 }
 
 struct UploadView_Previews: PreviewProvider {
