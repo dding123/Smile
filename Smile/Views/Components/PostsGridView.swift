@@ -7,11 +7,13 @@
 import SwiftUI
 
 struct PostsGridView: View {
+    @EnvironmentObject var appState: AppState
     @State private var selectedTab = 0
     @State private var selectedPost: Post? = nil
     let uploadedPosts: [Post]
     let taggedPosts: [Post]
-    
+    let onPostDeleted: ((Post) -> Void)?  // Make callback optional
+
     var body: some View {
         VStack {
             Picker("Post Type", selection: $selectedTab) {
@@ -38,8 +40,16 @@ struct PostsGridView: View {
                 }
             }
             .sheet(item: $selectedPost) { post in
-                PostDetailView(post: post)
-            }
+                PostDetailView(post: post){
+                    // Add the deletion handler here
+                    onPostDeleted?(post)
+                }
+                .onDisappear {
+                    Task {
+                        await appState.refreshAllPosts()
+                    }
+                }
+                }
         }
     }
 }

@@ -51,12 +51,7 @@ class AppState: ObservableObject {
         
         do {
             // Fetch user's uploaded posts
-            let posts = try await dataService.fetchUserPosts(userId: userId, limit: 12, after: nil)
-            print("Fetched \(posts.count) user posts")
-            posts.forEach { post in
-                print("Post image path: \(post.imagePath)")
-            }
-            userPosts = posts
+            userPosts = try await dataService.fetchUserPosts(userId: userId, limit: 12, after: nil)
             
             // Fetch posts where user is tagged
             taggedPosts = try await dataService.fetchTaggedPosts(userId: userId, limit: 12, after: nil)

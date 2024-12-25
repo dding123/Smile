@@ -121,7 +121,8 @@ struct UserView: View {
                 
                 // Posts Grid
                 PostsGridView(uploadedPosts: viewModel.uploadedPosts,
-                            taggedPosts: viewModel.taggedPosts)
+                            taggedPosts: viewModel.taggedPosts,
+                              onPostDeleted: nil)
                     .padding(.top)
             }
         }

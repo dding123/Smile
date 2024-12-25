@@ -2115,6 +2115,8 @@ protocol DataService {
     
     func fetchUserGroups() async throws -> [UserGroup]
     func createGroup(name: String) async throws -> UserGroup  // Remove photo parameter
+    
+    func deletePost(_ postId: String) async throws
 //    func joinGroup(groupId: String) async throws
 //    func leaveGroup(groupId: String) async throws
 }
@@ -2653,6 +2655,24 @@ class FirebaseDataService: DataService {
             )
         }
     }
+    
+    func deletePost(_ postId: String) async throws {
+        let db = Firestore.firestore()
+        let storage = Storage.storage()
+        
+        // Get the post first to get the image path
+        let postDoc = try await db.collection("posts").document(postId).getDocument()
+        guard let post = try? postDoc.data(as: Post.self) else {
+            throw NSError(domain: "", code: -1, userInfo: [NSLocalizedDescriptionKey: "Post not found"])
+        }
+        
+        // Delete the image from storage
+        let storageRef = storage.reference().child(post.imagePath)
+        try await storageRef.delete()
+        
+        // Delete the post document and all its subcollections
+        try await db.collection("posts").document(postId).delete()
+    }
 }
 
 ```
@@ -2761,12 +2781,7 @@ class AppState: ObservableObject {
         
         do {
             // Fetch user's uploaded posts
-            let posts = try await dataService.fetchUserPosts(userId: userId, limit: 12, after: nil)
-            print("Fetched \(posts.count) user posts")
-            posts.forEach { post in
-                print("Post image path: \(post.imagePath)")
-            }
-            userPosts = posts
+            userPosts = try await dataService.fetchUserPosts(userId: userId, limit: 12, after: nil)
             
             // Fetch posts where user is tagged
             taggedPosts = try await dataService.fetchTaggedPosts(userId: userId, limit: 12, after: nil)
@@ -3100,8 +3115,8 @@ class HomeViewModel: ObservableObject {
 //  Created by David Ding on 10/28/24.
 //
 import SwiftUI
-import Firebase
 import Combine
+import FirebaseAuth
 
 class PostDetailViewModel: ObservableObject {
     @Published var comments: [Comment] = []
@@ -3110,9 +3125,13 @@ class PostDetailViewModel: ObservableObject {
     @Published var isCommentingActive: Bool = false
     @Published var newCommentText: String = ""
     @Published var userProfilePicture: String?
+    @Published var showDeleteConfirmation = false
+    @Published var isDeleting = false  // Add this line
     
     private let post: Post
     private let dataService: DataService
+    var onPostDeleted: (() -> Void)?  // Add this line
+
     
     init(post: Post, dataService: DataService = FirebaseDataService()) {
         self.post = post
@@ -3122,6 +3141,21 @@ class PostDetailViewModel: ObservableObject {
             await fetchComments()
             await fetchLikeStatus()
             await fetchUserProfile()
+        }
+    }
+    
+    @MainActor
+    func deletePost() async {
+        guard let postId = post.id else { return }
+        isDeleting = true
+        
+        do {
+            try await dataService.deletePost(postId)
+            onPostDeleted?()  // Call the callback
+            isDeleting = false
+        } catch {
+            print("Error deleting post: \(error)")
+            isDeleting = false
         }
     }
     
@@ -3164,31 +3198,30 @@ class PostDetailViewModel: ObservableObject {
         }
     }
     
-    @MainActor
     func toggleLike() {
-           guard let postId = post.id, !postId.isEmpty else {
-               print("Warning: Invalid post ID in toggleLike")
-               return
-           }
-           
-           Task {
-               do {
-                   isLiked.toggle()
-                   if isLiked {
-                       likeCount += 1
-                   } else {
-                       likeCount -= 1
-                   }
-                   
-                   try await dataService.toggleLike(for: postId)
-               } catch {
-                   // Revert on failure
-                   isLiked.toggle()
-                   likeCount += isLiked ? 1 : -1
-                   print("Error toggling like: \(error)")
-               }
-           }
-       }
+        guard let postId = post.id, !postId.isEmpty else {
+            print("Warning: Invalid post ID in toggleLike")
+            return
+        }
+        
+        Task {
+            do {
+                isLiked.toggle()
+                if isLiked {
+                    likeCount += 1
+                } else {
+                    likeCount -= 1
+                }
+                
+                try await dataService.toggleLike(for: postId)
+            } catch {
+                // Revert on failure
+                isLiked.toggle()
+                likeCount += isLiked ? 1 : -1
+                print("Error toggling like: \(error)")
+            }
+        }
+    }
     
     @MainActor
     func addComment() async {
@@ -3265,6 +3298,14 @@ class ProfileViewModel: ProfileLoading {
     
     func signOut() async {
         await authViewModel.signOut()
+    }
+    
+    func removePost(_ post: Post) {
+        // Remove from uploaded posts
+        uploadedPosts.removeAll { $0.id == post.id }
+        
+        // Remove from tagged posts if applicable
+        taggedPosts.removeAll { $0.id == post.id }
     }
 }
     // Future methods could include:
@@ -3361,18 +3402,18 @@ class TaggingViewModel: ObservableObject {
         $searchText
             .debounce(for: .milliseconds(300), scheduler: RunLoop.main)
             .sink { [weak self] text in
-                if !text.isEmpty {
-                    // Cancel any existing search task
-                    self?.searchTask?.cancel()
-                    
-                    // Create a new search task
-                    self?.searchTask = Task {
-                        await self?.searchUsers(matching: text)
-                    }
-                } else {
+                guard let self = self else { return }
+                self.searchTask?.cancel()
+                
+                if text.isEmpty {
                     Task { @MainActor in
-                        self?.searchResults = []
+                        self.searchResults = []  // Ensure results are cleared when search is empty
                     }
+                    return
+                }
+                
+                self.searchTask = Task {
+                    await self.searchUsers(matching: text)
                 }
             }
             .store(in: &cancellables)
@@ -3459,6 +3500,7 @@ class UserViewModel: ProfileLoading {
 import SwiftUI
 
 struct PostFeedCell: View {
+    @EnvironmentObject var appState: AppState
     @StateObject private var viewModel: PostDetailViewModel
     let post: Post
     
@@ -3551,6 +3593,11 @@ struct PostFeedCell: View {
             
             NavigationLink {
                 PostDetailView(post: post)
+                    .onDisappear {
+                        Task {
+                            await appState.refreshAllPosts()
+                        }
+                    }
             } label: {
                 HStack(spacing: 4) {
                     Image(systemName: "bubble.right")
@@ -3711,6 +3758,7 @@ struct PostImageView: View {
 import SwiftUI
 
 struct PostsGridView: View {
+    @EnvironmentObject var appState: AppState
     @State private var selectedTab = 0
     @State private var selectedPost: Post? = nil
     let uploadedPosts: [Post]
@@ -3743,7 +3791,12 @@ struct PostsGridView: View {
             }
             .sheet(item: $selectedPost) { post in
                 PostDetailView(post: post)
-            }
+                    .onDisappear {
+                        Task {
+                            await appState.refreshAllPosts()
+                        }
+                    }
+                }
         }
     }
 }
@@ -4264,16 +4317,21 @@ struct LoginView_Previews: PreviewProvider {
 //
 
 import SwiftUI
+import FirebaseAuth
 
 struct PostDetailView: View {
     @Environment(\.dismiss) private var dismiss
+    @EnvironmentObject var appState: AppState
     @StateObject private var viewModel: PostDetailViewModel
     let post: Post
+    var onPostDeleted: (() -> Void)?  // Add this line
     
-    init(post: Post) {
+    init(post: Post, onPostDeleted: (() -> Void)? = nil) {
         self.post = post
+        self.onPostDeleted = onPostDeleted
         _viewModel = StateObject(wrappedValue: PostDetailViewModel(post: post))
     }
+   
     
     var body: some View {
         VStack(spacing: 0) {
@@ -4293,9 +4351,31 @@ struct PostDetailView: View {
                 
                 Spacer()
                 
-                // Empty view for balance
-                Image(systemName: "xmark")
-                    .opacity(0)
+                // Options Menu
+                if post.userId == Auth.auth().currentUser?.uid {
+                    Menu {
+                        Button(role: .destructive) {
+                            viewModel.showDeleteConfirmation = true
+                        } label: {
+                            Label("Delete Post", systemImage: "trash")
+                        }
+                        
+                        Button {
+                            // Share functionality
+                        } label: {
+                            Label("Share", systemImage: "square.and.arrow.up")
+                        }
+                        
+                        Button {
+                            // Report functionality
+                        } label: {
+                            Label("Report", systemImage: "flag")
+                        }
+                    } label: {
+                        Image(systemName: "ellipsis")
+                            .foregroundColor(.primary)
+                    }
+                }
             }
             .padding()
             .background(Color(.systemBackground))
@@ -4321,16 +4401,9 @@ struct PostDetailView: View {
                                 .font(.headline)
                             
                             Spacer()
-                            
-                            Button {
-                                // Add more options menu
-                            } label: {
-                                Image(systemName: "ellipsis")
-                            }
                         }
                         .padding(.horizontal)
                         
-                        // Rest of the content remains the same
                         PostImageView(
                             imagePath: post.imagePath,
                             size: geometry.size.width
@@ -4401,6 +4474,19 @@ struct PostDetailView: View {
                 }
             }
         }
+        .alert("Delete Post", isPresented: $viewModel.showDeleteConfirmation) {
+            Button("Cancel", role: .cancel) { }
+            Button("Delete", role: .destructive) {
+                Task {
+                    await viewModel.deletePost()
+                    await appState.refreshAllPosts()
+                    await appState.refreshUserPosts()
+                    dismiss()
+                }
+            }
+        } message: {
+            Text("Are you sure you want to delete this post? This action cannot be undone.")
+        }
         .overlay(alignment: .bottom) {
             if viewModel.isCommentingActive {
                 CommentInputView(
@@ -4417,7 +4503,6 @@ struct PostDetailView: View {
     }
 }
 
-// Update CommentInputView to ensure proper width
 struct CommentInputView: View {
     @Binding var text: String
     let onSubmit: () -> Void
@@ -4619,9 +4704,11 @@ struct ProfileView: View {
                 .frame(maxWidth: .infinity, alignment: .leading)  // Force left alignment
                 
                 // Posts Grid
-                PostsGridView(uploadedPosts: viewModel.uploadedPosts,
-                            taggedPosts: viewModel.taggedPosts)
-                    .padding(.top, 2)
+                PostsGridView(
+                    uploadedPosts: viewModel.uploadedPosts,
+                    taggedPosts: viewModel.taggedPosts
+                )
+                .padding(.top, 2)
             }
         }
         .ignoresSafeArea(.container, edges: .top)
@@ -4828,7 +4915,7 @@ struct TabNavigator: View {
                     }
                     .tag(1)
                 
-                Group { } // Empty group for upload tab
+                Color.clear  // Using Color.clear instead of empty Group
                     .tabItem {
                         Label("Upload", systemImage: "plus.square")
                     }
@@ -4858,6 +4945,13 @@ struct TabNavigator: View {
                 matching: .images,
                 photoLibrary: .shared()
             )
+            .onChange(of: isPickerPresented) { isPresented in
+                if !isPresented && selectedTab == 2 {
+                    // If photo picker is dismissed and we're on upload tab,
+                    // go back to previous tab
+                    selectedTab = 0  // Or store previous tab in a @State variable
+                }
+            }
             .onChange(of: selectedItem) { item in
                 if let item = item {
                     Task {
@@ -4971,6 +5065,7 @@ struct TaggingView: View {
                                 viewModel.removeTag(user)
                             } else {
                                 viewModel.tagUser(user)
+                                viewModel.searchText = "" // Clear search text after tagging
                             }
                         }
                     }

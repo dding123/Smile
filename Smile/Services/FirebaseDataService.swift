@@ -527,4 +527,22 @@ class FirebaseDataService: DataService {
             )
         }
     }
+    
+    func deletePost(_ postId: String) async throws {
+        let db = Firestore.firestore()
+        let storage = Storage.storage()
+        
+        // Get the post first to get the image path
+        let postDoc = try await db.collection("posts").document(postId).getDocument()
+        guard let post = try? postDoc.data(as: Post.self) else {
+            throw NSError(domain: "", code: -1, userInfo: [NSLocalizedDescriptionKey: "Post not found"])
+        }
+        
+        // Delete the image from storage
+        let storageRef = storage.reference().child(post.imagePath)
+        try await storageRef.delete()
+        
+        // Delete the post document and all its subcollections
+        try await db.collection("posts").document(postId).delete()
+    }
 }

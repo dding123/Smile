@@ -111,9 +111,15 @@ struct ProfileView: View {
                 .frame(maxWidth: .infinity, alignment: .leading)  // Force left alignment
                 
                 // Posts Grid
-                PostsGridView(uploadedPosts: viewModel.uploadedPosts,
-                            taggedPosts: viewModel.taggedPosts)
-                    .padding(.top, 2)
+                PostsGridView(
+                    uploadedPosts: viewModel.uploadedPosts,
+                    taggedPosts: viewModel.taggedPosts,
+                    onPostDeleted: { post in
+                        viewModel.removePost(post)
+                    }
+                )
+                .environmentObject(viewModel)  // Add this line
+                .padding(.top, 2)
             }
         }
         .ignoresSafeArea(.container, edges: .top)

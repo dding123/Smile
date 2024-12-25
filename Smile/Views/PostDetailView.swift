@@ -6,16 +6,21 @@
 //
 
 import SwiftUI
+import FirebaseAuth
 
 struct PostDetailView: View {
     @Environment(\.dismiss) private var dismiss
+    @EnvironmentObject var appState: AppState
     @StateObject private var viewModel: PostDetailViewModel
     let post: Post
+    var onPostDeleted: (() -> Void)?  // Add this line
     
-    init(post: Post) {
+    init(post: Post, onPostDeleted: (() -> Void)? = nil) {
         self.post = post
+        self.onPostDeleted = onPostDeleted
         _viewModel = StateObject(wrappedValue: PostDetailViewModel(post: post))
     }
+   
     
     var body: some View {
         VStack(spacing: 0) {
@@ -35,9 +40,31 @@ struct PostDetailView: View {
                 
                 Spacer()
                 
-                // Empty view for balance
-                Image(systemName: "xmark")
-                    .opacity(0)
+                // Options Menu
+                if post.userId == Auth.auth().currentUser?.uid {
+                    Menu {
+                        Button(role: .destructive) {
+                            viewModel.showDeleteConfirmation = true
+                        } label: {
+                            Label("Delete Post", systemImage: "trash")
+                        }
+                        
+                        Button {
+                            // Share functionality
+                        } label: {
+                            Label("Share", systemImage: "square.and.arrow.up")
+                        }
+                        
+                        Button {
+                            // Report functionality
+                        } label: {
+                            Label("Report", systemImage: "flag")
+                        }
+                    } label: {
+                        Image(systemName: "ellipsis")
+                            .foregroundColor(.primary)
+                    }
+                }
             }
             .padding()
             .background(Color(.systemBackground))
@@ -63,16 +90,9 @@ struct PostDetailView: View {
                                 .font(.headline)
                             
                             Spacer()
-                            
-                            Button {
-                                // Add more options menu
-                            } label: {
-                                Image(systemName: "ellipsis")
-                            }
                         }
                         .padding(.horizontal)
                         
-                        // Rest of the content remains the same
                         PostImageView(
                             imagePath: post.imagePath,
                             size: geometry.size.width
@@ -143,6 +163,20 @@ struct PostDetailView: View {
                 }
             }
         }
+        .alert("Delete Post", isPresented: $viewModel.showDeleteConfirmation) {
+            Button("Cancel", role: .cancel) { }
+            Button("Delete", role: .destructive) {
+                Task {
+                    await viewModel.deletePost()
+                    await appState.refreshAllPosts()
+                    await appState.refreshUserPosts()
+                    onPostDeleted?()  // Add this line
+                    dismiss()
+                }
+            }
+        } message: {
+            Text("Are you sure you want to delete this post? This action cannot be undone.")
+        }
         .overlay(alignment: .bottom) {
             if viewModel.isCommentingActive {
                 CommentInputView(
@@ -159,7 +193,6 @@ struct PostDetailView: View {
     }
 }
 
-// Update CommentInputView to ensure proper width
 struct CommentInputView: View {
     @Binding var text: String
     let onSubmit: () -> Void

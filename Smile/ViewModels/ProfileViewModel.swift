@@ -55,6 +55,14 @@ class ProfileViewModel: ProfileLoading {
     func signOut() async {
         await authViewModel.signOut()
     }
+    
+    func removePost(_ post: Post) {
+        // Remove from uploaded posts
+        uploadedPosts.removeAll { $0.id == post.id }
+        
+        // Remove from tagged posts if applicable
+        taggedPosts.removeAll { $0.id == post.id }
+    }
 }
     // Future methods could include:
     // - updateProfile(firstName:lastName:bio:)

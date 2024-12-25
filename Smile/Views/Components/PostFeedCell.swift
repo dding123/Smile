@@ -7,6 +7,7 @@
 import SwiftUI
 
 struct PostFeedCell: View {
+    @EnvironmentObject var appState: AppState
     @StateObject private var viewModel: PostDetailViewModel
     let post: Post
     
@@ -99,6 +100,11 @@ struct PostFeedCell: View {
             
             NavigationLink {
                 PostDetailView(post: post)
+                    .onDisappear {
+                        Task {
+                            await appState.refreshAllPosts()
+                        }
+                    }
             } label: {
                 HStack(spacing: 4) {
                     Image(systemName: "bubble.right")
