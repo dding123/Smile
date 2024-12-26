@@ -16,6 +16,7 @@ class PostDetailViewModel: ObservableObject {
     @Published var isCommentingActive: Bool = false
     @Published var newCommentText: String = ""
     @Published var userProfilePicture: String?
+    @Published var userProfilePictures: [String: String] = [:]
     @Published var showDeleteConfirmation = false
     @Published var isDeleting = false
     
@@ -51,6 +52,20 @@ class PostDetailViewModel: ObservableObject {
     func fetchComments() async {
         do {
             comments = try await dataService.fetchComments(for: post.uniqueId)
+            
+            // Fetch profile pictures for all commenters
+            for comment in comments {
+                if userProfilePictures[comment.userId] == nil {
+                    do {
+                        let user = try await dataService.fetchUserProfile(userId: comment.userId)
+                        await MainActor.run {
+                            userProfilePictures[comment.userId] = user.profilePictureUrl
+                        }
+                    } catch {
+                        print("Error fetching profile picture for user \(comment.userId): \(error)")
+                    }
+                }
+            }
         } catch {
             print("Error fetching comments: \(error)")
         }

@@ -13,14 +13,13 @@ struct PostDetailView: View {
     @EnvironmentObject var appState: AppState
     @StateObject private var viewModel: PostDetailViewModel
     let post: Post
-    var onPostDeleted: (() -> Void)?  // Add this line
+    var onPostDeleted: (() -> Void)?
     
     init(post: Post, onPostDeleted: (() -> Void)? = nil) {
         self.post = post
         self.onPostDeleted = onPostDeleted
         _viewModel = StateObject(wrappedValue: PostDetailViewModel(post: post))
     }
-   
     
     var body: some View {
         VStack(spacing: 0) {
@@ -95,9 +94,15 @@ struct PostDetailView: View {
                         
                         PostImageView(
                             imagePath: post.imagePath,
-                            size: geometry.size.width
+                            size: geometry.size.width - 32 // Subtract padding for margins
                         )
-                        .frame(width: geometry.size.width)
+                        .frame(width: geometry.size.width - 32)
+                        .clipShape(RoundedRectangle(cornerRadius: 12))
+                        .overlay(
+                            RoundedRectangle(cornerRadius: 12)
+                                .stroke(Color.gray.opacity(0.2), lineWidth: 1)
+                        )
+                        .padding(.horizontal, 16)
                         
                         // Action buttons
                         HStack(spacing: 16) {
@@ -135,26 +140,56 @@ struct PostDetailView: View {
                         
                         // Caption
                         if !post.caption.isEmpty {
-                            HStack(alignment: .top, spacing: 4) {
-                                Text(post.username)
-                                    .fontWeight(.semibold)
-                                Text(post.caption)
-                                    .fixedSize(horizontal: false, vertical: true)
+                            HStack(alignment: .top, spacing: 8) {
+                                // Caption profile picture
+                                AsyncImage(url: URL(string: viewModel.userProfilePicture ?? "")) { image in
+                                    image
+                                        .resizable()
+                                        .aspectRatio(contentMode: .fill)
+                                } placeholder: {
+                                    Circle()
+                                        .foregroundColor(.gray.opacity(0.3))
+                                }
+                                .frame(width: 24, height: 24)
+                                .clipShape(Circle())
+                                
+                                VStack(alignment: .leading, spacing: 2) {
+                                    Text(post.username)
+                                        .fontWeight(.semibold)
+                                    Text(post.caption)
+                                        .fixedSize(horizontal: false, vertical: true)
+                                }
                             }
                             .padding(.horizontal)
                         }
                         
                         // Comments
                         ForEach(viewModel.comments) { comment in
-                            HStack(alignment: .top, spacing: 4) {
-                                Text(comment.username)
-                                    .fontWeight(.semibold)
-                                Text(comment.text)
-                                    .fixedSize(horizontal: false, vertical: true)
+                            HStack(alignment: .top, spacing: 8) {
+                                // Comment profile picture
+                                AsyncImage(url: URL(string: viewModel.userProfilePictures[comment.userId] ?? "")) { image in
+                                    image
+                                        .resizable()
+                                        .aspectRatio(contentMode: .fill)
+                                } placeholder: {
+                                    Circle()
+                                        .foregroundColor(.gray.opacity(0.3))
+                                }
+                                .frame(width: 24, height: 24)
+                                .clipShape(Circle())
+                                
+                                VStack(alignment: .leading, spacing: 2) {
+                                    HStack {
+                                        Text(comment.username)
+                                            .fontWeight(.semibold)
+                                        Text(comment.timeAgo)
+                                            .font(.caption)
+                                            .foregroundColor(.gray)
+                                    }
+                                    Text(comment.text)
+                                        .fixedSize(horizontal: false, vertical: true)
+                                }
                                 Spacer()
-                                Text(comment.timeAgo)
-                                    .font(.caption)
-                                    .foregroundColor(.gray)
                             }
                             .padding(.horizontal)
                         }
@@ -170,7 +205,7 @@ struct PostDetailView: View {
                     await viewModel.deletePost()
                     await appState.refreshAllPosts()
                     await appState.refreshUserPosts()
-                    onPostDeleted?()  // Add this line
+                    onPostDeleted?()
                     dismiss()
                 }
             }
@@ -195,10 +230,23 @@ struct PostDetailView: View {
 
 struct CommentInputView: View {
     @Binding var text: String
+    @EnvironmentObject var authViewModel: AuthViewModel
     let onSubmit: () -> Void
     
     var body: some View {
-        HStack {
+        HStack(spacing: 12) {
+            // Profile picture
+            AsyncImage(url: URL(string: authViewModel.currentUser?.profilePictureUrl ?? "")) { image in
+                image
+                    .resizable()
+                    .aspectRatio(contentMode: .fill)
+            } placeholder: {
+                Circle()
+                    .foregroundColor(.gray.opacity(0.3))
+            }
+            .frame(width: 32, height: 32)
+            .clipShape(Circle())
+            
             TextField("Add a comment...", text: $text)
                 .textFieldStyle(RoundedBorderTextFieldStyle())
             
@@ -216,5 +264,15 @@ struct CommentInputView: View {
                 .foregroundColor(.gray.opacity(0.3)),
             alignment: .top
         )
+    }
+}
+
+struct PostDetailView_Previews: PreviewProvider {
+    static var previews: some View {
+        PreviewHelpers.PreviewContainer {
+            NavigationView {
+                PostDetailView(post: PreviewHelpers.samplePosts[0])
+            }
+        }
     }
 }

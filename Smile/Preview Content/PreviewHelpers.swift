@@ -43,38 +43,50 @@ struct PreviewHelpers {
     // MARK: - Posts
     static let samplePosts = [
         Post(
+            id: "post1",
             userId: demoUser.id,
             username: demoUser.username,
             imagePath: "path/to/image1.jpg",
-            caption: "Beautiful sunset at the beach! #nature #peace",
+            caption: "Enjoying a beautiful sunset at the beach! The colors tonight were absolutely amazing. 🌅 #nature #peace #sunset",
             taggedUsers: ["sarahsmith"],
             createdAt: Date().addingTimeInterval(-3600),
             likeCount: 42,
             commentCount: 7
         ),
         Post(
+            id: "post2",
             userId: demoUser.id,
             username: demoUser.username,
             imagePath: "path/to/image2.jpg",
-            caption: "Coffee time with friends ☕️ #coffeelover",
+            caption: "Coffee time with friends ☕️ #coffeelover #friends #weekend",
             taggedUsers: ["mikechen", "sarahsmith"],
             createdAt: Date().addingTimeInterval(-7200),
             likeCount: 89,
             commentCount: 12
         )
     ]
-    
-    // MARK: - Comments
+
     static let sampleComments = [
         Comment(
+            id: "comment1",
             userId: "user-2",
             username: "sarahsmith",
-            text: "This looks amazing! "
+            text: "This looks absolutely amazing! Love the colors in this shot 😍",
+            createdAt: Date().addingTimeInterval(-1800)
         ),
         Comment(
+            id: "comment2",
             userId: "user-3",
             username: "mikechen",
-            text: "Great shot!"
+            text: "Great composition! What camera did you use for this?",
+            createdAt: Date().addingTimeInterval(-900)
+        ),
+        Comment(
+            id: "comment3",
+            userId: demoUser.id,
+            username: demoUser.username,
+            text: "Thanks everyone! Shot this on my iPhone 14 Pro",
+            createdAt: Date().addingTimeInterval(-600)
         )
     ]
     
