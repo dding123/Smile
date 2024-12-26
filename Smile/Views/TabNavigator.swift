@@ -13,9 +13,9 @@ struct TabNavigator: View {
     @EnvironmentObject var appState: AppState
     @State private var selectedTab = 0
     @State private var isPickerPresented = false
-    @State private var selectedItem: PhotosPickerItem?
-    @State private var selectedImageData: Data?
-    
+    @State private var selectedItem: PhotosPickerItem? = nil
+    @State private var selectedImageData: Data? = nil
+
     var body: some View {
         ZStack {
             TabView(selection: $selectedTab) {
@@ -31,11 +31,11 @@ struct TabNavigator: View {
                     }
                     .tag(1)
                 
-                Color.clear  // Using Color.clear instead of empty Group
-                    .tabItem {
-                        Label("Upload", systemImage: "plus.square")
-                    }
-                    .tag(2)
+                Color.clear
+                .tabItem {
+                    Label("Upload", systemImage: "plus.square")
+                }
+                .tag(2)
                 
                 GroupsView()
                     .tabItem {
@@ -52,57 +52,40 @@ struct TabNavigator: View {
             .onChange(of: selectedTab) { newValue in
                 if newValue == 2 {
                     isPickerPresented = true
+                    selectedTab = 0
                 }
             }
-            
             .photosPicker(
                 isPresented: $isPickerPresented,
                 selection: $selectedItem,
                 matching: .images,
                 photoLibrary: .shared()
             )
-            .onChange(of: isPickerPresented) { isPresented in
-                if !isPresented && selectedTab == 2 {
-                    // If photo picker is dismissed and we're on upload tab,
-                    // go back to previous tab
-                    selectedTab = 0  // Or store previous tab in a @State variable
-                }
-            }
-            .onChange(of: selectedItem) { item in
-                if let item = item {
+            .onChange(of: selectedItem) { newItem in
+                if let item = newItem {
                     Task {
                         if let data = try? await item.loadTransferable(type: Data.self) {
-                            selectedImageData = data
+                            await MainActor.run {
+                                selectedImageData = data
+                            }
+                        }
+                        await MainActor.run {
+                            selectedItem = nil
                         }
                     }
                 }
-                if selectedTab == 2 {
-                    selectedTab = 0
-                }
             }
-            
-            .fullScreenCover(item: Binding(
-                get: { selectedImageData.map { ImageData(data: $0) } },
-                set: { newValue in
+            if let imageData = selectedImageData {
+                TaggingView(imageData: imageData) {
                     selectedImageData = nil
-                    if selectedTab == 2 {
-                        selectedTab = 0
-                    }
+                    isPickerPresented = false
                 }
-            )) { imageData in
-                TaggingView(imageData: imageData.data)
-                    .environmentObject(authViewModel)
-                    .environmentObject(appState)
+                .environmentObject(authViewModel)
+                .environmentObject(appState)
             }
         }
     }
 }
-
-private struct ImageData: Identifiable {
-    let id = UUID()
-    let data: Data
-}
-
 
 //struct TabNavigator_Previews: PreviewProvider {
 //    static var previews: some View {

@@ -3118,6 +3118,7 @@ import SwiftUI
 import Combine
 import FirebaseAuth
 
+@MainActor
 class PostDetailViewModel: ObservableObject {
     @Published var comments: [Comment] = []
     @Published var likeCount: Int = 0
@@ -3126,12 +3127,11 @@ class PostDetailViewModel: ObservableObject {
     @Published var newCommentText: String = ""
     @Published var userProfilePicture: String?
     @Published var showDeleteConfirmation = false
-    @Published var isDeleting = false  // Add this line
+    @Published var isDeleting = false
     
     private let post: Post
     private let dataService: DataService
-    var onPostDeleted: (() -> Void)?  // Add this line
-
+    var onPostDeleted: (() -> Void)?
     
     init(post: Post, dataService: DataService = FirebaseDataService()) {
         self.post = post
@@ -3144,14 +3144,13 @@ class PostDetailViewModel: ObservableObject {
         }
     }
     
-    @MainActor
     func deletePost() async {
         guard let postId = post.id else { return }
         isDeleting = true
         
         do {
             try await dataService.deletePost(postId)
-            onPostDeleted?()  // Call the callback
+            onPostDeleted?()
             isDeleting = false
         } catch {
             print("Error deleting post: \(error)")
@@ -3159,7 +3158,6 @@ class PostDetailViewModel: ObservableObject {
         }
     }
     
-    @MainActor
     func fetchComments() async {
         do {
             comments = try await dataService.fetchComments(for: post.uniqueId)
@@ -3168,7 +3166,6 @@ class PostDetailViewModel: ObservableObject {
         }
     }
     
-    @MainActor
     func fetchLikeStatus() async {
         guard let postId = post.id, !postId.isEmpty else {
             print("Warning: Invalid post ID in fetchLikeStatus")
@@ -3188,7 +3185,6 @@ class PostDetailViewModel: ObservableObject {
         }
     }
     
-    @MainActor
     func fetchUserProfile() async {
         do {
             let profile = try await dataService.fetchUserProfile(userId: post.userId)
@@ -3223,7 +3219,6 @@ class PostDetailViewModel: ObservableObject {
         }
     }
     
-    @MainActor
     func addComment() async {
         guard !newCommentText.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty else { return }
         
@@ -3763,7 +3758,8 @@ struct PostsGridView: View {
     @State private var selectedPost: Post? = nil
     let uploadedPosts: [Post]
     let taggedPosts: [Post]
-    
+    let onPostDeleted: ((Post) -> Void)?  // Make callback optional
+
     var body: some View {
         VStack {
             Picker("Post Type", selection: $selectedTab) {
@@ -3790,12 +3786,15 @@ struct PostsGridView: View {
                 }
             }
             .sheet(item: $selectedPost) { post in
-                PostDetailView(post: post)
-                    .onDisappear {
-                        Task {
-                            await appState.refreshAllPosts()
-                        }
+                PostDetailView(post: post){
+                    // Add the deletion handler here
+                    onPostDeleted?(post)
+                }
+                .onDisappear {
+                    Task {
+                        await appState.refreshAllPosts()
                     }
+                }
                 }
         }
     }
@@ -4481,6 +4480,7 @@ struct PostDetailView: View {
                     await viewModel.deletePost()
                     await appState.refreshAllPosts()
                     await appState.refreshUserPosts()
+                    onPostDeleted?()  // Add this line
                     dismiss()
                 }
             }
@@ -4706,8 +4706,12 @@ struct ProfileView: View {
                 // Posts Grid
                 PostsGridView(
                     uploadedPosts: viewModel.uploadedPosts,
-                    taggedPosts: viewModel.taggedPosts
+                    taggedPosts: viewModel.taggedPosts,
+                    onPostDeleted: { post in
+                        viewModel.removePost(post)
+                    }
                 )
+                .environmentObject(viewModel)  // Add this line
                 .padding(.top, 2)
             }
         }
@@ -4897,9 +4901,10 @@ struct TabNavigator: View {
     @EnvironmentObject var appState: AppState
     @State private var selectedTab = 0
     @State private var isPickerPresented = false
-    @State private var selectedItem: PhotosPickerItem?
-    @State private var selectedImageData: Data?
-    
+    @State private var selectedItem: PhotosPickerItem? = nil
+    @State private var selectedImageData: Data? = nil
+    @State private var isUploading = false  // Add this to prevent re-entry
+
     var body: some View {
         ZStack {
             TabView(selection: $selectedTab) {
@@ -4915,11 +4920,11 @@ struct TabNavigator: View {
                     }
                     .tag(1)
                 
-                Color.clear  // Using Color.clear instead of empty Group
-                    .tabItem {
-                        Label("Upload", systemImage: "plus.square")
-                    }
-                    .tag(2)
+                Color.clear
+                .tabItem {
+                    Label("Upload", systemImage: "plus.square")
+                }
+                .tag(2)
                 
                 GroupsView()
                     .tabItem {
@@ -4934,49 +4939,52 @@ struct TabNavigator: View {
                     .tag(4)
             }
             .onChange(of: selectedTab) { newValue in
-                if newValue == 2 {
+                if newValue == 2 && !isUploading {
                     isPickerPresented = true
+                    selectedTab = 0
                 }
             }
-            
             .photosPicker(
                 isPresented: $isPickerPresented,
                 selection: $selectedItem,
                 matching: .images,
                 photoLibrary: .shared()
             )
-            .onChange(of: isPickerPresented) { isPresented in
-                if !isPresented && selectedTab == 2 {
-                    // If photo picker is dismissed and we're on upload tab,
-                    // go back to previous tab
-                    selectedTab = 0  // Or store previous tab in a @State variable
-                }
-            }
             .onChange(of: selectedItem) { item in
+                guard !isUploading else { return }  // Prevent re-entry
                 if let item = item {
+                    isUploading = true  // Set flag before starting upload
                     Task {
                         if let data = try? await item.loadTransferable(type: Data.self) {
                             selectedImageData = data
                         }
+                        isUploading = false  // Reset flag after data is loaded
                     }
                 }
-                if selectedTab == 2 {
-                    selectedTab = 0
-                }
             }
-            
             .fullScreenCover(item: Binding(
                 get: { selectedImageData.map { ImageData(data: $0) } },
                 set: { newValue in
-                    selectedImageData = nil
-                    if selectedTab == 2 {
-                        selectedTab = 0
+                    // Clear everything at once
+                    withAnimation(nil) {  // Disable animation to prevent state updates from overlapping
+                        selectedImageData = nil
+                        selectedItem = nil
+                        isPickerPresented = false
+                        isUploading = false
                     }
                 }
             )) { imageData in
-                TaggingView(imageData: imageData.data)
-                    .environmentObject(authViewModel)
-                    .environmentObject(appState)
+                TaggingView(imageData: imageData.data) {
+                    // Add completion handler to ensure proper cleanup
+                    withAnimation(nil) {
+                        selectedImageData = nil
+                        selectedItem = nil
+                        isPickerPresented = false
+                        isUploading = false
+                    }
+                }
+                .environmentObject(authViewModel)
+                .environmentObject(appState)
             }
         }
     }
@@ -5017,39 +5025,45 @@ struct TaggingView: View {
     @StateObject private var viewModel = TaggingViewModel()
     @EnvironmentObject var appState: AppState
     @EnvironmentObject var authViewModel: AuthViewModel
-    @Environment(\.presentationMode) var presentationMode
+    @Environment(\.dismiss) var dismiss  // Change this line
     @State private var caption = ""
+    @State private var isUploading = false
     let imageData: Data
     private let dataService: DataService
-    var onUploadSuccess: (() -> Void)?
+    let onDismiss: () -> Void
     
-    init(imageData: Data, dataService: DataService = FirebaseDataService()) {
+    
+    init(imageData: Data, dataService: DataService = FirebaseDataService(), onDismiss: @escaping () -> Void = {}) {
         self.imageData = imageData
         self.dataService = dataService
+        self.onDismiss = onDismiss
     }
     
     var body: some View {
         NavigationView {
             Form {
-                if let uiImage = UIImage(data: imageData) {
-                    Image(uiImage: uiImage)
-                        .resizable()
-                        .aspectRatio(contentMode: .fill)
-                        .frame(height: UIScreen.main.bounds.width) // Make it square
-                        .clipShape(RoundedRectangle(cornerRadius: 12))
-                        .listRowInsets(EdgeInsets()) // Remove form padding
-                        .listRowBackground(Color.clear) // Remove form background
+                // Image Section
+                Section {
+                    if let uiImage = UIImage(data: imageData) {
+                        Image(uiImage: uiImage)
+                            .resizable()
+                            .aspectRatio(contentMode: .fill)
+                            .frame(height: UIScreen.main.bounds.width)
+                            .clipShape(RoundedRectangle(cornerRadius: 12))
+                            .listRowInsets(EdgeInsets())
+                    }
                 }
                 
+                // Caption Section
                 Section(header: Text("Caption")) {
                     TextField("Write a caption...", text: $caption)
                 }
                 
+                // Tag Users Section
                 Section(header: Text("Tag Users")) {
                     TextField("Search users...", text: $viewModel.searchText)
                         .autocapitalization(.none)
                     
-                    // Search Results
                     ForEach(viewModel.searchResults) { user in
                         HStack {
                             Text(user.username)
@@ -5065,33 +5079,36 @@ struct TaggingView: View {
                                 viewModel.removeTag(user)
                             } else {
                                 viewModel.tagUser(user)
-                                viewModel.searchText = "" // Clear search text after tagging
+                                viewModel.searchText = ""
                             }
                         }
                     }
                 }
                 
-                Section(header: Text("Tagged Users")) {
-                    ForEach(viewModel.taggedUsers) { user in
-                        HStack {
-                            Text(user.username)
-                            Spacer()
-                            Button(action: {
-                                viewModel.removeTag(user)
-                            }) {
-                                Image(systemName: "xmark.circle.fill")
-                                    .foregroundColor(.red)
+                // Tagged Users Section
+                if !viewModel.taggedUsers.isEmpty {
+                    Section(header: Text("Tagged Users")) {
+                        ForEach(viewModel.taggedUsers) { user in
+                            HStack {
+                                Text(user.username)
+                                Spacer()
+                                Button(action: {
+                                    viewModel.removeTag(user)
+                                }) {
+                                    Image(systemName: "xmark.circle.fill")
+                                        .foregroundColor(.red)
+                                }
                             }
                         }
                     }
                 }
             }
-            .navigationTitle("Add Info")
+            .navigationTitle("New Post")
             .navigationBarTitleDisplayMode(.inline)
             .toolbar {
                 ToolbarItem(placement: .navigationBarLeading) {
                     Button("Cancel") {
-                        presentationMode.wrappedValue.dismiss()
+                        dismiss()
                     }
                 }
                 
@@ -5099,29 +5116,37 @@ struct TaggingView: View {
                     Button("Share") {
                         uploadPost()
                     }
+                    .disabled(isUploading) 
+                }
+            }
+            .disabled(isUploading)
+            .overlay {
+                if isUploading {
+                    Color.black.opacity(0.3)
+                        .ignoresSafeArea()
+                        .overlay {
+                            ProgressView()
+                                .tint(.white)
+                                .scaleEffect(1.5)
+                        }
                 }
             }
         }
+        .interactiveDismissDisabled(isUploading)
     }
 
     private func uploadPost() {
-        guard let currentUser = Auth.auth().currentUser else {
-            print("No current user")
-            return
-        }
-        
-        guard let username = currentUser.displayName, !username.isEmpty else {
-            print("Username not found")
-            return
-        }
+        guard !isUploading else { return }
+        isUploading = true
         
         Task {
             do {
                 let imagePath = try await dataService.uploadImage(imageData)
                 let taggedUsers = viewModel.taggedUsers.map { $0.id }
+                
                 try await dataService.createPost(
-                    userId: currentUser.uid,
-                    username: username,
+                    userId: Auth.auth().currentUser?.uid ?? "",
+                    username: Auth.auth().currentUser?.displayName ?? "",
                     imagePath: imagePath,
                     caption: caption,
                     taggedUsers: taggedUsers
@@ -5130,21 +5155,17 @@ struct TaggingView: View {
                 await appState.postAdded()
                 
                 await MainActor.run {
-                    presentationMode.wrappedValue.dismiss()
-                    onUploadSuccess?()
+                    isUploading = false
+                    onDismiss()
+                    dismiss() // This will trigger the cleanup in TabNavigator
                 }
             } catch {
-                print("Error creating post: \(error.localizedDescription)")
+                print("Upload error: \(error)")
+                await MainActor.run {
+                    isUploading = false
+                }
             }
         }
-    }
-}
-
-extension TaggingView {
-    func onUploadSuccess(action: @escaping () -> Void) -> some View {
-        var view = self
-        view.onUploadSuccess = action
-        return view
     }
 }
 
@@ -5359,7 +5380,8 @@ struct UserView: View {
                 
                 // Posts Grid
                 PostsGridView(uploadedPosts: viewModel.uploadedPosts,
-                            taggedPosts: viewModel.taggedPosts)
+                            taggedPosts: viewModel.taggedPosts,
+                              onPostDeleted: nil)
                     .padding(.top)
             }
         }
