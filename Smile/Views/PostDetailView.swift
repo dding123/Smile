@@ -267,6 +267,7 @@ struct CommentInputView: View {
     }
 }
 
+#if DEBUG
 struct PostDetailView_Previews: PreviewProvider {
     static var previews: some View {
         PreviewHelpers.PreviewContainer {
@@ -276,3 +277,4 @@ struct PostDetailView_Previews: PreviewProvider {
         }
     }
 }
+#endif

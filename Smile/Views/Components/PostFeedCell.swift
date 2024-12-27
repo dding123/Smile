@@ -127,9 +127,25 @@ struct PostFeedCell: View {
     private var content: some View {
         VStack(alignment: .leading, spacing: 8) {
             if !post.caption.isEmpty {
-                Text(post.username).font(Theme.Typography.titleSmall) +
-                Text(" \(post.caption)")
-                    .font(Theme.Typography.bodyMedium)
+                HStack(alignment: .top, spacing: 8) {
+                    AsyncImage(url: URL(string: viewModel.userProfilePicture ?? "")) { image in
+                        image
+                            .resizable()
+                            .aspectRatio(contentMode: .fill)
+                    } placeholder: {
+                        Circle()
+                            .foregroundColor(.gray.opacity(0.3))
+                    }
+                    .frame(width: 24, height: 24)
+                    .clipShape(Circle())
+                    
+                    VStack(alignment: .leading, spacing: 2) {
+                        Text(post.username)
+                            .font(Theme.Typography.titleSmall)
+                        Text(post.caption)
+                            .font(Theme.Typography.bodyMedium)
+                    }
+                }
             }
             
             if !viewModel.comments.isEmpty {
@@ -150,3 +166,16 @@ struct PostFeedCell: View {
         }
     }
 }
+
+#if DEBUG
+struct PostFeedCell_Previews: PreviewProvider {
+    static var previews: some View {
+        PreviewHelpers.PreviewContainer {
+            ScrollView {
+                PostFeedCell(post: PreviewHelpers.samplePosts[0])
+            }
+            .background(Theme.Colors.background)
+        }
+    }
+}
+#endif

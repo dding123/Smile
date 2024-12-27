@@ -14,8 +14,12 @@ struct ProfileView: View {
     var profileImageSize: CGFloat { UIScreen.main.bounds.width * 0.28 } 
     
     init() {
-            _viewModel = StateObject(wrappedValue: ProfileViewModel(authViewModel: PreviewHelpers.mockAuthViewModel))
-        }
+        #if DEBUG
+        _viewModel = StateObject(wrappedValue: ProfileViewModel(authViewModel: PreviewHelpers.mockAuthViewModel))
+        #else
+        _viewModel = StateObject(wrappedValue: ProfileViewModel(authViewModel: AuthViewModel()))
+        #endif
+    }
     
     var body: some View {
         ScrollView {
@@ -139,6 +143,7 @@ struct ProfileView: View {
     }
 }
 
+#if DEBUG
 struct ProfileView_Previews: PreviewProvider {
     static var previews: some View {
         NavigationView {
@@ -147,3 +152,4 @@ struct ProfileView_Previews: PreviewProvider {
         }
     }
 }
+#endif

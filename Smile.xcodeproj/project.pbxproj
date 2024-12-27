@@ -171,6 +171,7 @@
 		090F42C22A67A5E90035774E /* Smile */ = {
 			isa = PBXGroup;
 			children = (
+				099E3F882D1F54F200253B08 /* Previews */,
 				0969DFB22CC4F2D8002A7BEA /* Info.plist */,
 				099E3F812D18F13000253B08 /* Protocols */,
 				094627E52C5090E600C8FE90 /* Resources */,
@@ -190,7 +191,6 @@
 		090F42C92A67A5EA0035774E /* Preview Content */ = {
 			isa = PBXGroup;
 			children = (
-				09A49D972CE1C58C00040397 /* PreviewHelpers.swift */,
 				090F42CA2A67A5EA0035774E /* Preview Assets.xcassets */,
 			);
 			path = "Preview Content";
@@ -278,6 +278,14 @@
 				099E3F822D18F15100253B08 /* ProfileLoading.swift */,
 			);
 			path = Protocols;
+			sourceTree = "<group>";
+		};
+		099E3F882D1F54F200253B08 /* Previews */ = {
+			isa = PBXGroup;
+			children = (
+				09A49D972CE1C58C00040397 /* PreviewHelpers.swift */,
+			);
+			path = Previews;
 			sourceTree = "<group>";
 		};
 		09A49D9F2CED606700040397 /* Components */ = {

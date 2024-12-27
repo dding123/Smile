@@ -33,6 +33,8 @@ struct PostsGridView: View {
                 ForEach(selectedTab == 0 ? uploadedPosts : taggedPosts) { post in
                     PostImageView(imagePath: post.imagePath,
                                 size: UIScreen.main.bounds.width / 3 - 1)
+                        .clipShape(RoundedRectangle(cornerRadius: 8))
+                        .contentShape(RoundedRectangle(cornerRadius: 8))
                         .clipped()
                         .onTapGesture {
                             selectedPost = post
