@@ -6,6 +6,7 @@
 //
 import SwiftUI
 import Firebase
+import FirebaseAuth
 import Combine
 
 class TaggingViewModel: ObservableObject {
@@ -52,6 +53,9 @@ class TaggingViewModel: ObservableObject {
     }
     
     func tagUser(_ user: UserPreview) {
+        // Prevent tagging yourself
+        guard user.id != Auth.auth().currentUser?.uid else { return }
+        
         if !taggedUsers.contains(user) {
             taggedUsers.append(user)
         }

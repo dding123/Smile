@@ -14,13 +14,19 @@ struct TaggingView: View {
     @StateObject private var viewModel = TaggingViewModel()
     @EnvironmentObject var appState: AppState
     @EnvironmentObject var authViewModel: AuthViewModel
-    @Environment(\.dismiss) var dismiss  // Change this line
+    @Environment(\.dismiss) var dismiss
     @State private var caption = ""
     @State private var isUploading = false
     let imageData: Data
     private let dataService: DataService
     let onDismiss: () -> Void
+    @State private var errorMessage: String?
+    @State private var showError = false
     
+    private var canPost: Bool {
+        !caption.isEmpty && !viewModel.taggedUsers.isEmpty &&
+        !viewModel.taggedUsers.contains { $0.id == Auth.auth().currentUser?.uid }
+    }
     
     init(imageData: Data, dataService: DataService = FirebaseDataService(), onDismiss: @escaping () -> Void = {}) {
         self.imageData = imageData
@@ -49,8 +55,8 @@ struct TaggingView: View {
                 }
                 
                 // Tag Users Section
-                Section(header: Text("Tag Users")) {
-                    TextField("Search users...", text: $viewModel.searchText)
+                Section(header: Text("Tag Friends")) {
+                    TextField("Search friends...", text: $viewModel.searchText)
                         .autocapitalization(.none)
                     
                     ForEach(viewModel.searchResults) { user in
@@ -75,18 +81,16 @@ struct TaggingView: View {
                 }
                 
                 // Tagged Users Section
-                if !viewModel.taggedUsers.isEmpty {
-                    Section(header: Text("Tagged Users")) {
-                        ForEach(viewModel.taggedUsers) { user in
-                            HStack {
-                                Text(user.username)
-                                Spacer()
-                                Button(action: {
-                                    viewModel.removeTag(user)
-                                }) {
-                                    Image(systemName: "xmark.circle.fill")
-                                        .foregroundColor(.red)
-                                }
+                Section(header: Text("Tagged Friends")) {
+                    ForEach(viewModel.taggedUsers) { user in
+                        HStack {
+                            Text(user.username)
+                            Spacer()
+                            Button(action: {
+                                viewModel.removeTag(user)
+                            }) {
+                                Image(systemName: "xmark.circle.fill")
+                                    .foregroundColor(.red)
                             }
                         }
                     }
@@ -105,8 +109,13 @@ struct TaggingView: View {
                     Button("Share") {
                         uploadPost()
                     }
-                    .disabled(isUploading) 
+                    .disabled(!canPost || isUploading)
                 }
+            }
+            .alert("Error", isPresented: $showError, presenting: errorMessage) { _ in
+                Button("OK", role: .cancel) { }
+            } message: { error in
+                Text(error)
             }
             .disabled(isUploading)
             .overlay {
@@ -125,11 +134,20 @@ struct TaggingView: View {
     }
 
     private func uploadPost() {
-        print("🚀 Starting upload")  // Debug print
-        guard !isUploading else {
-            print("⚠️ Upload already in progress")  // Debug print
+        guard !isUploading else { return }
+        
+        let currentUserId = Auth.auth().currentUser?.uid ?? ""
+        if viewModel.taggedUsers.isEmpty {
+            errorMessage = "You must tag at least one friend"
+            showError = true
             return
         }
+        if viewModel.taggedUsers.contains(where: { $0.id == currentUserId }) {
+            errorMessage = "You cannot tag yourself"
+            showError = true
+            return
+        }
+
         isUploading = true
         
         Task {

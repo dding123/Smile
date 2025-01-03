@@ -20,6 +20,11 @@ struct Post: Identifiable, Codable {
     let likeCount: Int
     let commentCount: Int
     
+    private enum ValidationError: Error {
+        case noFriendTagged
+        case selfTagged
+    }
+    
     var uniqueId: String {
         id ?? "\(userId)-\(createdAt?.timeIntervalSince1970 ?? 0)"
     }
@@ -45,6 +50,18 @@ struct Post: Identifiable, Codable {
         self.createdAt = createdAt
         self.likeCount = likeCount
         self.commentCount = commentCount
+    }
+    
+    func validate() throws {
+        // Must tag at least one friend
+        if taggedUsers.isEmpty {
+            throw ValidationError.noFriendTagged
+        }
+        
+        // Cannot tag yourself
+        if taggedUsers.contains(userId) {
+            throw ValidationError.selfTagged
+        }
     }
 }
 

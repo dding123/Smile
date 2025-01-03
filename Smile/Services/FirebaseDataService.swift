@@ -13,16 +13,7 @@ import FirebaseStorage
 import SwiftUI
 
 class FirebaseDataService: DataService {
-    
-    
-    //
-    //    func joinGroup(groupId: String) async throws {
-    //
-    //    }
-    //
-    //    func leaveGroup(groupId: String) async throws {
-    //        <#code#>
-    //    }
+
     func createGroup(name: String) async throws -> UserGroup {
         guard let userId = Auth.auth().currentUser?.uid else {
             throw NSError(domain: "", code: -1, userInfo: [NSLocalizedDescriptionKey: "User not logged in"])
@@ -66,13 +57,24 @@ class FirebaseDataService: DataService {
     }
     
     func createPost(userId: String, username: String, imagePath: String, caption: String, taggedUsers: [String]) async throws {
+        // Validate post
+        if taggedUsers.isEmpty {
+            throw NSError(domain: "", code: -1,
+                         userInfo: [NSLocalizedDescriptionKey: "Must tag at least one friend"])
+        }
+        
+        if taggedUsers.contains(userId) {
+            throw NSError(domain: "", code: -1,
+                         userInfo: [NSLocalizedDescriptionKey: "Cannot tag yourself"])
+        }
+        
         let db = Firestore.firestore()
         let postRef = db.collection("posts").document()
         
         let postData: [String: Any] = [
             "userId": userId,
             "username": username,
-            "imagePath": imagePath,  // Store path instead of URL
+            "imagePath": imagePath,
             "caption": caption,
             "taggedUsers": taggedUsers,
             "createdAt": FieldValue.serverTimestamp(),
@@ -199,6 +201,11 @@ class FirebaseDataService: DataService {
     }
     
     func searchUsers(matching query: String) async throws -> [UserPreview] {
+        guard let currentUserId = Auth.auth().currentUser?.uid else {
+            throw NSError(domain: "", code: -1,
+                         userInfo: [NSLocalizedDescriptionKey: "User not logged in"])
+        }
+        
         let db = Firestore.firestore()
         let cleanQuery = query.lowercased().filter { !$0.isWhitespace }
         
@@ -209,9 +216,15 @@ class FirebaseDataService: DataService {
             .getDocuments()
         
         return snapshot.documents.compactMap { document in
+            // Skip if this is the current user
+            guard document.documentID != currentUserId else {
+                return nil
+            }
+            
             guard let username = document.data()["username"] as? String else {
                 return nil
             }
+            
             return UserPreview(
                 id: document.documentID,
                 username: username,
