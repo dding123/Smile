@@ -1,7 +1,8 @@
 # Smile - iOS Social Media App
 
-![Uploading IMG_7002.PNG…]()
-![Uploading IMG_7003.PNG…]()
+<img width="590" height="1278" alt="IMG_7002" src="https://github.com/user-attachments/assets/bd27b7c7-1ca3-4edd-b631-a7b3f1dbe517" />
+<img width="590" height="1278" alt="IMG_7003" src="https://github.com/user-attachments/assets/3909c08c-a8df-48e2-9fb6-03cb7881fed3" />
+
 
 
 ## Overview
