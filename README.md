@@ -1,5 +1,9 @@
 # Smile - iOS Social Media App
 
+![Uploading IMG_7002.PNG…]()
+![Uploading IMG_7003.PNG…]()
+
+
 ## Overview
 Smile is a modern iOS social media application built with SwiftUI and Firebase. It offers real-time social interactions, image sharing, and user engagement features in a clean, intuitive interface.
 
